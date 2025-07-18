@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "id": "b7bc",
+      "email": "shabas@email.com",
+      "password": "shabas@123",
+      "role": "user"
+    }
+  ],
+  "slides": [
+    {
+      "id": 1,
+      "image": "/carousel/cricket.jpg",
+      "title": "Rule the Pitch",
+      "subtitle": "Shop Premium Cricket Bats, Pads & Gear",
+      "cta": "Explore Cricket →"
+    },
+    {
+      "id": 2,
+      "image": "/carousel/football.jpg",
+      "title": "Play with Precision",
+      "subtitle": "Latest Football Boots, Jerseys & Balls",
+      "cta": "Shop Football Gear →"
+    },
+    {
+      "id": 3,
+      "image": "/carousel/volley.jpg",
+      "title": "Fan Favourites",
+      "subtitle": "All You Need for Indoor & Outdoor Volleyball",
+      "cta": "Shop Volleyball →"
+    },
+    {
+      "id": 4,
+      "image": "/carousel/hockey.jpg",
+      "title": "Hit Hard. Stay Protected.",
+      "subtitle": "Top-Grade Hockey Sticks, Helmets & Pads",
+      "cta": "Explore Hockey Gear →"
+    }
+  ]
+}

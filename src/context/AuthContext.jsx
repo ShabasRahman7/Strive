@@ -1,15 +1,77 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // null or { name, role }
+const LOCAL_STORAGE_KEY = 'auth_user';
 
-  const login = (userData) => setUser(userData); // fake login
-  const logout = () => setUser(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  // Load from localStorage
+  useEffect(() => {
+    const savedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const login = async (email, password) => {
+    const res = await fetch(`http://localhost:3001/users?email=${email}`);
+    const users = await res.json();
+
+    if (users.length === 0) {
+      throw new Error("User not found");
+    }
+
+    const user = users[0];
+    if (user.password !== password) {
+      throw new Error("Incorrect password");
+    }
+
+    setUser(user);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
+    return user;
+  };
+
+  const register = async (email, password) => {
+    // Check if email exists
+    const res = await fetch(`http://localhost:3001/users?email=${email}`);
+    const existing = await res.json();
+    if (existing.length > 0) {
+      throw new Error("Email already registered");
+    }
+
+    const newUser = {
+      email,
+      password,
+      role: "user",
+    };
+
+    const createRes = await fetch(`http://localhost:3001/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newUser)
+    });
+
+    if (!createRes.ok) {
+      throw new Error("Failed to register");
+    }
+
+    const createdUser = await createRes.json();
+    setUser(createdUser);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(createdUser));
+    return createdUser;
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
