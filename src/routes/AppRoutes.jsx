@@ -27,7 +27,6 @@ const AppRoutes = () => {
     <Routes>
       {/* Public Route with layout */}
       <Route path="/" element={<GuestLayout />}>
-        {/* Optional nested public content */}
         {/* <Route index element={<Home />} /> */}
       </Route>
 

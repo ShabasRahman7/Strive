@@ -36,5 +36,839 @@
       "subtitle": "Top-Grade Hockey Sticks, Helmets & Pads",
       "cta": "Explore Hockey Gear →"
     }
+  ],
+  "products": [
+    {
+      "id": "d4b36ae3-af9f-4f14-8593-7d58da6da4d6",
+      "name": "Adidas Predator Ball",
+      "description": "High quality adidas predator ball suitable for all levels.",
+      "price": 4255.11,
+      "count": 46,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Adidas+Predator+Ball"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-14T07:30:20.742443"
+    },
+    {
+      "id": "61fc6bfc-9ee1-414b-8cfc-aa21b211197c",
+      "name": "Nike Phantom Cleats",
+      "description": "High quality nike phantom cleats suitable for all levels.",
+      "price": 610.31,
+      "count": 74,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Nike+Phantom+Cleats"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-04T07:30:20.742443"
+    },
+    {
+      "id": "5321123a-f4ca-41d7-90e9-8a4b5e371bcd",
+      "name": "Puma Shin Guards",
+      "description": "High quality puma shin guards suitable for all levels.",
+      "price": 2195.94,
+      "count": 94,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Puma+Shin+Guards"
+      ],
+      "isActive": false,
+      "created_at": "2025-05-15T07:30:20.742443"
+    },
+    {
+      "id": "3a92e4db-f389-42d5-b181-372c187427a5",
+      "name": "Football Goal Net",
+      "description": "High quality football goal net suitable for all levels.",
+      "price": 3865.47,
+      "count": 11,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Football+Goal+Net"
+      ],
+      "isActive": true,
+      "created_at": "2025-07-14T07:30:20.742443"
+    },
+    {
+      "id": "142f3a91-75bc-49e6-865c-555aaaa5e61b",
+      "name": "Training Cones",
+      "description": "High quality training cones suitable for all levels.",
+      "price": 1518.99,
+      "count": 47,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Training+Cones"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-14T07:30:20.742443"
+    },
+    {
+      "id": "2110d128-cb3e-4033-9ac2-6eda0292505b",
+      "name": "Goalkeeper Gloves",
+      "description": "High quality goalkeeper gloves suitable for all levels.",
+      "price": 2227.85,
+      "count": 33,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Goalkeeper+Gloves"
+      ],
+      "isActive": true,
+      "created_at": "2025-05-05T07:30:20.742443"
+    },
+    {
+      "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
+      "name": "Messi Jersey",
+      "description": "High quality messi jersey suitable for all levels.",
+      "price": 2047.79,
+      "count": 37,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Messi+Jersey"
+      ],
+      "isActive": false,
+      "created_at": "2025-05-19T07:30:20.742443"
+    },
+    {
+      "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
+      "name": "Nike Football Shorts",
+      "description": "High quality nike football shorts suitable for all levels.",
+      "price": 1128.06,
+      "count": 45,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Nike+Football+Shorts"
+      ],
+      "isActive": true,
+      "created_at": "2025-01-22T07:30:20.742443"
+    },
+    {
+      "id": "2aaff6d3-d4ba-4fc2-9598-f24dfec32ab2",
+      "name": "FIFA Match Ball",
+      "description": "High quality fifa match ball suitable for all levels.",
+      "price": 3885.08,
+      "count": 63,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=FIFA+Match+Ball"
+      ],
+      "isActive": true,
+      "created_at": "2025-05-12T07:30:20.742443"
+    },
+    {
+      "id": "0521c98a-5bde-4541-8e60-ac887988ace7",
+      "name": "Training Bibs",
+      "description": "High quality training bibs suitable for all levels.",
+      "price": 4712.23,
+      "count": 83,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Training+Bibs"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-21T07:30:20.742443"
+    },
+    {
+      "id": "20ee204c-a5cb-42cd-9607-7a818d484261",
+      "name": "Knee Socks",
+      "description": "High quality knee socks suitable for all levels.",
+      "price": 3239.87,
+      "count": 36,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Knee+Socks"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-27T07:30:20.742443"
+    },
+    {
+      "id": "0ddcb398-724b-4479-a031-5cb31697c56b",
+      "name": "Football Pump",
+      "description": "High quality football pump suitable for all levels.",
+      "price": 3515.02,
+      "count": 47,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Football+Pump"
+      ],
+      "isActive": false,
+      "created_at": "2025-03-24T07:30:20.742443"
+    },
+    {
+      "id": "021bea50-56e3-426d-afd5-1aac9e8fca1b",
+      "name": "Footwear Bag",
+      "description": "High quality footwear bag suitable for all levels.",
+      "price": 1861.44,
+      "count": 52,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Footwear+Bag"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-07T07:30:20.742443"
+    },
+    {
+      "id": "9ca6039b-31d8-40f3-9320-7f1f567eaafc",
+      "name": "Adidas Football Cap",
+      "description": "High quality adidas football cap suitable for all levels.",
+      "price": 590.73,
+      "count": 51,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Adidas+Football+Cap"
+      ],
+      "isActive": true,
+      "created_at": "2025-07-15T07:30:20.742443"
+    },
+    {
+      "id": "547d82e1-ca1f-45c2-a446-b0efd891c11e",
+      "name": "Team Duffel Bag",
+      "description": "High quality team duffel bag suitable for all levels.",
+      "price": 4529.93,
+      "count": 74,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Team+Duffel+Bag"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-24T07:30:20.742443"
+    },
+    {
+      "id": "5b7e69c0-73be-4788-817b-11013e784150",
+      "name": "Warm-up Jacket",
+      "description": "High quality warm-up jacket suitable for all levels.",
+      "price": 1036.39,
+      "count": 28,
+      "category": "football",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Warm-up+Jacket"
+      ],
+      "isActive": false,
+      "created_at": "2025-05-08T07:30:20.742443"
+    },
+    {
+      "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
+      "name": "Kookaburra Bat",
+      "description": "High quality kookaburra bat suitable for all levels.",
+      "price": 2042.72,
+      "count": 64,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Kookaburra+Bat"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-29T07:30:20.742443"
+    },
+    {
+      "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
+      "name": "SG Test Ball",
+      "description": "High quality sg test ball suitable for all levels.",
+      "price": 2430.62,
+      "count": 59,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=SG+Test+Ball"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-28T07:30:20.742443"
+    },
+    {
+      "id": "4af73bdb-716e-4958-be50-7fb2ac457203",
+      "name": "Cricket Helmet",
+      "description": "High quality cricket helmet suitable for all levels.",
+      "price": 2231.37,
+      "count": 29,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Cricket+Helmet"
+      ],
+      "isActive": false,
+      "created_at": "2025-02-27T07:30:20.742443"
+    },
+    {
+      "id": "cd2ce208-0770-4705-9d49-396dfeaa4ebc",
+      "name": "Batting Pads",
+      "description": "High quality batting pads suitable for all levels.",
+      "price": 4311.37,
+      "count": 44,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Batting+Pads"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-23T07:30:20.742443"
+    },
+    {
+      "id": "ba622218-bf17-4a04-bb41-c148999d0578",
+      "name": "Wicketkeeping Gloves",
+      "description": "High quality wicketkeeping gloves suitable for all levels.",
+      "price": 827.01,
+      "count": 30,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Wicketkeeping+Gloves"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-09T07:30:20.742443"
+    },
+    {
+      "id": "e29866c0-d6f4-42fd-867c-60ea098fcdfa",
+      "name": "Cricket Stumps",
+      "description": "High quality cricket stumps suitable for all levels.",
+      "price": 2858.98,
+      "count": 88,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Cricket+Stumps"
+      ],
+      "isActive": true,
+      "created_at": "2025-01-28T07:30:20.742443"
+    },
+    {
+      "id": "0646a4e6-1643-4fea-9697-618b4e2ca9d0",
+      "name": "All-Rounder Shoes",
+      "description": "High quality all-rounder shoes suitable for all levels.",
+      "price": 2071.52,
+      "count": 84,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=All-Rounder+Shoes"
+      ],
+      "isActive": false,
+      "created_at": "2025-07-09T07:30:20.742443"
+    },
+    {
+      "id": "15f6c7ec-895e-421f-a77c-556a5da30a44",
+      "name": "Cricket Cap",
+      "description": "High quality cricket cap suitable for all levels.",
+      "price": 3156.92,
+      "count": 91,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Cricket+Cap"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-11T07:30:20.742443"
+    },
+    {
+      "id": "95bd7e16-7bde-4040-b957-a848f2e826b1",
+      "name": "Team Jersey",
+      "description": "High quality team jersey suitable for all levels.",
+      "price": 3441.62,
+      "count": 13,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Team+Jersey"
+      ],
+      "isActive": false,
+      "created_at": "2025-04-16T07:30:20.742443"
+    },
+    {
+      "id": "d5a8fe01-4358-4cb5-8c69-0396200a2e8f",
+      "name": "Score Sheet Book",
+      "description": "High quality score sheet book suitable for all levels.",
+      "price": 1340.22,
+      "count": 52,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Score+Sheet+Book"
+      ],
+      "isActive": false,
+      "created_at": "2025-06-11T07:30:20.742443"
+    },
+    {
+      "id": "d657fd9f-a77b-4550-835b-6e61e7a9817f",
+      "name": "Ball Thrower",
+      "description": "High quality ball thrower suitable for all levels.",
+      "price": 4952.87,
+      "count": 63,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Ball+Thrower"
+      ],
+      "isActive": true,
+      "created_at": "2025-05-31T07:30:20.742443"
+    },
+    {
+      "id": "c801d7ef-eb5b-4030-908c-a0a375659373",
+      "name": "Elbow Guard",
+      "description": "High quality elbow guard suitable for all levels.",
+      "price": 4296.22,
+      "count": 21,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Elbow+Guard"
+      ],
+      "isActive": true,
+      "created_at": "2025-05-02T07:30:20.742443"
+    },
+    {
+      "id": "899c5ffc-30bd-4fdf-b58e-05f2af8238ee",
+      "name": "Practice Net",
+      "description": "High quality practice net suitable for all levels.",
+      "price": 3736.93,
+      "count": 38,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Practice+Net"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-19T07:30:20.742443"
+    },
+    {
+      "id": "b69fb062-2f51-468a-823e-d0ae6763db71",
+      "name": "Cricket Kit Bag",
+      "description": "High quality cricket kit bag suitable for all levels.",
+      "price": 4517.01,
+      "count": 86,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Cricket+Kit+Bag"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-31T07:30:20.742443"
+    },
+    {
+      "id": "5cc6a4c1-8c3b-4bbe-96ee-a240d1b61c06",
+      "name": "Leg Guards",
+      "description": "High quality leg guards suitable for all levels.",
+      "price": 3780.45,
+      "count": 86,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Leg+Guards"
+      ],
+      "isActive": false,
+      "created_at": "2025-04-11T07:30:20.742443"
+    },
+    {
+      "id": "08bd6a44-c709-4461-b624-2bd42a3b4786",
+      "name": "Chest Guard",
+      "description": "High quality chest guard suitable for all levels.",
+      "price": 2753.77,
+      "count": 31,
+      "category": "cricket",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Chest+Guard"
+      ],
+      "isActive": false,
+      "created_at": "2025-07-17T07:30:20.742443"
+    },
+    {
+      "id": "1874a9cd-f2f4-4d69-9227-44dbaab3839c",
+      "name": "Grays Hockey Stick",
+      "description": "High quality grays hockey stick suitable for all levels.",
+      "price": 1230.31,
+      "count": 24,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Grays+Hockey+Stick"
+      ],
+      "isActive": true,
+      "created_at": "2025-04-25T07:30:20.742443"
+    },
+    {
+      "id": "e00cf2a1-a028-44c8-a0e8-9ad40d815270",
+      "name": "Hockey Turf Shoes",
+      "description": "High quality hockey turf shoes suitable for all levels.",
+      "price": 3157.08,
+      "count": 20,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Hockey+Turf+Shoes"
+      ],
+      "isActive": false,
+      "created_at": "2025-02-14T07:30:20.742443"
+    },
+    {
+      "id": "096cfb66-c774-46d7-9b8f-21c97ac504a8",
+      "name": "Mouth Guard",
+      "description": "High quality mouth guard suitable for all levels.",
+      "price": 2721.85,
+      "count": 34,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Mouth+Guard"
+      ],
+      "isActive": true,
+      "created_at": "2025-01-27T07:30:20.742443"
+    },
+    {
+      "id": "14c5e731-94ae-496c-98d4-1a317e9c240b",
+      "name": "Hockey Ball",
+      "description": "High quality hockey ball suitable for all levels.",
+      "price": 3723.2,
+      "count": 33,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Hockey+Ball"
+      ],
+      "isActive": false,
+      "created_at": "2025-02-16T07:30:20.742443"
+    },
+    {
+      "id": "22c4cb2d-886d-4566-ab3e-527e61336a85",
+      "name": "Training Cone Set",
+      "description": "High quality training cone set suitable for all levels.",
+      "price": 3993.29,
+      "count": 92,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Training+Cone+Set"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-06T07:30:20.742443"
+    },
+    {
+      "id": "393099ca-2293-48a0-a94c-0f1a5bf7d48f",
+      "name": "Goalkeeper Kit",
+      "description": "High quality goalkeeper kit suitable for all levels.",
+      "price": 4854.91,
+      "count": 39,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Goalkeeper+Kit"
+      ],
+      "isActive": false,
+      "created_at": "2025-05-21T07:30:20.742443"
+    },
+    {
+      "id": "d45b58fd-f283-4ce0-9db4-8253e95d53d5",
+      "name": "Stick Bag",
+      "description": "High quality stick bag suitable for all levels.",
+      "price": 3258.84,
+      "count": 47,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Stick+Bag"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-18T07:30:20.742443"
+    },
+    {
+      "id": "e439ffad-a50c-4ea5-a5d3-11a1f238ec89",
+      "name": "Hockey Jersey",
+      "description": "High quality hockey jersey suitable for all levels.",
+      "price": 3127.14,
+      "count": 15,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Hockey+Jersey"
+      ],
+      "isActive": false,
+      "created_at": "2025-07-07T07:30:20.742443"
+    },
+    {
+      "id": "d807d3a9-57db-4b53-987c-fe438382eeda",
+      "name": "Hockey Shorts",
+      "description": "High quality hockey shorts suitable for all levels.",
+      "price": 4459.14,
+      "count": 38,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Hockey+Shorts"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-21T07:30:20.742443"
+    },
+    {
+      "id": "9a9e7867-6cb9-4123-b30f-ee8a38cd9e14",
+      "name": "Wrist Band",
+      "description": "High quality wrist band suitable for all levels.",
+      "price": 1231.59,
+      "count": 54,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Wrist+Band"
+      ],
+      "isActive": false,
+      "created_at": "2025-06-29T07:30:20.742443"
+    },
+    {
+      "id": "3f99092c-fa10-4f67-a1e5-583f5dab4feb",
+      "name": "Hockey Net",
+      "description": "High quality hockey net suitable for all levels.",
+      "price": 4895.07,
+      "count": 45,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Hockey+Net"
+      ],
+      "isActive": false,
+      "created_at": "2025-07-19T07:30:20.742443"
+    },
+    {
+      "id": "7ea5c9b9-0ce8-428e-a79d-e124445d66f3",
+      "name": "Dribbling Board",
+      "description": "High quality dribbling board suitable for all levels.",
+      "price": 3908.96,
+      "count": 56,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Dribbling+Board"
+      ],
+      "isActive": true,
+      "created_at": "2025-04-16T07:30:20.742443"
+    },
+    {
+      "id": "79d5bf1a-bcee-433f-a7f7-d0998db5eb32",
+      "name": "Turf Cleaner",
+      "description": "High quality turf cleaner suitable for all levels.",
+      "price": 1011.08,
+      "count": 76,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Turf+Cleaner"
+      ],
+      "isActive": false,
+      "created_at": "2025-04-01T07:30:20.742443"
+    },
+    {
+      "id": "522d13cc-333c-424a-bb6d-605a11e931f5",
+      "name": "Speed Ladder",
+      "description": "High quality speed ladder suitable for all levels.",
+      "price": 632.68,
+      "count": 18,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Speed+Ladder"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-24T07:30:20.742443"
+    },
+    {
+      "id": "370f2f37-06eb-4235-8bca-249b580e01ec",
+      "name": "Arm Guards",
+      "description": "High quality arm guards suitable for all levels.",
+      "price": 786.56,
+      "count": 62,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Arm+Guards"
+      ],
+      "isActive": false,
+      "created_at": "2025-06-30T07:30:20.742443"
+    },
+    {
+      "id": "e137b0d8-a2a8-4410-bede-fdc030edc455",
+      "name": "Grip Tape",
+      "description": "High quality grip tape suitable for all levels.",
+      "price": 3475.09,
+      "count": 13,
+      "category": "hockey",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Grip+Tape"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-08T07:30:20.742443"
+    },
+    {
+      "id": "2e8c89a8-eabe-4ea5-aed0-58cef6cc3218",
+      "name": "Mikasa Volleyball",
+      "description": "High quality mikasa volleyball suitable for all levels.",
+      "price": 2018.08,
+      "count": 79,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Mikasa+Volleyball"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-09T07:30:20.742443"
+    },
+    {
+      "id": "96d6d3fc-548e-49e0-9ae6-545b0aa16d62",
+      "name": "Knee Pads",
+      "description": "High quality knee pads suitable for all levels.",
+      "price": 4534.88,
+      "count": 16,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Knee+Pads"
+      ],
+      "isActive": true,
+      "created_at": "2025-07-19T07:30:20.742443"
+    },
+    {
+      "id": "6aeb4ff3-4042-456d-912e-563c02ba458a",
+      "name": "Training Poles",
+      "description": "High quality training poles suitable for all levels.",
+      "price": 4603.57,
+      "count": 11,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Training+Poles"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-07T07:30:20.742443"
+    },
+    {
+      "id": "4f383ec4-5ffa-44e0-a766-60f15ab3b03d",
+      "name": "Serving Trainer",
+      "description": "High quality serving trainer suitable for all levels.",
+      "price": 1509.32,
+      "count": 68,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Serving+Trainer"
+      ],
+      "isActive": false,
+      "created_at": "2025-03-08T07:30:20.742443"
+    },
+    {
+      "id": "9e4548d7-fcc4-47e0-bbe8-2526ce7ae687",
+      "name": "Volleyball Net",
+      "description": "High quality volleyball net suitable for all levels.",
+      "price": 2187.04,
+      "count": 21,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Volleyball+Net"
+      ],
+      "isActive": true,
+      "created_at": "2025-04-11T07:30:20.742443"
+    },
+    {
+      "id": "7ed36adf-5d35-457e-97c6-4d6abd070076",
+      "name": "Spalding Ball",
+      "description": "High quality spalding ball suitable for all levels.",
+      "price": 2895.45,
+      "count": 12,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Spalding+Ball"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-15T07:30:20.742443"
+    },
+    {
+      "id": "86098b37-f816-4c43-b746-35a0e73b749b",
+      "name": "Sand Court Ball",
+      "description": "High quality sand court ball suitable for all levels.",
+      "price": 3145.99,
+      "count": 97,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Sand+Court+Ball"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-25T07:30:20.742443"
+    },
+    {
+      "id": "1bbbb176-1830-4783-87e5-1a0f43a3ae6a",
+      "name": "Team Tank Top",
+      "description": "High quality team tank top suitable for all levels.",
+      "price": 3784.19,
+      "count": 29,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Team+Tank+Top"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-04T07:30:20.742443"
+    },
+    {
+      "id": "20165436-3959-48f7-a379-b844b91d9399",
+      "name": "Wrist Bands",
+      "description": "High quality wrist bands suitable for all levels.",
+      "price": 4134.89,
+      "count": 56,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Wrist+Bands"
+      ],
+      "isActive": true,
+      "created_at": "2025-03-14T07:30:20.742443"
+    },
+    {
+      "id": "c0b80731-236e-4c37-bf4a-60373dca3752",
+      "name": "Court Lines Set",
+      "description": "High quality court lines set suitable for all levels.",
+      "price": 1170.09,
+      "count": 15,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Court+Lines+Set"
+      ],
+      "isActive": true,
+      "created_at": "2025-05-11T07:30:20.742443"
+    },
+    {
+      "id": "c651c859-0a55-4377-844b-fe910eb45158",
+      "name": "Ball Bag",
+      "description": "High quality ball bag suitable for all levels.",
+      "price": 3798.3,
+      "count": 54,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Ball+Bag"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-17T07:30:20.742443"
+    },
+    {
+      "id": "d584e06b-866f-481e-9e73-11f312f5b9c1",
+      "name": "Volleyball Shoes",
+      "description": "High quality volleyball shoes suitable for all levels.",
+      "price": 3830.02,
+      "count": 48,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Volleyball+Shoes"
+      ],
+      "isActive": false,
+      "created_at": "2025-02-24T07:30:20.742443"
+    },
+    {
+      "id": "4b056f10-85a0-4097-988b-9fffc3c26033",
+      "name": "Beach Ball",
+      "description": "High quality beach ball suitable for all levels.",
+      "price": 3589.72,
+      "count": 80,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Beach+Ball"
+      ],
+      "isActive": true,
+      "created_at": "2025-02-22T07:30:20.742443"
+    },
+    {
+      "id": "78dc8d15-6e19-47cb-bd81-f1f10fcd535e",
+      "name": "Training Bibs",
+      "description": "High quality training bibs suitable for all levels.",
+      "price": 3228.11,
+      "count": 58,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Training+Bibs"
+      ],
+      "isActive": true,
+      "created_at": "2025-06-01T07:30:20.742443"
+    },
+    {
+      "id": "ae930b59-766a-4048-acaa-43193d0721d6",
+      "name": "Volleyball Cap",
+      "description": "High quality volleyball cap suitable for all levels.",
+      "price": 4519.3,
+      "count": 64,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Volleyball+Cap"
+      ],
+      "isActive": false,
+      "created_at": "2025-05-06T07:30:20.742443"
+    },
+    {
+      "id": "45c69c77-319b-4042-9505-4c4f5d7913ed",
+      "name": "Inflation Pump",
+      "description": "High quality inflation pump suitable for all levels.",
+      "price": 1300.82,
+      "count": 69,
+      "category": "volleyball",
+      "images": [
+        "https://via.placeholder.com/512x512.png?text=Inflation+Pump"
+      ],
+      "isActive": true,
+      "created_at": "2025-04-20T07:30:20.742443"
+    }
   ]
 }
