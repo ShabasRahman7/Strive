@@ -1,29 +1,29 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Routes, Route, Navigate } from "react-router-dom";
 
 // Layout
-import Layout from '../layouts/Layout';
+import Layout from "../layouts/Layout";
 
 // Pages
-import Home from '../pages/public/Home';
-import Login from '../pages/auth/Login';
-import Register from '../pages/auth/Register';
+import Home from "../pages/public/Home";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import ProductList from "../pages/public/ProductList";
+import ProductDetail from "../pages/public/ProductDetail";
+import CartPage from "../pages/user/CartPage";
 
-// Protected Route wrapper (imported from separate file)
-import ProtectedRoute from './ProtectedRoute';
+// Protected Route
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Unified layout for both guest and user */}
+      {/* Shared layout */}
       <Route path="/" element={<Layout />}>
-        {/* Home page (public or shared) */}
         <Route index element={<Home />} />
+        <Route path="products" element={<ProductList />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
 
-        {/* ✅ Example: More routes can go here in future */}
-        {/* <Route path="products" element={<ProductList />} /> */}
-
-        {/* ✅ Protected route for logged-in users */}
+        {/* Protected Routes */}
         <Route
           path="user"
           element={
@@ -32,13 +32,21 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="cart"
+          element={
+            <ProtectedRoute role="user" onGuestAlert>
+              <CartPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
-      {/* Auth pages (outside layout) */}
+      {/* Auth pages */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Fallback */}
+      {/* 404 fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

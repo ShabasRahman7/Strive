@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 
 const Carousel = () => {
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const navigate=useNavigate()
   useEffect(() => {
     const fetchSlides = async () => {
       try {
@@ -70,7 +71,12 @@ const Carousel = () => {
                   <p className="text-[10px] sm:text-sm md:text-lg mb-2 sm:mb-4 break-words leading-snug">
                     {slide.subtitle}
                   </p>
-                  <button className="btn btn-primary text-[10px] sm:text-sm px-2 py-1 sm:px-4 sm:py-2">
+                  <button
+                    className="btn btn-primary text-[10px] sm:text-sm px-2 py-1 sm:px-4 sm:py-2"
+                    onClick={() =>
+                      navigate(`/products?category=${slide.category}`)
+                    }
+                  >
                     {slide.cta}
                   </button>
                 </div>

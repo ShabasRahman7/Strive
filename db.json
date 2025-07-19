@@ -4,37 +4,86 @@
       "id": "b7bc",
       "email": "shabas@email.com",
       "password": "shabas@123",
-      "role": "user"
+      "role": "user",
+      "cart": [
+        {
+          "id": "ba622218-bf17-4a04-bb41-c148999d0578",
+          "name": "Wicketkeeping Gloves",
+          "description": "High quality wicketkeeping gloves suitable for all levels.",
+          "price": 827.01,
+          "count": 30,
+          "category": "cricket",
+          "images": [
+            "/products/cricket/wicketkeeping_gloves.jpeg"
+          ],
+          "isActive": true,
+          "created_at": "2025-02-09T07:30:20.742443",
+          "quantity": 1
+        },
+        {
+          "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
+          "name": "SG Test Ball",
+          "description": "High quality sg test ball suitable for all levels.",
+          "price": 2430.62,
+          "count": 59,
+          "category": "cricket",
+          "images": [
+            "/products/cricket/sg_test_ball.jpeg"
+          ],
+          "isActive": true,
+          "created_at": "2025-06-28T07:30:20.742443",
+          "quantity": 1
+        }
+      ],
+      "wishlist": [
+        {
+          "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
+          "name": "SG Test Ball",
+          "description": "High quality sg test ball suitable for all levels.",
+          "price": 2430.62,
+          "count": 59,
+          "category": "cricket",
+          "images": [
+            "/products/cricket/sg_test_ball.jpeg"
+          ],
+          "isActive": true,
+          "created_at": "2025-06-28T07:30:20.742443"
+        }
+      ]
     }
   ],
   "slides": [
     {
-      "id": 1,
+      "id": "1",
       "image": "/carousel/cricket.jpg",
       "title": "Rule the Pitch",
       "subtitle": "Shop Premium Cricket Bats, Pads & Gear",
-      "cta": "Explore Cricket →"
+      "cta": "Explore Cricket →",
+      "category": "cricket"
     },
     {
-      "id": 2,
+      "id": "2",
       "image": "/carousel/football.jpg",
       "title": "Play with Precision",
       "subtitle": "Latest Football Boots, Jerseys & Balls",
-      "cta": "Shop Football Gear →"
+      "cta": "Shop Football Gear →",
+      "category": "football"
     },
     {
-      "id": 3,
+      "id": "3",
       "image": "/carousel/volley.jpg",
       "title": "Fan Favourites",
       "subtitle": "All You Need for Indoor & Outdoor Volleyball",
-      "cta": "Shop Volleyball →"
+      "cta": "Shop Volleyball →",
+      "category": "volleyball"
     },
     {
-      "id": 4,
+      "id": "4",
       "image": "/carousel/hockey.jpg",
       "title": "Hit Hard. Stay Protected.",
       "subtitle": "Top-Grade Hockey Sticks, Helmets & Pads",
-      "cta": "Explore Hockey Gear →"
+      "cta": "Explore Hockey Gear →",
+      "category": "hockey"
     }
   ],
   "products": [

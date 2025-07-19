@@ -4,10 +4,9 @@ import { useAuth } from "../../context/AuthContext";
 import { Sun, Moon } from "lucide-react";
 
 function UserNavbar() {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Theme state & sync with localStorage + html[data-theme]
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
@@ -27,6 +26,11 @@ function UserNavbar() {
     logout();
     navigate("/login");
   };
+
+  // Safely compute cart data
+  const cartItems = user?.cart || [];
+  const cartItemCount = cartItems.length;
+  const cartSubtotal = cartItems.reduce((acc, item) => acc + (item.price || 0), 0);
 
   return (
     <div className="bg-base-100 shadow-sm sticky top-0 z-50">
@@ -71,18 +75,29 @@ function UserNavbar() {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                <span className="badge badge-sm indicator-item">7</span>
+                <span className="badge badge-sm indicator-item">
+                  {cartItemCount}
+                </span>
               </div>
             </div>
             <div
               tabIndex={0}
-              className="card card-compact dropdown-content bg-base-100 z-10 mt-3 w-52 shadow"
+              className="card card-compact dropdown-content bg-base-100 z-10 mt-3 w-60 shadow"
             >
               <div className="card-body">
-                <span className="text-lg font-bold">7 Items</span>
-                <span className="text-info">Subtotal: $1834</span>
+                <span className="text-lg font-bold">
+                  {cartItemCount} {cartItemCount === 1 ? "Item" : "Items"}
+                </span>
+                <span className="text-info">
+                  Subtotal: ₹{cartSubtotal.toFixed(2)}
+                </span>
                 <div className="card-actions">
-                  <button className="btn btn-primary btn-block">View cart</button>
+                  <button
+                    className="btn btn-primary btn-block"
+                    onClick={() => navigate("/cart")}
+                  >
+                    View Cart
+                  </button>
                 </div>
               </div>
             </div>
@@ -111,8 +126,12 @@ function UserNavbar() {
                   Profile <span className="badge">New</span>
                 </a>
               </li>
-              <li><a>Settings</a></li>
-              <li><button onClick={handleLogout}>Logout</button></li>
+              <li>
+                <a onClick={() => navigate("/")}>Home</a>
+              </li>
+              <li>
+                <button onClick={handleLogout}>Logout</button>
+              </li>
             </ul>
           </div>
         </div>
