@@ -46,7 +46,7 @@
       "count": 46,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Adidas+Predator+Ball"
+        "/products/football/adidas_predator_ball.png"
       ],
       "isActive": true,
       "created_at": "2025-02-14T07:30:20.742443"
@@ -59,7 +59,7 @@
       "count": 74,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Nike+Phantom+Cleats"
+        "/products/football/nike_phantom_cleats.png"
       ],
       "isActive": true,
       "created_at": "2025-06-04T07:30:20.742443"
@@ -72,7 +72,7 @@
       "count": 94,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Puma+Shin+Guards"
+        "/products/football/puma_shin_guards.png"
       ],
       "isActive": false,
       "created_at": "2025-05-15T07:30:20.742443"
@@ -85,7 +85,7 @@
       "count": 11,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Football+Goal+Net"
+        "/products/football/football_goal_net.png"
       ],
       "isActive": true,
       "created_at": "2025-07-14T07:30:20.742443"
@@ -98,7 +98,7 @@
       "count": 47,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Training+Cones"
+        "/products/football/training_cones.png"
       ],
       "isActive": true,
       "created_at": "2025-03-14T07:30:20.742443"
@@ -111,7 +111,7 @@
       "count": 33,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Goalkeeper+Gloves"
+        "/products/football/goalkeeper_gloves.png"
       ],
       "isActive": true,
       "created_at": "2025-05-05T07:30:20.742443"
@@ -124,7 +124,7 @@
       "count": 37,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Messi+Jersey"
+        "/products/football/messi_jersey.png"
       ],
       "isActive": false,
       "created_at": "2025-05-19T07:30:20.742443"
@@ -137,7 +137,7 @@
       "count": 45,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Nike+Football+Shorts"
+        "/products/football/nike_football_shorts.png"
       ],
       "isActive": true,
       "created_at": "2025-01-22T07:30:20.742443"
@@ -150,7 +150,7 @@
       "count": 63,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=FIFA+Match+Ball"
+        "/products/football/fifa_match_ball.png"
       ],
       "isActive": true,
       "created_at": "2025-05-12T07:30:20.742443"
@@ -163,7 +163,7 @@
       "count": 83,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Training+Bibs"
+        "/products/football/training_bibs.png"
       ],
       "isActive": true,
       "created_at": "2025-02-21T07:30:20.742443"
@@ -176,7 +176,7 @@
       "count": 36,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Knee+Socks"
+        "/products/football/knee_socks.png"
       ],
       "isActive": true,
       "created_at": "2025-02-27T07:30:20.742443"
@@ -189,7 +189,7 @@
       "count": 47,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Football+Pump"
+        "/products/football/football_pump.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-03-24T07:30:20.742443"
@@ -202,7 +202,7 @@
       "count": 52,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Footwear+Bag"
+        "/products/football/footwear_bag.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-07T07:30:20.742443"
@@ -215,7 +215,7 @@
       "count": 51,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Adidas+Football+Cap"
+        "/products/football/adidas_football_cap.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-07-15T07:30:20.742443"
@@ -228,7 +228,7 @@
       "count": 74,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Team+Duffel+Bag"
+        "/products/football/team_duffel_bag.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-24T07:30:20.742443"
@@ -241,7 +241,7 @@
       "count": 28,
       "category": "football",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Warm-up+Jacket"
+        "/products/football/warm_up_jacket.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-05-08T07:30:20.742443"
@@ -254,7 +254,7 @@
       "count": 64,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Kookaburra+Bat"
+        "/products/cricket/kookaburra_bat.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-29T07:30:20.742443"
@@ -267,7 +267,7 @@
       "count": 59,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=SG+Test+Ball"
+        "/products/cricket/sg_test_ball.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-28T07:30:20.742443"
@@ -280,7 +280,7 @@
       "count": 29,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Cricket+Helmet"
+        "/products/cricket/cricket_helmet.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-02-27T07:30:20.742443"
@@ -293,7 +293,7 @@
       "count": 44,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Batting+Pads"
+        "/products/cricket/batting_pads.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-02-23T07:30:20.742443"
@@ -306,7 +306,7 @@
       "count": 30,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Wicketkeeping+Gloves"
+        "/products/cricket/wicketkeeping_gloves.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-02-09T07:30:20.742443"
@@ -319,7 +319,7 @@
       "count": 88,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Cricket+Stumps"
+        "/products/cricket/cricket_stumps.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-01-28T07:30:20.742443"
@@ -332,7 +332,7 @@
       "count": 84,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=All-Rounder+Shoes"
+        "/products/cricket/all_rounder_shoes.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-07-09T07:30:20.742443"
@@ -345,7 +345,7 @@
       "count": 91,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Cricket+Cap"
+        "/products/cricket/cricket_cap.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-11T07:30:20.742443"
@@ -358,7 +358,7 @@
       "count": 13,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Team+Jersey"
+        "/products/cricket/team_jersey.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-04-16T07:30:20.742443"
@@ -371,7 +371,7 @@
       "count": 52,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Score+Sheet+Book"
+        "/products/cricket/score_sheet_book.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-06-11T07:30:20.742443"
@@ -384,7 +384,7 @@
       "count": 63,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Ball+Thrower"
+        "/products/cricket/ball_thrower.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-05-31T07:30:20.742443"
@@ -397,7 +397,7 @@
       "count": 21,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Elbow+Guard"
+        "/products/cricket/elbow_guard.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-05-02T07:30:20.742443"
@@ -410,7 +410,7 @@
       "count": 38,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Practice+Net"
+        "/products/cricket/practice_net.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-19T07:30:20.742443"
@@ -423,7 +423,7 @@
       "count": 86,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Cricket+Kit+Bag"
+        "/products/cricket/cricket_kit_bag.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-31T07:30:20.742443"
@@ -436,7 +436,7 @@
       "count": 86,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Leg+Guards"
+        "/products/cricket/leg_guards.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-04-11T07:30:20.742443"
@@ -449,7 +449,7 @@
       "count": 31,
       "category": "cricket",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Chest+Guard"
+        "/products/cricket/chest_guard.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-07-17T07:30:20.742443"
@@ -462,7 +462,7 @@
       "count": 24,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Grays+Hockey+Stick"
+        "/products/hockey/grays_hockey_stick.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-04-25T07:30:20.742443"
@@ -475,7 +475,7 @@
       "count": 20,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Hockey+Turf+Shoes"
+        "/products/hockey/hockey_turf_shoes.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-02-14T07:30:20.742443"
@@ -488,7 +488,7 @@
       "count": 34,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Mouth+Guard"
+        "/products/hockey/mouth_guard.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-01-27T07:30:20.742443"
@@ -501,7 +501,7 @@
       "count": 33,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Hockey+Ball"
+        "/products/hockey/hockey_ball.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-02-16T07:30:20.742443"
@@ -514,7 +514,7 @@
       "count": 92,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Training+Cone+Set"
+        "/products/hockey/training_cone_set.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-06T07:30:20.742443"
@@ -527,7 +527,7 @@
       "count": 39,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Goalkeeper+Kit"
+        "/products/hockey/goalkeeper_kit.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-05-21T07:30:20.742443"
@@ -540,7 +540,7 @@
       "count": 47,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Stick+Bag"
+        "/products/hockey/stick_bag.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-18T07:30:20.742443"
@@ -553,7 +553,7 @@
       "count": 15,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Hockey+Jersey"
+        "/products/hockey/hockey_jersey.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-07-07T07:30:20.742443"
@@ -566,7 +566,7 @@
       "count": 38,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Hockey+Shorts"
+        "/products/hockey/hockey_shorts.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-21T07:30:20.742443"
@@ -579,7 +579,7 @@
       "count": 54,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Wrist+Band"
+        "/products/hockey/wrist_band.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-06-29T07:30:20.742443"
@@ -592,7 +592,7 @@
       "count": 45,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Hockey+Net"
+        "/products/hockey/hockey_net.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-07-19T07:30:20.742443"
@@ -605,7 +605,7 @@
       "count": 56,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Dribbling+Board"
+        "/products/hockey/dribbling_board.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-04-16T07:30:20.742443"
@@ -618,7 +618,7 @@
       "count": 76,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Turf+Cleaner"
+        "/products/hockey/turf_cleaner.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-04-01T07:30:20.742443"
@@ -631,7 +631,7 @@
       "count": 18,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Speed+Ladder"
+        "/products/hockey/speed_ladder.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-24T07:30:20.742443"
@@ -644,7 +644,7 @@
       "count": 62,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Arm+Guards"
+        "/products/hockey/arm_guards.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-06-30T07:30:20.742443"
@@ -657,7 +657,7 @@
       "count": 13,
       "category": "hockey",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Grip+Tape"
+        "/products/hockey/grip_tape.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-02-08T07:30:20.742443"
@@ -670,7 +670,7 @@
       "count": 79,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Mikasa+Volleyball"
+        "/products/volley/mikasa_volleyball.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-09T07:30:20.742443"
@@ -683,7 +683,7 @@
       "count": 16,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Knee+Pads"
+        "/products/volley/knee_pads.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-07-19T07:30:20.742443"
@@ -696,7 +696,7 @@
       "count": 11,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Training+Poles"
+        "/products/volley/training_poles.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-07T07:30:20.742443"
@@ -709,7 +709,7 @@
       "count": 68,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Serving+Trainer"
+        "/products/volley/serving_trainer.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-03-08T07:30:20.742443"
@@ -722,7 +722,7 @@
       "count": 21,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Volleyball+Net"
+        "/products/volley/volleyball_net.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-04-11T07:30:20.742443"
@@ -735,7 +735,7 @@
       "count": 12,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Spalding+Ball"
+        "/products/volley/spalding_ball.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-15T07:30:20.742443"
@@ -748,7 +748,7 @@
       "count": 97,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Sand+Court+Ball"
+        "/products/volley/sand_court_ball.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-25T07:30:20.742443"
@@ -761,7 +761,7 @@
       "count": 29,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Team+Tank+Top"
+        "/products/volley/team_tank_top.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-02-04T07:30:20.742443"
@@ -774,7 +774,7 @@
       "count": 56,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Wrist+Bands"
+        "/products/volley/wrist_bands.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-03-14T07:30:20.742443"
@@ -787,7 +787,7 @@
       "count": 15,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Court+Lines+Set"
+        "/products/volley/court_lines_set.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-05-11T07:30:20.742443"
@@ -800,7 +800,7 @@
       "count": 54,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Ball+Bag"
+        "/products/volley/ball_bag.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-02-17T07:30:20.742443"
@@ -813,7 +813,7 @@
       "count": 48,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Volleyball+Shoes"
+        "/products/volley/volleyball_shoes.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-02-24T07:30:20.742443"
@@ -826,7 +826,7 @@
       "count": 80,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Beach+Ball"
+        "/products/volley/beach_ball.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-02-22T07:30:20.742443"
@@ -839,7 +839,7 @@
       "count": 58,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Training+Bibs"
+        "/products/volley/training_bibs.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-06-01T07:30:20.742443"
@@ -852,7 +852,7 @@
       "count": 64,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Volleyball+Cap"
+        "/products/volley/volleyball_cap.jpeg"
       ],
       "isActive": false,
       "created_at": "2025-05-06T07:30:20.742443"
@@ -865,7 +865,7 @@
       "count": 69,
       "category": "volleyball",
       "images": [
-        "https://via.placeholder.com/512x512.png?text=Inflation+Pump"
+        "/products/volley/inflation_pump.jpeg"
       ],
       "isActive": true,
       "created_at": "2025-04-20T07:30:20.742443"

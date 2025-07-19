@@ -13,9 +13,9 @@ export default function Login() {
   // Alert message state
   const [alert, setAlert] = useState({ message: "", type: "error" }); // type: "success" | "error"
 
-  useEffect(() => {
-    if (user) navigate("/user");
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (user) navigate("/");
+  // }, [user, navigate]);
 
   // Auto-clear alert after 3s
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function Login() {
       setLoading(true);
       await login(email, password);
       sessionStorage.setItem("showLoginToast", "true");
-      navigate("/user");
+      navigate("/");
     } catch (error) {
       setAlert({ message: error.message, type: "error" });
     } finally {

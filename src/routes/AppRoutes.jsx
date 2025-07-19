@@ -1,50 +1,44 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Layouts
-import UserLayout from '../layouts/UserLayout';
-import GuestLayout from '../layouts/GuestLayout';
+// Layout
+import Layout from '../layouts/Layout';
 
-// Auth Pages
+// Pages
+import Home from '../pages/public/Home';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 
-// Public Pages
-// import Home from '../pages/public/Home'; // optional
-
-// ProtectedRoute
-const ProtectedRoute = ({ children, role }) => {
-  const { user } = useAuth();
-
-  if (!user) return <Navigate to="/login" replace />;
-  if (role && user.role !== role) return <Navigate to="/" replace />;
-
-  return children;
-};
+// Protected Route wrapper (imported from separate file)
+import ProtectedRoute from './ProtectedRoute';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Route with layout */}
-      <Route path="/" element={<GuestLayout />}>
-        {/* <Route index element={<Home />} /> */}
+      {/* Unified layout for both guest and user */}
+      <Route path="/" element={<Layout />}>
+        {/* Home page (public or shared) */}
+        <Route index element={<Home />} />
+
+        {/* ✅ Example: More routes can go here in future */}
+        {/* <Route path="products" element={<ProductList />} /> */}
+
+        {/* ✅ Protected route for logged-in users */}
+        <Route
+          path="user"
+          element={
+            <ProtectedRoute role="user">
+              <div>User Dashboard or Page</div>
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
-      {/* Protected User Route */}
-      <Route
-        path="/user"
-        element={
-          <ProtectedRoute role="user">
-            <UserLayout />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Auth Routes (outside GuestLayout to allow redirect if logged in) */}
+      {/* Auth pages (outside layout) */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Fallback Route */}
+      {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
