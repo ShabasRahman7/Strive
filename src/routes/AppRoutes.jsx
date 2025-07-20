@@ -15,6 +15,9 @@ import CartPage from "../pages/user/CartPage";
 import ProtectedRoute from "./ProtectedRoute";
 import WishlistPage from "../pages/user/WishlistPage";
 import ProfilePage from "../pages/user/ProfilePage";
+import CheckoutPage from "../pages/user/CheckoutPage";
+import OrderHistoryPage from "../pages/user/OrderHistoryPage";
+import OrderDetailsPage from "../pages/user/OrderDetailsPage";
 
 const AppRoutes = () => {
   return (
@@ -55,6 +58,30 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute role="user" onGuestAlert>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="checkout"
+          element={
+            <ProtectedRoute role="user" onGuestAlert>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute role="user" onGuestAlert>
+              <OrderHistoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders/:id"
+          element={
+            <ProtectedRoute role="user" onGuestAlert>
+              <OrderDetailsPage />
             </ProtectedRoute>
           }
         />

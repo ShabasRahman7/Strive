@@ -46,7 +46,7 @@ function UserNavbar() {
   return (
     <div className="bg-base-100 shadow-sm sticky top-0 z-50">
       <div className="navbar max-w-5xl w-full mx-auto px-4">
-        <div className="flex-1">
+        <div className="flex-1" onClick={()=> navigate("/")}>
           <img
             src="/strive-logo.png"
             alt="Strive Logo"

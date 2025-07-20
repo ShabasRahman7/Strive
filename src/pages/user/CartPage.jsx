@@ -69,6 +69,19 @@ const CartPage = () => {
     0
   );
 
+  const handleCheckout = async () => {
+    const result = await Swal.fire({
+      title: "Proceed to Checkout?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    });
+
+    if (result.isConfirmed) {
+      navigate("/checkout", { state: { cartItems } });
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto p-4">
       <button
@@ -145,7 +158,9 @@ const CartPage = () => {
             </span>
           </div>
 
-          <button className="btn btn-primary w-full py-3 mt-6">Checkout</button>
+          <button className="btn btn-primary w-full py-3 mt-6" onClick={handleCheckout}>
+            Checkout
+          </button>
         </div>
       )}
     </div>
