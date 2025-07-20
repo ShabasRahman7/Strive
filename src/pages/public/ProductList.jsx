@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import api from "../../api/axios"; 
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -9,9 +10,11 @@ const ProductList = () => {
   const categoryFilter = params.get("category");
 
   useEffect(() => {
-    fetch("http://localhost:3001/products")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchProducts = async () => {
+      try {
+        const res = await api.get("/products");
+        const data = res.data;
+
         if (categoryFilter) {
           const filtered = data.filter(
             (product) =>
@@ -21,8 +24,12 @@ const ProductList = () => {
         } else {
           setProducts(data);
         }
-      })
-      .catch((error) => console.error("Error fetching products:", error));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
   }, [categoryFilter]);
 
   return (

@@ -4,12 +4,14 @@ import { Plus, Minus, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 
 const CartPage = () => {
   const { user, updateUser } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     setCartItems(
       user?.cart?.map((item) => ({ ...item, quantity: item.quantity || 1 })) ||
@@ -55,11 +57,7 @@ const CartPage = () => {
 
   const persistCart = async (updatedCart) => {
     try {
-      await fetch(`http://localhost:3001/users/${user.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart: updatedCart }),
-      });
+      await api.patch(`/users/${user.id}`, { cart: updatedCart });
       updateUser({ ...user, cart: updatedCart });
     } catch (err) {
       console.error("Cart persist error", err);
@@ -132,7 +130,6 @@ const CartPage = () => {
                   <button
                     className="btn btn-sm btn-error"
                     onClick={() => confirmRemoveItem(item.id)}
-                    disabled={isProcessing}
                   >
                     <Trash2 size={16} />
                   </button>

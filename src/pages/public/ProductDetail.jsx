@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ShoppingCart, Heart, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import api from "../../api/axios";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -18,9 +19,8 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/products/${id}`);
-        if (!res.ok) throw new Error("Product not found");
-        const data = await res.json();
+        const res = await api.get(`/products/${id}`);
+        const data = res.data;
         setProduct(data);
 
         if (user) {
@@ -30,7 +30,7 @@ const ProductDetail = () => {
           setInWishlist(isInWishlist);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
@@ -66,12 +66,7 @@ const ProductDetail = () => {
     const updatedUser = { ...user, cart: updatedCart };
 
     try {
-      await fetch(`http://localhost:3001/users/${user.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart: updatedCart })
-      });
-
+      await api.patch(`/users/${user.id}`, { cart: updatedCart });
       updateUser(updatedUser);
       setInCart(true);
     } catch (error) {
@@ -91,12 +86,7 @@ const ProductDetail = () => {
     const updatedUser = { ...user, wishlist: updatedWishlist };
 
     try {
-      await fetch(`http://localhost:3001/users/${user.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ wishlist: updatedWishlist })
-      });
-
+      await api.patch(`/users/${user.id}`, { wishlist: updatedWishlist });
       updateUser(updatedUser);
       setInWishlist(!isInWishlist);
     } catch (error) {

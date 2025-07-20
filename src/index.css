@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@media (max-width: 768px) {
+  .Toastify__toast {
+    margin-top: 60px; 
+  }
+}

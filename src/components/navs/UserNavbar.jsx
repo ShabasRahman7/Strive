@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Sun, Moon } from "lucide-react";
+import {
+  Sun,
+  Moon,
+  Home,
+  Heart,
+  ShoppingBag,
+  LogOut,
+  UserRound,
+} from "lucide-react";
 
 function UserNavbar() {
   const { user, logout } = useAuth();
@@ -24,13 +32,16 @@ function UserNavbar() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/");
   };
 
   // Safely compute cart data
   const cartItems = user?.cart || [];
   const cartItemCount = cartItems.length;
-  const cartSubtotal = cartItems.reduce((acc, item) => acc + (item.price || 0), 0);
+  const cartSubtotal = cartItems.reduce(
+    (acc, item) => acc + (item.price || 0),
+    0
+  );
 
   return (
     <div className="bg-base-100 shadow-sm sticky top-0 z-50">
@@ -59,7 +70,11 @@ function UserNavbar() {
 
           {/* Cart Dropdown */}
           <div className="dropdown dropdown-end mr-1">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle"
+            >
               <div className="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +128,8 @@ function UserNavbar() {
               <div className="w-10 rounded-full">
                 <img
                   alt="User Avatar"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={user?.profileImage}
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -122,15 +138,31 @@ function UserNavbar() {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
-                  Profile <span className="badge">New</span>
+                <a onClick={() => navigate("/")}>
+                  <Home className="w-4 h-4 mr-2" /> Home
                 </a>
               </li>
               <li>
-                <a onClick={() => navigate("/")}>Home</a>
+                <a onClick={() => navigate("/profile")}>
+                  <UserRound className="w-4 h-4 mr-2" />
+                  Profile
+                  <span className="badge ml-auto">New</span>
+                </a>
               </li>
               <li>
-                <button onClick={handleLogout}>Logout</button>
+                <a onClick={() => navigate("/wishlist")}>
+                  <Heart className="w-4 h-4 mr-2" /> Wishlist
+                </a>
+              </li>
+              <li>
+                <a onClick={() => navigate("/orders")}>
+                  <ShoppingBag className="w-4 h-4 mr-2" /> Orders
+                </a>
+              </li>
+              <li>
+                <button onClick={handleLogout}>
+                  <LogOut className="w-4 h-4 mr-2" /> Logout
+                </button>
               </li>
             </ul>
           </div>

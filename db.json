@@ -1,38 +1,37 @@
 {
   "users": [
     {
-      "id": "b7bc",
+      "id": "0356",
       "email": "shabas@email.com",
       "password": "shabas@123",
+      "name": "Shabas",
       "role": "user",
+      "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+      "addresses": [
+        {
+          "line1": "sfzf",
+          "line2": "",
+          "city": "zfzf",
+          "state": "zfz",
+          "pin": "343432",
+          "type": "home",
+          "id": "5d69f0f5-359d-40ea-8edd-a01c3e31ae60"
+        }
+      ],
       "cart": [
         {
-          "id": "ba622218-bf17-4a04-bb41-c148999d0578",
-          "name": "Wicketkeeping Gloves",
-          "description": "High quality wicketkeeping gloves suitable for all levels.",
-          "price": 827.01,
-          "count": 30,
+          "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
+          "name": "Kookaburra Bat",
+          "description": "High quality kookaburra bat suitable for all levels.",
+          "price": 2042.72,
+          "count": 64,
           "category": "cricket",
           "images": [
-            "/products/cricket/wicketkeeping_gloves.jpeg"
+            "/products/cricket/kookaburra_bat.jpeg"
           ],
           "isActive": true,
-          "created_at": "2025-02-09T07:30:20.742443",
-          "quantity": 1
-        },
-        {
-          "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
-          "name": "SG Test Ball",
-          "description": "High quality sg test ball suitable for all levels.",
-          "price": 2430.62,
-          "count": 59,
-          "category": "cricket",
-          "images": [
-            "/products/cricket/sg_test_ball.jpeg"
-          ],
-          "isActive": true,
-          "created_at": "2025-06-28T07:30:20.742443",
-          "quantity": 1
+          "created_at": "2025-06-29T07:30:20.742443",
+          "quantity": 2
         }
       ],
       "wishlist": [

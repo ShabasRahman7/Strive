@@ -13,9 +13,9 @@ export default function Login() {
   // Alert message state
   const [alert, setAlert] = useState({ message: "", type: "error" }); // type: "success" | "error"
 
-  // useEffect(() => {
-  //   if (user) navigate("/");
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   // Auto-clear alert after 3s
   useEffect(() => {

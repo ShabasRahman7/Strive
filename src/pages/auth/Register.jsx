@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const { user, register } = useAuth();
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState({ message: "", type: "error" }); // success | error
+  const [alert, setAlert] = useState({ message: "", type: "error" }); 
 
   useEffect(() => {
     if (user) {
-      navigate("/user");
+      navigate("/profile");
     }
   }, [user, navigate]);
 
@@ -28,6 +30,10 @@ export default function Register() {
   const validate = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    if (!name.trim()) {
+      setAlert({ message: "Name is required.", type: "error" });
+      return false;
+    }
     if (!email.trim()) {
       setAlert({ message: "Email is required.", type: "error" });
       return false;
@@ -65,9 +71,9 @@ export default function Register() {
 
     try {
       setLoading(true);
-      await register(email, password);
-      setAlert({ message: "Registration successful!", type: "success" });
-      navigate("/user");
+      await register(email, password, name);
+      toast.success("Registration Successfull")
+      navigate("/profile");
     } catch (error) {
       setAlert({ message: error.message, type: "error" });
     } finally {
@@ -91,12 +97,24 @@ export default function Register() {
           )}
 
           <div className="form-control">
+            <label className="label">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input input-bordered"
+              required
+            />
+          </div>
+
+          <div className="form-control">
             <label className="label">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="input input-bordered"
+              required
             />
           </div>
 
@@ -107,6 +125,7 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="input input-bordered"
+              required
             />
           </div>
 
@@ -117,6 +136,7 @@ export default function Register() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="input input-bordered"
+              required
             />
           </div>
 
