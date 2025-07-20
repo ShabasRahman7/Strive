@@ -29,7 +29,7 @@ const Footer = () => {
           <ul className="text-sm space-y-2">
             <li className="flex items-center gap-2">
               <Mail size={16} />
-              support@strive.com
+              support@strive.in
             </li>
             <li className="flex items-center gap-2">
               <Phone size={16} /> +91 98765 43210

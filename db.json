@@ -27,7 +27,34 @@
           "id": "ef005d42-d4c3-4a62-826d-272b541e5b1c"
         }
       ],
-      "cart": [],
+      "cart": [
+        {
+          "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
+          "name": "Messi Jersey",
+          "description": "High quality messi jersey suitable for all levels.",
+          "price": 2047.79,
+          "count": 37,
+          "category": "football",
+          "images": [
+            "/products/football/messi_jersey.png"
+          ],
+          "isActive": false,
+          "created_at": "2025-05-19T07:30:20.742443"
+        },
+        {
+          "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
+          "name": "Nike Football Shorts",
+          "description": "High quality nike football shorts suitable for all levels.",
+          "price": 1128.06,
+          "count": 45,
+          "category": "football",
+          "images": [
+            "/products/football/nike_football_shorts.png"
+          ],
+          "isActive": true,
+          "created_at": "2025-01-22T07:30:20.742443"
+        }
+      ],
       "wishlist": [
         {
           "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
@@ -54,6 +81,32 @@
           ],
           "isActive": true,
           "created_at": "2025-05-05T07:30:20.742443"
+        },
+        {
+          "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
+          "name": "Messi Jersey",
+          "description": "High quality messi jersey suitable for all levels.",
+          "price": 2047.79,
+          "count": 37,
+          "category": "football",
+          "images": [
+            "/products/football/messi_jersey.png"
+          ],
+          "isActive": false,
+          "created_at": "2025-05-19T07:30:20.742443"
+        },
+        {
+          "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
+          "name": "Nike Football Shorts",
+          "description": "High quality nike football shorts suitable for all levels.",
+          "price": 1128.06,
+          "count": 45,
+          "category": "football",
+          "images": [
+            "/products/football/nike_football_shorts.png"
+          ],
+          "isActive": true,
+          "created_at": "2025-01-22T07:30:20.742443"
         }
       ],
       "orders": [
