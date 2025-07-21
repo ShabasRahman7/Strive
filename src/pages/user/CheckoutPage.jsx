@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import api from "../../api/axios";
 
 const CheckoutPage = () => {
   const { state } = useLocation();
@@ -33,20 +34,54 @@ const CheckoutPage = () => {
       (a) => a.id === selectedAddressId
     );
 
-    const order = {
-      id: crypto.randomUUID(),
-      items: cartItems,
-      totalAmount: subtotal,
-      address: selectedAddress,
-      paymentMethod,
-      status: "pending",
-      createdAt: new Date().toISOString(),
-    };
-
-    const updatedOrders = [...user.orders, order];
-
     try {
+      // ✅ Step 1: Validate stock and availability
+      const invalidItems = [];
+
+      for (const item of cartItems) {
+        const { data: product } = await api.get(`/products/${item.id}`);
+
+        if (!product.isActive) {
+          invalidItems.push(`❌ ${item.name} is inactive`);
+        } else if (item.quantity > product.count) {
+          invalidItems.push(
+            `❌ ${item.name} only has ${product.count} in stock`
+          );
+        }
+      }
+
+      if (invalidItems.length > 0) {
+        Swal.fire("Order Error", invalidItems.join("<br>"), "warning");
+        return;
+      }
+
+      // ✅ Step 2: Create order object with unique ID
+      const order = {
+        id: crypto.randomUUID(),
+        items: cartItems,
+        totalAmount: subtotal,
+        address: selectedAddress,
+        paymentMethod,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+      };
+
+      const updatedOrders = [...user.orders, order];
+
+      // ✅ Step 3: Update stock in the backend
+      await Promise.all(
+        cartItems.map(async (item) => {
+          const { data: product } = await api.get(`/products/${item.id}`);
+
+          await api.patch(`/products/${item.id}`, {
+            count: product.count - item.quantity,
+          });
+        })
+      );
+
+      // ✅ Step 4: Clear cart and update user orders
       await updateUser({ ...user, cart: [], orders: updatedOrders });
+
       Swal.fire(
         "Order Placed",
         "Your order has been placed successfully!",

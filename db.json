@@ -27,34 +27,7 @@
           "id": "ef005d42-d4c3-4a62-826d-272b541e5b1c"
         }
       ],
-      "cart": [
-        {
-          "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
-          "name": "Messi Jersey",
-          "description": "High quality messi jersey suitable for all levels.",
-          "price": 2047.79,
-          "count": 37,
-          "category": "football",
-          "images": [
-            "/products/football/messi_jersey.png"
-          ],
-          "isActive": false,
-          "created_at": "2025-05-19T07:30:20.742443"
-        },
-        {
-          "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
-          "name": "Nike Football Shorts",
-          "description": "High quality nike football shorts suitable for all levels.",
-          "price": 1128.06,
-          "count": 45,
-          "category": "football",
-          "images": [
-            "/products/football/nike_football_shorts.png"
-          ],
-          "isActive": true,
-          "created_at": "2025-01-22T07:30:20.742443"
-        }
-      ],
+      "cart": [],
       "wishlist": [
         {
           "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
@@ -70,19 +43,6 @@
           "created_at": "2025-06-28T07:30:20.742443"
         },
         {
-          "id": "2110d128-cb3e-4033-9ac2-6eda0292505b",
-          "name": "Goalkeeper Gloves",
-          "description": "High quality goalkeeper gloves suitable for all levels.",
-          "price": 2227.85,
-          "count": 33,
-          "category": "football",
-          "images": [
-            "/products/football/goalkeeper_gloves.png"
-          ],
-          "isActive": true,
-          "created_at": "2025-05-05T07:30:20.742443"
-        },
-        {
           "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
           "name": "Messi Jersey",
           "description": "High quality messi jersey suitable for all levels.",
@@ -107,12 +67,39 @@
           ],
           "isActive": true,
           "created_at": "2025-01-22T07:30:20.742443"
+        },
+        {
+          "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
+          "name": "Kookaburra Bat",
+          "description": "High quality kookaburra bat suitable for all levels.",
+          "price": 2042.72,
+          "count": 64,
+          "category": "cricket",
+          "images": [
+            "/products/cricket/kookaburra_bat.jpeg"
+          ],
+          "isActive": true,
+          "created_at": "2025-06-29T07:30:20.742443"
         }
       ],
       "orders": [
         {
-          "id": "243d669b-8c90-4796-8580-a68348ac5254",
+          "id": "3c336c64-5fa7-4537-ba7e-67ee75898691",
           "items": [
+            {
+              "id": "4af73bdb-716e-4958-be50-7fb2ac457203",
+              "name": "Cricket Helmet",
+              "description": "High quality cricket helmet suitable for all levels.",
+              "price": 2231.37,
+              "count": 29,
+              "category": "cricket",
+              "images": [
+                "/products/cricket/cricket_helmet.jpeg"
+              ],
+              "isActive": false,
+              "created_at": "2025-02-27T07:30:20.742443",
+              "quantity": 29
+            },
             {
               "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
               "name": "Kookaburra Bat",
@@ -125,56 +112,10 @@
               ],
               "isActive": true,
               "created_at": "2025-06-29T07:30:20.742443",
-              "quantity": 1
-            },
-            {
-              "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
-              "name": "SG Test Ball",
-              "description": "High quality sg test ball suitable for all levels.",
-              "price": 2430.62,
-              "count": 59,
-              "category": "cricket",
-              "images": [
-                "/products/cricket/sg_test_ball.jpeg"
-              ],
-              "isActive": true,
-              "created_at": "2025-06-28T07:30:20.742443",
               "quantity": 2
             }
           ],
-          "totalAmount": 6903.96,
-          "address": {
-            "line1": "gddgdg",
-            "line2": "",
-            "city": "sgsg",
-            "state": "gggdsg",
-            "pin": "223323",
-            "type": "home",
-            "id": "8ce4d1b2-9783-4a29-beba-db1879f989e5"
-          },
-          "paymentMethod": "upi",
-          "status": "success",
-          "createdAt": "2025-07-20T11:17:46.495Z"
-        },
-        {
-          "id": "7275a42a-5b2a-49ca-815f-015cddd78172",
-          "items": [
-            {
-              "id": "2110d128-cb3e-4033-9ac2-6eda0292505b",
-              "name": "Goalkeeper Gloves",
-              "description": "High quality goalkeeper gloves suitable for all levels.",
-              "price": 2227.85,
-              "count": 33,
-              "category": "football",
-              "images": [
-                "/products/football/goalkeeper_gloves.png"
-              ],
-              "isActive": true,
-              "created_at": "2025-05-05T07:30:20.742443",
-              "quantity": 1
-            }
-          ],
-          "totalAmount": 2227.85,
+          "totalAmount": 68795.17,
           "address": {
             "line1": "fsfsf",
             "line2": "",
@@ -186,7 +127,7 @@
           },
           "paymentMethod": "cod",
           "status": "pending",
-          "createdAt": "2025-07-20T11:31:25.829Z"
+          "createdAt": "2025-07-21T06:49:14.575Z"
         }
       ]
     }
@@ -322,7 +263,7 @@
       "name": "Nike Football Shorts",
       "description": "High quality nike football shorts suitable for all levels.",
       "price": 1128.06,
-      "count": 45,
+      "count": 24,
       "category": "football",
       "images": [
         "/products/football/nike_football_shorts.png"
@@ -439,7 +380,7 @@
       "name": "Kookaburra Bat",
       "description": "High quality kookaburra bat suitable for all levels.",
       "price": 2042.72,
-      "count": 64,
+      "count": 62,
       "category": "cricket",
       "images": [
         "/products/cricket/kookaburra_bat.jpeg"
@@ -465,12 +406,12 @@
       "name": "Cricket Helmet",
       "description": "High quality cricket helmet suitable for all levels.",
       "price": 2231.37,
-      "count": 29,
+      "count": 0,
       "category": "cricket",
       "images": [
         "/products/cricket/cricket_helmet.jpeg"
       ],
-      "isActive": false,
+      "isActive": true,
       "created_at": "2025-02-27T07:30:20.742443"
     },
     {

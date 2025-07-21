@@ -15,7 +15,6 @@ const ProductDetail = () => {
   const [inCart, setInCart] = useState(false);
   const [inWishlist, setInWishlist] = useState(false);
 
-  // Fetch product details and check cart/wishlist
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -24,8 +23,8 @@ const ProductDetail = () => {
         setProduct(data);
 
         if (user) {
-          const isInCart = user.cart?.some(item => item.id === data.id);
-          const isInWishlist = user.wishlist?.some(item => item.id === data.id);
+          const isInCart = user.cart?.some((item) => item.id === data.id);
+          const isInWishlist = user.wishlist?.some((item) => item.id === data.id);
           setInCart(isInCart);
           setInWishlist(isInWishlist);
         }
@@ -39,7 +38,6 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id, user]);
 
-  // Show login prompt if guest user
   const promptLogin = () => {
     Swal.fire({
       icon: "info",
@@ -47,40 +45,44 @@ const ProductDetail = () => {
       text: "Please login to use this feature.",
       showCancelButton: true,
       confirmButtonText: "Login",
-      cancelButtonText: "Cancel"
-    }).then(result => {
+      cancelButtonText: "Cancel",
+    }).then((result) => {
       if (result.isConfirmed) {
         navigate("/login");
       }
     });
   };
 
-  // Add to cart handler
   const handleAddToCart = async () => {
     if (!user) return promptLogin();
 
-    const alreadyInCart = user.cart?.some(item => item.id === product.id);
-    if (alreadyInCart) return;
+    if (inCart) return;
 
-    const updatedCart = [...(user.cart || []), product];
+    if (!product.isActive || product.count === 0) {
+      Swal.fire("Out of Stock", "This product is currently unavailable.", "info");
+      return;
+    }
+
+    const updatedCart = [...(user.cart || []), { ...product, quantity: 1 }];
     const updatedUser = { ...user, cart: updatedCart };
 
     try {
       await api.patch(`/users/${user.id}`, { cart: updatedCart });
       updateUser(updatedUser);
       setInCart(true);
+      Swal.fire("Added", `${product.name} has been added to cart.`, "success");
     } catch (error) {
       console.error("Failed to update cart:", error);
+      Swal.fire("Error", "Failed to add to cart", "error");
     }
   };
 
-  // Wishlist toggle handler
   const handleToggleWishlist = async () => {
     if (!user) return promptLogin();
 
-    const isInWishlist = user.wishlist?.some(item => item.id === product.id);
+    const isInWishlist = user.wishlist?.some((item) => item.id === product.id);
     const updatedWishlist = isInWishlist
-      ? user.wishlist.filter(item => item.id !== product.id)
+      ? user.wishlist.filter((item) => item.id !== product.id)
       : [...(user.wishlist || []), product];
 
     const updatedUser = { ...user, wishlist: updatedWishlist };
@@ -89,13 +91,21 @@ const ProductDetail = () => {
       await api.patch(`/users/${user.id}`, { wishlist: updatedWishlist });
       updateUser(updatedUser);
       setInWishlist(!isInWishlist);
+      Swal.fire(
+        isInWishlist ? "Removed" : "Added",
+        `${product.name} has been ${isInWishlist ? "removed from" : "added to"} wishlist.`,
+        "success"
+      );
     } catch (error) {
       console.error("Failed to update wishlist:", error);
+      Swal.fire("Error", "Failed to update wishlist", "error");
     }
   };
 
   if (loading) return <div>Loading product details...</div>;
   if (!product) return <div>Product not found.</div>;
+
+  const isOutOfStock = !product.isActive || product.count === 0;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
@@ -129,8 +139,14 @@ const ProductDetail = () => {
           <p>
             <strong>Category:</strong> {product.category}
           </p>
+
           <p>
-            <strong>In Stock:</strong> {product.count}
+            <strong>In Stock:</strong>{" "}
+            {isOutOfStock ? (
+              <span className="text-red-500 font-semibold">Out of Stock</span>
+            ) : (
+              product.count
+            )}
           </p>
 
           {/* Wishlist Button */}
@@ -161,9 +177,10 @@ const ProductDetail = () => {
               <button
                 className="btn btn-primary w-full flex gap-2 items-center"
                 onClick={handleAddToCart}
+                disabled={isOutOfStock}
               >
                 <ShoppingCart size={18} />
-                Add to Cart
+                {isOutOfStock ? "Out of Stock" : "Add to Cart"}
               </button>
             )}
           </div>

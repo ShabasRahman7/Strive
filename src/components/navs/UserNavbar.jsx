@@ -146,12 +146,13 @@ function UserNavbar() {
                 <a onClick={() => navigate("/profile")}>
                   <UserRound className="w-4 h-4 mr-2" />
                   Profile
-                  <span className="badge ml-auto">New</span>
+                  <span className="badge text-xs ml-auto">New</span>
                 </a>
               </li>
               <li>
                 <a onClick={() => navigate("/wishlist")}>
                   <Heart className="w-4 h-4 mr-2" /> Wishlist
+                  <span className="badge text-xs ml-auto">{`${user.wishlist.length} Items`}</span>
                 </a>
               </li>
               <li>
