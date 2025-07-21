@@ -3,6 +3,7 @@ import Carousel from "../../components/shared/Carousel";
 import SearchBar from "../../components/shared/SearchBar";
 import Footer from "../../components/shared/Footer";
 import FeaturedCategories from "./FeaturedCategories";
+import TopSellingProducts from "./TopSellingProducts";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
     <SearchBar/>
     <Carousel />
     <FeaturedCategories/>
+    <TopSellingProducts/>
     <Footer/>
     </>
   );

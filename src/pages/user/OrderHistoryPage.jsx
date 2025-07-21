@@ -6,7 +6,7 @@ const OrderHistoryPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const orders = user?.orders || [];
+  const orders = user?.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || [];
 
   return (
     <div className="max-w-4xl mx-auto p-4">

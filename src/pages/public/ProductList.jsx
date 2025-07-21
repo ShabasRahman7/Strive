@@ -15,93 +15,140 @@ const ProductList = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
+  // Controlled states synced with URL params
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOption, setSortOption] = useState("");
+  // You may also want to sync searchQuery state if you have a search input
+
   const location = useLocation();
   const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
 
+  // Parse URL params and filter products accordingly
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const res = await api.get("/products");
-      const data = res.data;
+    const fetchAndFilter = async () => {
+      try {
+        const res = await api.get("/products");
+        const data = res.data;
 
-      const uniqueCategories = [...new Set(data.map((item) => item.category))];
-      setCategories(uniqueCategories);
-      setAllProducts(data);
+        const params = new URLSearchParams(location.search);
+        const urlCategory = params.get("category") || "";
+        const searchQuery = params.get("name_like") || "";
+        const minPriceParam = params.get("minPrice") || "";
+        const maxPriceParam = params.get("maxPrice") || "";
+        const sortParam = params.get("sort") || "";
 
-      const urlCategory = params.get("category");
-      if (urlCategory) {
+        // Set categories (once)
+        const uniqueCategories = [...new Set(data.map((item) => item.category))];
+        setCategories(uniqueCategories);
+        setAllProducts(data);
+
+        // Sync local UI states with URL params
         setSelectedCategory(urlCategory);
-        const filtered = data.filter(
-          (p) => p.category.toLowerCase() === urlCategory.toLowerCase()
-        );
+        setMinPrice(minPriceParam);
+        setMaxPrice(maxPriceParam);
+        setSortOption(sortParam);
+
+        let filtered = [...data];
+
+        if (urlCategory) {
+          filtered = filtered.filter(
+            (p) => p.category.toLowerCase() === urlCategory.toLowerCase()
+          );
+        }
+
+        if (searchQuery) {
+          filtered = filtered.filter((p) =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+
+        if (minPriceParam) {
+          filtered = filtered.filter((p) => p.price >= Number(minPriceParam));
+        }
+
+        if (maxPriceParam) {
+          filtered = filtered.filter((p) => p.price <= Number(maxPriceParam));
+        }
+
+        // Sorting
+        switch (sortParam) {
+          case "az":
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case "za":
+            filtered.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+          case "priceLowHigh":
+            filtered.sort((a, b) => a.price - b.price);
+            break;
+          case "priceHighLow":
+            filtered.sort((a, b) => b.price - a.price);
+            break;
+          case "newest":
+            filtered.sort((a, b) => b.id - a.id);
+            break;
+          default:
+            break;
+        }
+
         setProducts(filtered);
-      } else {
-        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-    } catch (error) {
-      console.error("Error fetching products:", error);
+    };
+
+    fetchAndFilter();
+  }, [location.search]);
+
+  // Functions to update URL params on user interaction:
+
+  const updateURLParams = (key, value) => {
+    const params = new URLSearchParams(location.search);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
     }
+    navigate(`/products?${params.toString()}`, { replace: true });
   };
 
-  fetchProducts();
-}, []);
+  const onCategoryChange = (category) => {
+    updateURLParams("category", category);
+  };
 
-  useEffect(() => {
-    let filtered = [...allProducts];
+  const onMinPriceChange = (price) => {
+    updateURLParams("minPrice", price);
+  };
 
-    if (selectedCategory) {
-      filtered = filtered.filter(
-        (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
+  const onMaxPriceChange = (price) => {
+    updateURLParams("maxPrice", price);
+  };
 
-    if (minPrice) {
-      filtered = filtered.filter((p) => p.price >= Number(minPrice));
-    }
+  const onSortChange = (sortKey) => {
+    updateURLParams("sort", sortKey);
+  };
 
-    if (maxPrice) {
-      filtered = filtered.filter((p) => p.price <= Number(maxPrice));
-    }
-
-    switch (sortOption) {
-      case "az":
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "za":
-        filtered.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      case "priceLowHigh":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "priceHighLow":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "newest":
-        filtered.sort((a, b) => b.id - a.id);
-        break;
-      default:
-        break;
-    }
-
-    setProducts(filtered);
-  }, [selectedCategory, minPrice, maxPrice, sortOption, allProducts]);
-
+  // Reset filters by clearing all relevant params except 'name_like' (or clear all if you want)
   const resetFilters = () => {
-    setSelectedCategory("");
-    setMinPrice("");
-    setMaxPrice("");
+    const params = new URLSearchParams(location.search);
+    // Remove filtering params:
+    params.delete("category");
+    params.delete("minPrice");
+    params.delete("maxPrice");
+    params.delete("sort");
+    // Optionally keep search or clear it too:
+    // params.delete("name_like");
+
+    navigate(`/products?${params.toString()}`, { replace: true });
   };
 
   return (
     <div className="max-w-5xl w-full mx-auto px-4">
       {/* Back Button */}
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/')}
         className="btn btn-sm btn-outline my-4 flex items-center gap-2"
       >
         <ArrowLeft size={16} /> Go Back
@@ -125,34 +172,34 @@ const ProductList = () => {
               tabIndex={0}
               className="btn btn-outline flex items-center gap-2 h-full"
             >
-             Sort
+              Sort
             </label>
             <ul
               tabIndex={0}
               className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-[100]"
             >
               <li>
-                <button onClick={() => setSortOption("newest")}>
+                <button onClick={() => onSortChange("newest")}>
                   <Clock size={16} /> Newest - Default
                 </button>
               </li>
               <li>
-                <button onClick={() => setSortOption("az")}>
+                <button onClick={() => onSortChange("az")}>
                   <SortAsc size={16} /> A-Z
                 </button>
               </li>
               <li>
-                <button onClick={() => setSortOption("za")}>
+                <button onClick={() => onSortChange("za")}>
                   <SortDesc size={16} /> Z-A
                 </button>
               </li>
               <li>
-                <button onClick={() => setSortOption("priceLowHigh")}>
+                <button onClick={() => onSortChange("priceLowHigh")}>
                   <IndianRupee size={16} /> Price: Low to High
                 </button>
               </li>
               <li>
-                <button onClick={() => setSortOption("priceHighLow")}>
+                <button onClick={() => onSortChange("priceHighLow")}>
                   <IndianRupee size={16} /> Price: High to Low
                 </button>
               </li>
@@ -202,7 +249,7 @@ const ProductList = () => {
             <select
               className="select select-bordered"
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => onCategoryChange(e.target.value)}
             >
               <option value="">All</option>
               {categories.map((cat) => (
@@ -221,7 +268,8 @@ const ProductList = () => {
                 type="number"
                 className="input input-bordered"
                 value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
+                onChange={(e) => onMinPriceChange(e.target.value)}
+                min="0"
               />
             </div>
             <div className="form-control flex-1">
@@ -230,7 +278,8 @@ const ProductList = () => {
                 type="number"
                 className="input input-bordered"
                 value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
+                onChange={(e) => onMaxPriceChange(e.target.value)}
+                min="0"
               />
             </div>
           </div>
