@@ -1,17 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
-// Layout
 import Layout from "../layouts/Layout";
-
-// Pages
 import Home from "../pages/public/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ProductList from "../pages/public/ProductList";
 import ProductDetail from "../pages/public/ProductDetail";
 import CartPage from "../pages/user/CartPage";
-
-// Protected Route
 import ProtectedRoute from "./ProtectedRoute";
 import WishlistPage from "../pages/user/WishlistPage";
 import ProfilePage from "../pages/user/ProfilePage";
@@ -70,7 +64,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/orders"
+          path="orders"
           element={
             <ProtectedRoute role="user" onGuestAlert>
               <OrderHistoryPage />
@@ -78,7 +72,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/orders/:id"
+          path="orders/:id"
           element={
             <ProtectedRoute role="user" onGuestAlert>
               <OrderDetailsPage />
@@ -91,7 +85,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* 404 fallback */}
+      {/* 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

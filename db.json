@@ -27,7 +27,22 @@
           "id": "ef005d42-d4c3-4a62-826d-272b541e5b1c"
         }
       ],
-      "cart": [],
+      "cart": [
+        {
+          "id": "3a92e4db-f389-42d5-b181-372c187427a5",
+          "name": "Football Goal Net",
+          "description": "High quality football goal net suitable for all levels.",
+          "price": 3865.47,
+          "count": 11,
+          "category": "football",
+          "images": [
+            "/products/football/football_goal_net.png"
+          ],
+          "isActive": true,
+          "created_at": "2025-07-14T07:30:20.742443",
+          "quantity": 1
+        }
+      ],
       "wishlist": [
         {
           "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",

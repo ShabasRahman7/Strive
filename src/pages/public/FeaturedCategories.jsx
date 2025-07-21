@@ -29,7 +29,7 @@ const FeaturedCategories = () => {
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-10 sm:py-12">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-10">
+      <h2 className="text-2xl font-bold mb-6">
         Shop by Category
       </h2>
 

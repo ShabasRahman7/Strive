@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, role, onGuestAlert }) => {
   const navigate = useNavigate();
   const [alertShown, setAlertShown] = useState(false);
 
-  // Handle guest alert only after auth is fully loaded
+
   useEffect(() => {
     if (loading || alertShown || user || !onGuestAlert) return;
 
