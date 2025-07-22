@@ -29,13 +29,10 @@ const ProtectedRoute = ({ children, role, onGuestAlert }) => {
     });
   }, [user, loading, alertShown, onGuestAlert, navigate]);
 
-  // Wait until auth loading finishes
   if (loading) return null;
 
-  // Guest + onGuestAlert handled by alert, return nothing
   if (!user && onGuestAlert) return null;
 
-  // Fallback redirects
   if (!user) return <Navigate to="/login" replace />;
   if (role && user.role !== role) return <Navigate to="/" replace />;
 
