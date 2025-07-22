@@ -117,7 +117,6 @@ const ProductDetail = () => {
       </button>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Product Image */}
         <div className="md:w-1/2">
           <img
             src={product.images[0]}
@@ -126,7 +125,6 @@ const ProductDetail = () => {
           />
         </div>
 
-        {/* Product Info */}
         <div className="md:w-1/2 space-y-3">
           <h1 className="text-3xl font-bold">{product.name}</h1>
           <p className="text-primary text-2xl font-semibold">
@@ -149,7 +147,6 @@ const ProductDetail = () => {
             )}
           </p>
 
-          {/* Wishlist Button */}
           <button
             onClick={handleToggleWishlist}
             className={`btn btn-sm ${
@@ -163,7 +160,6 @@ const ProductDetail = () => {
             {inWishlist ? "Wishlisted" : "Add to Wishlist"}
           </button>
 
-          {/* Add to Cart Button */}
           <div className="mt-6">
             {inCart ? (
               <button

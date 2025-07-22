@@ -10,14 +10,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Alert message state
-  const [alert, setAlert] = useState({ message: "", type: "error" }); // type: "success" | "error"
+  const [alert, setAlert] = useState({ message: "", type: "error" });
 
   useEffect(() => {
     if (user) navigate("/");
   }, [user, navigate]);
 
-  // Auto-clear alert after 3s
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(

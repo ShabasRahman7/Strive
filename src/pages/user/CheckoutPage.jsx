@@ -35,7 +35,6 @@ const CheckoutPage = () => {
     );
 
     try {
-      // ✅ Step 1: Validate stock and availability
       const invalidItems = [];
 
       for (const item of cartItems) {
@@ -55,7 +54,6 @@ const CheckoutPage = () => {
         return;
       }
 
-      // ✅ Step 2: Create order object with unique ID
       const order = {
         id: crypto.randomUUID(),
         items: cartItems,
@@ -68,7 +66,6 @@ const CheckoutPage = () => {
 
       const updatedOrders = [...user.orders, order];
 
-      // ✅ Step 3: Update stock in the backend
       await Promise.all(
         cartItems.map(async (item) => {
           const { data: product } = await api.get(`/products/${item.id}`);
@@ -79,7 +76,6 @@ const CheckoutPage = () => {
         })
       );
 
-      // ✅ Step 4: Clear cart and update user orders
       await updateUser({ ...user, cart: [], orders: updatedOrders });
 
       Swal.fire(

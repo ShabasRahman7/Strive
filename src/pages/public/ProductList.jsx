@@ -15,17 +15,14 @@ const ProductList = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // Controlled states synced with URL params
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOption, setSortOption] = useState("");
-  // You may also want to sync searchQuery state if you have a search input
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Parse URL params and filter products accordingly
   useEffect(() => {
     const fetchAndFilter = async () => {
       try {
@@ -39,12 +36,9 @@ const ProductList = () => {
         const maxPriceParam = params.get("maxPrice") || "";
         const sortParam = params.get("sort") || "";
 
-        // Set categories (once)
         const uniqueCategories = [...new Set(data.map((item) => item.category))];
         setCategories(uniqueCategories);
         setAllProducts(data);
-
-        // Sync local UI states with URL params
         setSelectedCategory(urlCategory);
         setMinPrice(minPriceParam);
         setMaxPrice(maxPriceParam);
@@ -102,7 +96,6 @@ const ProductList = () => {
     fetchAndFilter();
   }, [location.search]);
 
-  // Functions to update URL params on user interaction:
 
   const updateURLParams = (key, value) => {
     const params = new URLSearchParams(location.search);
@@ -130,23 +123,18 @@ const ProductList = () => {
     updateURLParams("sort", sortKey);
   };
 
-  // Reset filters by clearing all relevant params except 'name_like' (or clear all if you want)
   const resetFilters = () => {
     const params = new URLSearchParams(location.search);
-    // Remove filtering params:
     params.delete("category");
     params.delete("minPrice");
     params.delete("maxPrice");
     params.delete("sort");
-    // Optionally keep search or clear it too:
-    // params.delete("name_like");
 
     navigate(`/products?${params.toString()}`, { replace: true });
   };
 
   return (
     <div className="max-w-5xl w-full mx-auto px-4">
-      {/* Back Button */}
       <button
         onClick={() => navigate('/')}
         className="btn btn-sm btn-outline my-4 flex items-center gap-2"
@@ -154,19 +142,15 @@ const ProductList = () => {
         <ArrowLeft size={16} /> Go Back
       </button>
 
-      {/* Header with Filter & Sort */}
       <div className="flex justify-between items-center mb-6 mt-2">
         <h2 className="text-2xl font-bold">All Products</h2>
         <div className="flex gap-2">
-          {/* FILTER BUTTON */}
           <label
             htmlFor="filter_modal"
             className="btn btn-outline flex items-center gap-2 cursor-pointer"
           >
             <Filter size={16} /> Filter
           </label>
-
-          {/* SORT DROPDOWN */}
           <div className="dropdown dropdown-end">
             <label
               tabIndex={0}
@@ -208,7 +192,6 @@ const ProductList = () => {
         </div>
       </div>
 
-      {/* PRODUCT GRID */}
       {products.length === 0 ? (
         <div className="text-center">No products found.</div>
       ) : (
@@ -237,13 +220,11 @@ const ProductList = () => {
         </div>
       )}
 
-      {/* FILTER MODAL using DaisyUI */}
       <input type="checkbox" id="filter_modal" className="modal-toggle" />
       <div className="modal" role="dialog">
         <div className="modal-box w-full max-w-md">
           <h3 className="text-xl font-bold mb-4">Filter Products</h3>
 
-          {/* CATEGORY */}
           <div className="form-control mb-3">
             <label className="label">Category</label>
             <select
@@ -260,7 +241,6 @@ const ProductList = () => {
             </select>
           </div>
 
-          {/* PRICE RANGE */}
           <div className="flex gap-4 mb-4">
             <div className="form-control flex-1">
               <label className="label">Min Price</label>

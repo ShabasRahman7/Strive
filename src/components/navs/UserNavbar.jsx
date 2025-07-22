@@ -35,7 +35,6 @@ function UserNavbar() {
     navigate("/");
   };
 
-  // Safely compute cart data
   const cartItems = user?.cart || [];
   const cartItemCount = cartItems.length;
   const cartSubtotal = cartItems.reduce(
