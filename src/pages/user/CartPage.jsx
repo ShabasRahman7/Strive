@@ -20,7 +20,7 @@ const CartPage = () => {
   }, [user]);
 
   const updateQuantity = async (productId, newQty) => {
-    if (newQty < 1) return;
+    if (newQty < 1 || newQty > 10) return;
     setIsProcessing(true);
     const updated = cartItems.map((item) =>
       item.id !== productId ? item : { ...item, quantity: newQty }

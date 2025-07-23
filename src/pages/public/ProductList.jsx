@@ -18,6 +18,7 @@ const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [priceError, setPriceError] = useState("");
   const [sortOption, setSortOption] = useState("");
 
   const location = useLocation();
@@ -36,7 +37,9 @@ const ProductList = () => {
         const maxPriceParam = params.get("maxPrice") || "";
         const sortParam = params.get("sort") || "";
 
-        const uniqueCategories = [...new Set(data.map((item) => item.category))];
+        const uniqueCategories = [
+          ...new Set(data.map((item) => item.category)),
+        ];
         setCategories(uniqueCategories);
         setAllProducts(data);
         setSelectedCategory(urlCategory);
@@ -66,7 +69,6 @@ const ProductList = () => {
           filtered = filtered.filter((p) => p.price <= Number(maxPriceParam));
         }
 
-        // Sorting
         switch (sortParam) {
           case "az":
             filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -96,7 +98,6 @@ const ProductList = () => {
     fetchAndFilter();
   }, [location.search]);
 
-
   const updateURLParams = (key, value) => {
     const params = new URLSearchParams(location.search);
     if (value) {
@@ -108,15 +109,15 @@ const ProductList = () => {
   };
 
   const onCategoryChange = (category) => {
-    updateURLParams("category", category);
+    setSelectedCategory(category);
   };
 
   const onMinPriceChange = (price) => {
-    updateURLParams("minPrice", price);
+    setMinPrice(price);
   };
 
   const onMaxPriceChange = (price) => {
-    updateURLParams("maxPrice", price);
+    setMaxPrice(price);
   };
 
   const onSortChange = (sortKey) => {
@@ -130,13 +131,51 @@ const ProductList = () => {
     params.delete("maxPrice");
     params.delete("sort");
 
+    setMinPrice("");
+    setMaxPrice("");
+    setSelectedCategory("");
+    setPriceError("");
+
     navigate(`/products?${params.toString()}`, { replace: true });
+  };
+
+  const applyFilters = () => {
+    if (minPrice && maxPrice && Number(minPrice) > Number(maxPrice)) {
+      setPriceError("Min price cannot be greater than max price.");
+      return;
+    }
+
+    setPriceError("");
+
+    const params = new URLSearchParams(location.search);
+
+    if (selectedCategory) {
+      params.set("category", selectedCategory);
+    } else {
+      params.delete("category");
+    }
+
+    if (minPrice) {
+      params.set("minPrice", minPrice);
+    } else {
+      params.delete("minPrice");
+    }
+
+    if (maxPrice) {
+      params.set("maxPrice", maxPrice);
+    } else {
+      params.delete("maxPrice");
+    }
+
+    navigate(`/products?${params.toString()}`, { replace: true });
+
+    document.getElementById("filter_modal").checked = false;
   };
 
   return (
     <div className="max-w-5xl w-full mx-auto px-4">
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate("/")}
         className="btn btn-sm btn-outline my-4 flex items-center gap-2"
       >
         <ArrowLeft size={16} /> Go Back
@@ -220,6 +259,7 @@ const ProductList = () => {
         </div>
       )}
 
+      {/* Modal */}
       <input type="checkbox" id="filter_modal" className="modal-toggle" />
       <div className="modal" role="dialog">
         <div className="modal-box w-full max-w-md">
@@ -230,7 +270,7 @@ const ProductList = () => {
             <select
               className="select select-bordered"
               value={selectedCategory}
-              onChange={(e) => onCategoryChange(e.target.value)}
+              onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="">All</option>
               {categories.map((cat) => (
@@ -241,7 +281,7 @@ const ProductList = () => {
             </select>
           </div>
 
-          <div className="flex gap-4 mb-4">
+          <div className="flex gap-4 mb-2">
             <div className="form-control flex-1">
               <label className="label">Min Price</label>
               <input
@@ -263,6 +303,9 @@ const ProductList = () => {
               />
             </div>
           </div>
+          {priceError && (
+            <p className="text-error text-sm mt-1 ml-1">{priceError}</p>
+          )}
 
           <div className="modal-action">
             <label
@@ -272,9 +315,13 @@ const ProductList = () => {
             >
               Reset
             </label>
-            <label htmlFor="filter_modal" className="btn btn-primary btn-sm">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={applyFilters}
+            >
               Apply
-            </label>
+            </button>
           </div>
         </div>
       </div>
