@@ -7,26 +7,7 @@
       "name": "Shabas ",
       "role": "user",
       "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
-      "addresses": [
-        {
-          "line1": "gddgdg",
-          "line2": "",
-          "city": "sgsg",
-          "state": "gggdsg",
-          "pin": "223323",
-          "type": "home",
-          "id": "8ce4d1b2-9783-4a29-beba-db1879f989e5"
-        },
-        {
-          "line1": "fsfsf",
-          "line2": "",
-          "city": "fsfsf",
-          "state": "de",
-          "pin": "222222",
-          "type": "work",
-          "id": "ef005d42-d4c3-4a62-826d-272b541e5b1c"
-        }
-      ],
+      "addresses": [],
       "cart": [
         {
           "id": "3a92e4db-f389-42d5-b181-372c187427a5",
