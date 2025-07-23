@@ -9,18 +9,18 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  const savedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (savedUser) {
-    const parsed = JSON.parse(savedUser);
-    api.get(`/users/${parsed.id}`).then((res) => {
-      setUser(res.data);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(res.data));
+    const savedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedUser) {
+      const parsed = JSON.parse(savedUser);
+      api.get(`/users/${parsed.id}`).then((res) => {
+        setUser(res.data);
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(res.data));
+        setLoading(false);
+      });
+    } else {
       setLoading(false);
-    });
-  } else {
-    setLoading(false);
-  }
-}, []);
+    }
+  }, []);
 
   const login = async (email, password) => {
     try {

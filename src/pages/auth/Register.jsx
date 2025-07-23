@@ -2,17 +2,36 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords do not match")
+    .required("Confirm password is required"),
+});
 
 export default function Register() {
-  const { user, register } = useAuth();
+  const { user, register: registerUser } = useAuth();
   const navigate = useNavigate();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState({ message: "", type: "error" }); 
+  const [alert, setAlert] = useState({ message: "", type: "error" });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
     if (user) {
@@ -27,52 +46,11 @@ export default function Register() {
     }
   }, [alert]);
 
-  const validate = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!name.trim()) {
-      setAlert({ message: "Name is required.", type: "error" });
-      return false;
-    }
-    if (!email.trim()) {
-      setAlert({ message: "Email is required.", type: "error" });
-      return false;
-    }
-    if (!emailRegex.test(email)) {
-      setAlert({ message: "Enter a valid email.", type: "error" });
-      return false;
-    }
-    if (!password) {
-      setAlert({ message: "Password is required.", type: "error" });
-      return false;
-    }
-    if (password.length < 6) {
-      setAlert({
-        message: "Password must be at least 6 characters.",
-        type: "error",
-      });
-      return false;
-    }
-    if (!confirmPassword) {
-      setAlert({ message: "Confirm password is required.", type: "error" });
-      return false;
-    }
-    if (confirmPassword !== password) {
-      setAlert({ message: "Passwords do not match.", type: "error" });
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
+  const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await register(email, password, name);
-      toast.success("Registration Successfull")
+      await registerUser(data.email, data.password, data.name);
+      toast.success("Registration Successful");
       navigate("/profile");
     } catch (error) {
       setAlert({ message: error.message, type: "error" });
@@ -87,7 +65,7 @@ export default function Register() {
         <div className="flex justify-center pt-6">
           <img src="/strive-logo.png" alt="Logo" className="h-16 w-auto" />
         </div>
-        <form onSubmit={handleSubmit} className="card-body">
+        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
           <h2 className="text-2xl font-bold text-center">Register</h2>
 
           {alert.message && (
@@ -100,52 +78,48 @@ export default function Register() {
             <label className="label">Name</label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              {...register("name")}
               className="input input-bordered"
-              required
             />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
           </div>
 
           <div className="form-control">
             <label className="label">Email</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
               className="input input-bordered"
-              required
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
           <div className="form-control">
             <label className="label">Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
               className="input input-bordered"
-              required
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            )}
           </div>
 
           <div className="form-control">
             <label className="label">Confirm Password</label>
             <input
               type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              {...register("confirmPassword")}
               className="input input-bordered"
-              required
             />
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+            )}
           </div>
 
           <div className="form-control mt-6">
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={loading}
-            >
+            <button className="btn btn-primary" type="submit" disabled={loading}>
               {loading ? "Registering..." : "Register"}
             </button>
           </div>

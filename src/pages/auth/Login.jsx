@@ -1,58 +1,46 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
 
 export default function Login() {
-  const { user, login } = useAuth();
+  const { user, login, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [alert, setAlert] = useState({ message: "", type: "error" });
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   useEffect(() => {
-    if (user) navigate("/");
-  }, [user, navigate]);
+    if (!authLoading && user) {
+      navigate("/");
+    }
+  }, [authLoading, user, navigate]);
 
   useEffect(() => {
     if (alert.message) {
-      const timer = setTimeout(
-        () => setAlert({ message: "", type: "error" }),
-        3000
-      );
+      const timer = setTimeout(() => setAlert({ message: "", type: "error" }), 3000);
       return () => clearTimeout(timer);
     }
   }, [alert]);
 
-  const validate = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email.trim()) {
-      setAlert({ message: "Email is required.", type: "error" });
-      return false;
-    }
-    if (!emailRegex.test(email)) {
-      setAlert({ message: "Enter a valid email.", type: "error" });
-      return false;
-    }
-
-    if (!password) {
-      setAlert({ message: "Password is required.", type: "error" });
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
+  const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await login(email, password);
+      await login(data.email, data.password);
       sessionStorage.setItem("showLoginToast", "true");
       navigate("/");
     } catch (error) {
@@ -62,13 +50,21 @@ export default function Login() {
     }
   };
 
+  if (authLoading || user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-base-200">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-base-200">
       <div className="card w-96 bg-base-100 shadow-xl mx-4">
         <div className="flex justify-center pt-6">
           <img src="/strive-logo.png" alt="Logo" className="h-16 w-auto" />
         </div>
-        <form onSubmit={handleSubmit} className="card-body">
+        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
           <h2 className="text-2xl font-bold text-center">Login</h2>
 
           {alert.message && (
@@ -81,28 +77,24 @@ export default function Login() {
             <label className="label">Email</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
               className="input input-bordered"
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
           <div className="form-control">
             <label className="label">Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
               className="input input-bordered"
             />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
           <div className="form-control mt-6">
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={loading}
-            >
+            <button className="btn btn-primary" type="submit" disabled={loading}>
               {loading ? "Logging in..." : "Login"}
             </button>
           </div>
