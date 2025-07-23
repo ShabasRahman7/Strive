@@ -68,7 +68,7 @@ function UserNavbar() {
           </button>
 
           {/* Cart Dropdown */}
-          <div className="dropdown dropdown-end mr-1">
+          <div className="dropdown dropdown-end dropdown-hover mr-1">
             <div
               tabIndex={0}
               role="button"
@@ -96,7 +96,7 @@ function UserNavbar() {
             </div>
             <div
               tabIndex={0}
-              className="card card-compact dropdown-content bg-base-100 z-10 mt-3 w-60 shadow"
+              className="card card-compact dropdown-content bg-base-100 z-10 w-60 shadow"
             >
               <div className="card-body">
                 <span className="text-lg font-bold">
@@ -118,7 +118,7 @@ function UserNavbar() {
           </div>
 
           {/* User Avatar Dropdown */}
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end dropdown-hover">
             <div
               tabIndex={0}
               role="button"
@@ -134,7 +134,7 @@ function UserNavbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow"
             >
               <li>
                 <a onClick={() => navigate("/")}>
