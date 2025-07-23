@@ -4,6 +4,7 @@ import { ShoppingCart, Heart, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import api from "../../api/axios";
+import { toast } from "react-toastify";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -59,7 +60,7 @@ const ProductDetail = () => {
     if (inCart) return;
 
     if (!product.isActive || product.count === 0) {
-      Swal.fire("Out of Stock", "This product is currently unavailable.", "info");
+      toast.error("This product is currently unavailable.");
       return;
     }
 
@@ -70,10 +71,10 @@ const ProductDetail = () => {
       await api.patch(`/users/${user.id}`, { cart: updatedCart });
       updateUser(updatedUser);
       setInCart(true);
-      Swal.fire("Added", `${product.name} has been added to cart.`, "success");
+      toast.success(`${product.name} has been added to cart.`);
     } catch (error) {
       console.error("Failed to update cart:", error);
-      Swal.fire("Error", "Failed to add to cart", "error");
+      toast.error("Failed to add to cart");
     }
   };
 
@@ -91,14 +92,10 @@ const ProductDetail = () => {
       await api.patch(`/users/${user.id}`, { wishlist: updatedWishlist });
       updateUser(updatedUser);
       setInWishlist(!isInWishlist);
-      Swal.fire(
-        isInWishlist ? "Removed" : "Added",
-        `${product.name} has been ${isInWishlist ? "removed from" : "added to"} wishlist.`,
-        "success"
-      );
+      toast.success(`${product.name} has been ${isInWishlist ? "removed from" : "added to"} wishlist.`,);
     } catch (error) {
       console.error("Failed to update wishlist:", error);
-      Swal.fire("Error", "Failed to update wishlist", "error");
+      toast.error("Failed to update wishlist")
     }
   };
 

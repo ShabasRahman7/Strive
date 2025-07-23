@@ -22,22 +22,23 @@
           "isActive": true,
           "created_at": "2025-07-14T07:30:20.742443",
           "quantity": 1
+        },
+        {
+          "id": "cd2ce208-0770-4705-9d49-396dfeaa4ebc",
+          "name": "Batting Pads",
+          "description": "High quality batting pads suitable for all levels.",
+          "price": 4311.37,
+          "count": 44,
+          "category": "cricket",
+          "images": [
+            "/products/cricket/batting_pads.jpeg"
+          ],
+          "isActive": true,
+          "created_at": "2025-02-23T07:30:20.742443",
+          "quantity": 1
         }
       ],
       "wishlist": [
-        {
-          "id": "7c628a32-afd2-49a5-af27-1aacbade2e14",
-          "name": "SG Test Ball",
-          "description": "High quality sg test ball suitable for all levels.",
-          "price": 2430.62,
-          "count": 59,
-          "category": "cricket",
-          "images": [
-            "/products/cricket/sg_test_ball.jpeg"
-          ],
-          "isActive": true,
-          "created_at": "2025-06-28T07:30:20.742443"
-        },
         {
           "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
           "name": "Messi Jersey",
@@ -50,32 +51,6 @@
           ],
           "isActive": false,
           "created_at": "2025-05-19T07:30:20.742443"
-        },
-        {
-          "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
-          "name": "Nike Football Shorts",
-          "description": "High quality nike football shorts suitable for all levels.",
-          "price": 1128.06,
-          "count": 45,
-          "category": "football",
-          "images": [
-            "/products/football/nike_football_shorts.png"
-          ],
-          "isActive": true,
-          "created_at": "2025-01-22T07:30:20.742443"
-        },
-        {
-          "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
-          "name": "Kookaburra Bat",
-          "description": "High quality kookaburra bat suitable for all levels.",
-          "price": 2042.72,
-          "count": 64,
-          "category": "cricket",
-          "images": [
-            "/products/cricket/kookaburra_bat.jpeg"
-          ],
-          "isActive": true,
-          "created_at": "2025-06-29T07:30:20.742443"
         }
       ],
       "orders": [

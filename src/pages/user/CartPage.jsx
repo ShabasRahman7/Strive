@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const { user, updateUser } = useAuth();
@@ -44,6 +45,7 @@ const CartPage = () => {
 
     if (result.isConfirmed) {
       removeItem(productId);
+      toast.success("Product Successfully Removed")
     }
   };
 

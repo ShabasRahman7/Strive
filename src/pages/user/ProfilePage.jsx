@@ -96,7 +96,6 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-base-200 py-10 px-4">
-      <ToastContainer position="top-right" autoClose={3000} />
       <div className="max-w-3xl mx-auto bg-base-100 shadow-lg rounded-lg p-8">
         <div className="flex flex-col items-center gap-4">
           <img

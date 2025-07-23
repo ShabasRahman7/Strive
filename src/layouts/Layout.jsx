@@ -4,6 +4,7 @@ import UserNav from "../components/navs/UserNavbar";
 import GuestNav from "../components/navs/GuestNavbar";
 import { Outlet } from "react-router-dom";
 import { toast } from "react-toastify";
+import ScrollToTop from "../components/shared/ScrollToTop";
 
 function Layout() {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ function Layout() {
 
   return (
     <>
+      <ScrollToTop />
       {user ? <UserNav /> : <GuestNav />}
       <main className="min-h-screen">
         <Outlet />

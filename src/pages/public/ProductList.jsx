@@ -23,8 +23,8 @@ const ProductList = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchAndFilter = async () => {
       try {
         const res = await api.get("/products");
