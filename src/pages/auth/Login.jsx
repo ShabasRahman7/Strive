@@ -25,10 +25,14 @@ export default function Login() {
   });
 
   useEffect(() => {
-    if (!authLoading && user) {
+  if (!authLoading && user) {
+    if (user.role === "admin") {
+      navigate("/admin");
+    } else {
       navigate("/");
     }
-  }, [authLoading, user, navigate]);
+  }
+}, [authLoading, user, navigate]);
 
   useEffect(() => {
     if (alert.message) {

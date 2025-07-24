@@ -21,7 +21,7 @@ function Layout() {
   return (
     <>
       <ScrollToTop />
-      {user ? <UserNav /> : <GuestNav />}
+      {user?.role === "user" ? <UserNav /> : <GuestNav />}
       <main className="min-h-screen">
         <Outlet />
       </main>

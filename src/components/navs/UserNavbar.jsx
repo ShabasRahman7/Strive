@@ -10,6 +10,7 @@ import {
   LogOut,
   UserRound,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 function UserNavbar() {
   const { user, logout } = useAuth();
@@ -30,9 +31,18 @@ function UserNavbar() {
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure to logout!?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    });
+
+    if (result.isConfirmed) {
+      logout();
+      navigate("/login");
+    }
   };
 
   const cartItems = user?.cart || [];
@@ -45,7 +55,7 @@ function UserNavbar() {
   return (
     <div className="bg-base-100 shadow-sm sticky top-0 z-50">
       <div className="navbar max-w-5xl w-full mx-auto px-4">
-        <div className="flex-1" onClick={()=> navigate("/")}>
+        <div className="flex-1" onClick={() => navigate("/")}>
           <img
             src="/strive-logo.png"
             alt="Strive Logo"

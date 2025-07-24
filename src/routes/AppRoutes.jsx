@@ -12,10 +12,30 @@ import ProfilePage from "../pages/user/ProfilePage";
 import CheckoutPage from "../pages/user/CheckoutPage";
 import OrderHistoryPage from "../pages/user/OrderHistoryPage";
 import OrderDetailsPage from "../pages/user/OrderDetailsPage";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import UserManagement from '../pages/admin/UserManagement'
+import ProductManagement from '../pages/admin/ProductManagement'
+import OrderManagement from '../pages/admin/OrderManagement'
+
 
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Admin Layout */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<AdminDashboard />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="products" element={<ProductManagement />} />
+        <Route path="orders" element={<OrderManagement />} />
+      </Route>
       {/* Shared layout */}
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />

@@ -1,6 +1,13 @@
 {
   "users": [
     {
+      "id": "0777",
+      "email": "admin@email.com",
+      "password": "admin@123",
+      "name": "Shabas ",
+      "role": "admin"
+    },
+    {
       "id": "0356",
       "email": "shabas@email.com",
       "password": "shabas@123",
