@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
         password,
         name,
         role: "user",
+        isBlocked:false,
         profileImage:
           "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
         addresses: [],

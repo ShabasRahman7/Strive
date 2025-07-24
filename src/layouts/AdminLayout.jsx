@@ -16,7 +16,6 @@ function AdminLayout() {
   return (
     <>
       <AdminSidebar />
-      <Outlet />
     </>
   );
 }

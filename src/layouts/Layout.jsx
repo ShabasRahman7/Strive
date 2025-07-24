@@ -11,12 +11,16 @@ function Layout() {
 
   useEffect(() => {
     const showToast = sessionStorage.getItem("showLoginToast");
-
+    const showLogoutToast = sessionStorage.getItem("showLogoutToast");
     if (showToast) {
       toast.success("Login Successful!");
       sessionStorage.removeItem("showLoginToast");
     }
-  }, []);
+    if (showLogoutToast) {
+      toast.success("Logout Successful!");
+      sessionStorage.removeItem("showLogoutToast");
+    }
+  }, [user]);
 
   return (
     <>

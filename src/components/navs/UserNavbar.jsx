@@ -40,8 +40,9 @@ function UserNavbar() {
     });
 
     if (result.isConfirmed) {
+      sessionStorage.setItem("showLogoutToast", "true");
       logout();
-      navigate("/login");
+      navigate("/");
     }
   };
 

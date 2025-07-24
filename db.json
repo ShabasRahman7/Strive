@@ -13,6 +13,7 @@
       "password": "shabas@123",
       "name": "Shabas ",
       "role": "user",
+      "isBlocked": false,
       "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
       "addresses": [],
       "cart": [
@@ -140,6 +141,18 @@
           "createdAt": "2025-07-21T06:49:14.575Z"
         }
       ]
+    },
+    {
+      "id": "3a12",
+      "email": "sasds@sfs.dd",
+      "password": "123456",
+      "name": "test",
+      "role": "user",
+      "isBlocked": false,
+      "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+      "addresses": [],
+      "cart": [],
+      "wishlist": []
     }
   ],
   "slides": [
