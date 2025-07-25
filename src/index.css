@@ -7,6 +7,7 @@
 @media (max-width: 768px) {
   .Toastify__toast {
     margin-top: 60px; 
+    max-width: 75%;
   }
 }
 

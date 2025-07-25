@@ -123,8 +123,8 @@ export default function AdminSidebar() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 ml-0 md:ml-64">
-        <main className="p-6 overflow-y-auto min-h-screen">
+      <div className="flex-1 min-w-0 md:ml-64">
+        <main className="p-4 overflow-auto min-h-screen">
           <button className="md:hidden m-2" onClick={toggleSidebar}>
             <Menu size={24} />
           </button>

@@ -5,47 +5,60 @@
       "email": "admin@email.com",
       "password": "admin@123",
       "name": "Shabas ",
-      "role": "admin"
+      "role": "admin",
+      "isBlocked": true,
+      "wishlist": [
+        {
+          "id": "d4b36ae3-af9f-4f14-8593-7d58da6da4d6",
+          "name": "Adidas Predator Ball",
+          "description": "High quality adidas predator ball suitable for all levels.",
+          "price": 4255.11,
+          "count": 46,
+          "category": "football",
+          "images": [
+            "/products/football/adidas_predator_ball.png"
+          ],
+          "isActive": true,
+          "created_at": "2025-02-14T07:30:20.742443"
+        }
+      ],
+      "cart": [
+        {
+          "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
+          "name": "Nike Football Shorts",
+          "description": "High quality nike football shorts suitable for all levels.",
+          "price": 1128.06,
+          "count": 24,
+          "category": "football",
+          "images": [
+            "/products/football/nike_football_shorts.png"
+          ],
+          "isActive": true,
+          "created_at": "2025-01-22T07:30:20.742443",
+          "quantity": 1
+        }
+      ]
     },
     {
       "id": "0356",
       "email": "shabas@email.com",
       "password": "shabas@123",
-      "name": "Shabas ",
+      "name": "Shabas",
       "role": "user",
-      "isBlocked": false,
+      "isBlocked": true,
       "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
-      "addresses": [],
-      "cart": [
+      "addresses": [
         {
-          "id": "3a92e4db-f389-42d5-b181-372c187427a5",
-          "name": "Football Goal Net",
-          "description": "High quality football goal net suitable for all levels.",
-          "price": 3865.47,
-          "count": 11,
-          "category": "football",
-          "images": [
-            "/products/football/football_goal_net.png"
-          ],
-          "isActive": true,
-          "created_at": "2025-07-14T07:30:20.742443",
-          "quantity": 1
-        },
-        {
-          "id": "cd2ce208-0770-4705-9d49-396dfeaa4ebc",
-          "name": "Batting Pads",
-          "description": "High quality batting pads suitable for all levels.",
-          "price": 4311.37,
-          "count": 44,
-          "category": "cricket",
-          "images": [
-            "/products/cricket/batting_pads.jpeg"
-          ],
-          "isActive": true,
-          "created_at": "2025-02-23T07:30:20.742443",
-          "quantity": 1
+          "line1": "Test",
+          "line2": "",
+          "city": "Calicut",
+          "state": "Kerala",
+          "pin": "666666",
+          "type": "work",
+          "id": "74bde581-d71d-4f9f-b693-3c89f58d6e3d"
         }
       ],
+      "cart": [],
       "wishlist": [
         {
           "id": "17e7f774-7df2-4af1-8f3a-6984f7e6e99d",
@@ -59,6 +72,19 @@
           ],
           "isActive": false,
           "created_at": "2025-05-19T07:30:20.742443"
+        },
+        {
+          "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
+          "name": "Kookaburra Bat",
+          "description": "High quality kookaburra bat suitable for all levels.",
+          "price": 2042.72,
+          "count": 62,
+          "category": "cricket",
+          "images": [
+            "/products/cricket/kookaburra_bat.jpeg"
+          ],
+          "isActive": true,
+          "created_at": "2025-06-29T07:30:20.742443"
         }
       ],
       "orders": [
@@ -139,6 +165,38 @@
           "paymentMethod": "cod",
           "status": "pending",
           "createdAt": "2025-07-21T06:49:14.575Z"
+        },
+        {
+          "id": "62fb9c08-ab03-49b1-b7d1-3719f03859c4",
+          "items": [
+            {
+              "id": "d4b36ae3-af9f-4f14-8593-7d58da6da4d6",
+              "name": "Adidas Predator Ball",
+              "description": "High quality adidas predator ball suitable for all levels.",
+              "price": 4255.11,
+              "count": 46,
+              "category": "football",
+              "images": [
+                "/products/football/adidas_predator_ball.png"
+              ],
+              "isActive": true,
+              "created_at": "2025-02-14T07:30:20.742443",
+              "quantity": 1
+            }
+          ],
+          "totalAmount": 4255.11,
+          "address": {
+            "line1": "Test",
+            "line2": "",
+            "city": "Calicut",
+            "state": "Kerala",
+            "pin": "666666",
+            "type": "work",
+            "id": "74bde581-d71d-4f9f-b693-3c89f58d6e3d"
+          },
+          "paymentMethod": "cod",
+          "status": "pending",
+          "createdAt": "2025-07-25T04:29:58.926Z"
         }
       ]
     },
@@ -148,7 +206,7 @@
       "password": "123456",
       "name": "test",
       "role": "user",
-      "isBlocked": false,
+      "isBlocked": true,
       "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
       "addresses": [],
       "cart": [],
@@ -195,7 +253,7 @@
       "name": "Adidas Predator Ball",
       "description": "High quality adidas predator ball suitable for all levels.",
       "price": 4255.11,
-      "count": 46,
+      "count": 45,
       "category": "football",
       "images": [
         "/products/football/adidas_predator_ball.png"
