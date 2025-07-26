@@ -11,15 +11,16 @@ const OrderDetailsPage = () => {
 
   if (!order) {
     return (
-      <div className="text-center mt-10 text-red-500">
-        Order not found.
-      </div>
+      <div className="text-center mt-10 text-red-500">Order not found.</div>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <button className="btn btn-outline btn-sm mb-4" onClick={() => navigate(-1)}>
+      <button
+        className="btn btn-outline btn-sm mb-4"
+        onClick={() => navigate(-1)}
+      >
         ← Back
       </button>
 
@@ -42,9 +43,9 @@ const OrderDetailsPage = () => {
             className={`badge ${
               order.status === "pending"
                 ? "badge-warning"
-                : order.status === "success"
-                ? "badge-success"
-                : "badge-error"
+                : order.status === "shipped"
+                ? "badge-info"
+                : "badge-success"
             }`}
           >
             {order.status}

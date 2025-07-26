@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
+import api from "../../api/axios"; // ✅ use your custom axios instance
 
 const Carousel = () => {
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const res = await fetch("http://localhost:3001/slides");
-        if (!res.ok) throw new Error("Failed to fetch slides");
-        const data = await res.json();
-        setSlides(data);
+        const res = await api.get("/slides"); // ✅ call using custom axios
+        setSlides(res.data);
       } catch (error) {
-        console.error(error);
+        console.error("Failed to fetch slides:", error);
       } finally {
         setLoading(false);
       }

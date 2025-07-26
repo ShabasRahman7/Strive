@@ -45,9 +45,9 @@ const OrderHistoryPage = () => {
                     className={`badge ${
                       order.status === "pending"
                         ? "badge-warning"
-                        : order.status === "success"
-                        ? "badge-success"
-                        : "badge-error"
+                        : order.status === "shipped"
+                        ? "badge-info"
+                        : "badge-success"
                     }`}
                   >
                     {order.status}
