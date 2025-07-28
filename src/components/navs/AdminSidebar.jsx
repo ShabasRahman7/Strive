@@ -56,11 +56,11 @@ export default function AdminSidebar() {
       <aside
         className={`bg-base-100 w-65 p-5 shadow-md fixed top-0 left-0 h-full z-50 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out`}
+        } xl:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
         <div className="flex items-center justify-between mb-6 pl-3">
           <h2 className="text-lg font-bold">Admin Panel</h2>
-          <button className="md:hidden text-xl" onClick={toggleSidebar}>
+          <button className="xl:hidden text-xl" onClick={toggleSidebar}>
             <X />
           </button>
         </div>
@@ -123,9 +123,9 @@ export default function AdminSidebar() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 min-w-0 md:ml-64">
+      <div className="flex-1 min-w-0 xl:ml-64">
         <main className="p-4 overflow-auto min-h-screen">
-          <button className="md:hidden m-2" onClick={toggleSidebar}>
+          <button className="xl:hidden m-2" onClick={toggleSidebar}>
             <Menu size={24} />
           </button>
           <Outlet />
