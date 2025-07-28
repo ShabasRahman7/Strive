@@ -84,7 +84,7 @@ const AdminDashboard = () => {
     datasets: [
       {
         data: Object.values(statusCounts),
-        backgroundColor: ["#4ade80", "#facc15", "#f87171", "#a78bfa"],
+        backgroundColor: ["#4ade80", "#facc15", "#00bafe"],
         borderWidth: 1,
       },
     ],
