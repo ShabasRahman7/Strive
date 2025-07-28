@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { Mail, Edit3, Save, Home, Trash2, Plus } from "lucide-react";
+import { Mail, Edit3, Save, Home, Trash2, Plus, X } from "lucide-react";
 import api from "../../api/axios";
 import Swal from "sweetalert2";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -24,6 +24,9 @@ export default function ProfilePage() {
   const [showAdd, setShowAdd] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [profileImage, setProfileImage] = useState(user?.profileImage || "");
+
+  const [originalName, setOriginalName] = useState(user?.name || "");
+  const [originalImage, setOriginalImage] = useState(user?.profileImage || "");
 
   const {
     register,
@@ -48,12 +51,22 @@ export default function ProfilePage() {
       const updatedUser = { ...user, name, profileImage };
       await api.patch(`/users/${user.id}`, updatedUser);
       updateUser(updatedUser);
+
+      setOriginalName(name);
+      setOriginalImage(profileImage);
+
       setIsEditing(false);
       toast.success("Profile updated");
     } catch (err) {
       console.error("Error updating profile:", err);
       toast.error("Failed to update profile");
     }
+  };
+
+  const handleCancelEdit = () => {
+    setName(originalName);
+    setProfileImage(originalImage);
+    setIsEditing(false);
   };
 
   const addAddress = async (data) => {
@@ -98,11 +111,14 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-base-200 py-10 px-4">
       <div className="max-w-3xl mx-auto bg-base-100 shadow-lg rounded-lg p-8">
         <div className="flex flex-col items-center gap-4">
-          <img
-            src={profileImage || "/default-avatar.png"}
-            alt="User Avatar"
-            className="w-24 h-24 rounded-full object-cover shadow"
-          />
+          <div className="relative w-24 h-24">
+            <img
+              src={profileImage}
+              alt="User Avatar"
+              className="w-24 h-24 rounded-full object-cover shadow"
+            />
+          </div>
+
           {isEditing && (
             <input
               type="text"
@@ -112,6 +128,7 @@ export default function ProfilePage() {
               className="input input-sm input-bordered w-full max-w-xs"
             />
           )}
+
           <h2 className="text-2xl font-bold">
             {isEditing ? (
               <input
@@ -124,11 +141,17 @@ export default function ProfilePage() {
               user.name
             )}
           </h2>
-          <div>
+
+          <div className="flex gap-2">
             {isEditing ? (
-              <button onClick={handleSaveProfile} className="btn btn-sm btn-primary flex items-center gap-2">
-                <Save className="w-4 h-4" /> Save Changes
-              </button>
+              <>
+                <button onClick={handleSaveProfile} className="btn btn-sm btn-primary flex items-center gap-2">
+                  <Save className="w-4 h-4" /> Save
+                </button>
+                <button onClick={handleCancelEdit} className="btn btn-sm btn-ghost flex items-center gap-2">
+                  <X className="w-4 h-4" /> Cancel
+                </button>
+              </>
             ) : (
               <button onClick={() => setIsEditing(true)} className="btn btn-outline btn-sm flex items-center gap-2">
                 <Edit3 className="w-4 h-4" /> Edit Profile
@@ -251,7 +274,10 @@ export default function ProfilePage() {
             <div className="modal-action">
               <button
                 type="button"
-                onClick={() => { setShowAdd(false); reset(); }}
+                onClick={() => {
+                  setShowAdd(false);
+                  reset();
+                }}
                 className="btn btn-ghost btn-sm"
               >
                 Cancel
@@ -262,6 +288,13 @@ export default function ProfilePage() {
             </div>
           </form>
         </div>
+        <label
+          className="modal-backdrop"
+          onClick={() => {
+            setShowAdd(false);
+            reset();
+          }}
+        />
       </div>
     </div>
   );
