@@ -4,40 +4,8 @@
       "id": "0777",
       "email": "admin@email.com",
       "password": "admin@123",
-      "name": "Shabas ",
-      "role": "admin",
-      "isBlocked": true,
-      "wishlist": [
-        {
-          "id": "d4b36ae3-af9f-4f14-8593-7d58da6da4d6",
-          "name": "Adidas Predator Ball",
-          "description": "High quality adidas predator ball suitable for all levels.",
-          "price": 4255.11,
-          "count": 46,
-          "category": "football",
-          "images": [
-            "/products/football/adidas_predator_ball.png"
-          ],
-          "isActive": true,
-          "created_at": "2025-02-14T07:30:20.742443"
-        }
-      ],
-      "cart": [
-        {
-          "id": "552c91b8-11cb-4602-bcd5-8cfeb0fa2740",
-          "name": "Nike Football Shorts",
-          "description": "High quality nike football shorts suitable for all levels.",
-          "price": 1128.06,
-          "count": 24,
-          "category": "football",
-          "images": [
-            "/products/football/nike_football_shorts.png"
-          ],
-          "isActive": true,
-          "created_at": "2025-01-22T07:30:20.742443",
-          "quantity": 1
-        }
-      ]
+      "name": "Shabas",
+      "role": "admin"
     },
     {
       "id": "0356",
@@ -116,7 +84,7 @@
             "type": "home",
             "id": "8ce4d1b2-9783-4a29-beba-db1879f989e5"
           },
-          "paymentMethod": "cod",
+          "paymentMethod": "cash",
           "status": "pending",
           "createdAt": "2025-07-21T09:27:03.460Z"
         },
@@ -135,7 +103,7 @@
               ],
               "isActive": false,
               "created_at": "2025-02-27T07:30:20.742443",
-              "quantity": 29
+              "quantity": 2
             },
             {
               "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
@@ -149,10 +117,10 @@
               ],
               "isActive": true,
               "created_at": "2025-06-29T07:30:20.742443",
-              "quantity": 2
+              "quantity": 1
             }
           ],
-          "totalAmount": 68795.17,
+          "totalAmount": 6505.46,
           "address": {
             "line1": "fsfsf",
             "line2": "",
@@ -162,7 +130,7 @@
             "type": "work",
             "id": "ef005d42-d4c3-4a62-826d-272b541e5b1c"
           },
-          "paymentMethod": "cod",
+          "paymentMethod": "cash",
           "status": "shipped",
           "createdAt": "2025-07-21T06:49:14.575Z"
         },
@@ -194,7 +162,7 @@
             "type": "work",
             "id": "74bde581-d71d-4f9f-b693-3c89f58d6e3d"
           },
-          "paymentMethod": "cod",
+          "paymentMethod": "cash",
           "status": "delivered",
           "createdAt": "2025-07-25T04:29:58.926Z"
         }
@@ -206,11 +174,135 @@
       "password": "123456",
       "name": "test",
       "role": "user",
-      "isBlocked": true,
+      "isBlocked": false,
       "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
       "addresses": [],
       "cart": [],
       "wishlist": []
+    },
+    {
+      "id": "u1001",
+      "email": "maria@example.com",
+      "password": "maria123",
+      "name": "Maria Joseph",
+      "role": "user",
+      "profileImage": "https://randomuser.me/api/portraits/women/65.jpg",
+      "isBlocked": false,
+      "cart": [],
+      "wishlist": [],
+      "orders": [
+        {
+          "id": "ord1001",
+          "items": [],
+          "totalAmount": 1450,
+          "status": "pending",
+          "paymentMethod": "cash",
+          "createdAt": "2025-07-10T09:00:00.000Z",
+          "address": {
+            "line1": "123 Street",
+            "line2": "",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "pin": "400001",
+            "type": "home",
+            "id": "addr001"
+          }
+        },
+        {
+          "id": "ord1002",
+          "items": [],
+          "totalAmount": 2320.5,
+          "status": "delivered",
+          "paymentMethod": "upi",
+          "createdAt": "2025-07-05T13:15:00.000Z",
+          "address": {
+            "line1": "123 Street",
+            "line2": "",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "pin": "400001",
+            "type": "home",
+            "id": "addr002"
+          }
+        }
+      ]
+    },
+    {
+      "id": "u1002",
+      "email": "arjun@example.com",
+      "password": "arjun123",
+      "name": "Arjun Menon",
+      "role": "user",
+      "profileImage": "https://randomuser.me/api/portraits/men/52.jpg",
+      "isBlocked": false,
+      "cart": [],
+      "wishlist": [],
+      "orders": [
+        {
+          "id": "ord1003",
+          "items": [],
+          "totalAmount": 3089,
+          "status": "shipped",
+          "paymentMethod": "cash",
+          "createdAt": "2025-07-18T11:45:00.000Z",
+          "address": {
+            "line1": "456 Lane",
+            "line2": "",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "pin": "560001",
+            "type": "work",
+            "id": "addr003"
+          }
+        }
+      ]
+    },
+    {
+      "id": "u1003",
+      "email": "nisha@example.com",
+      "password": "nisha123",
+      "name": "Nisha Rai",
+      "role": "user",
+      "profileImage": "https://randomuser.me/api/portraits/women/23.jpg",
+      "isBlocked": false,
+      "cart": [],
+      "wishlist": [],
+      "orders": [
+        {
+          "id": "ord1004",
+          "items": [],
+          "totalAmount": 5120,
+          "status": "shipped",
+          "paymentMethod": "upi",
+          "createdAt": "2025-07-22T16:00:00.000Z",
+          "address": {
+            "line1": "789 Avenue",
+            "line2": "",
+            "city": "Delhi",
+            "state": "Delhi",
+            "pin": "110001",
+            "type": "home",
+            "id": "addr004"
+          }
+        },
+        {
+          "id": "ord1005",
+          "items": [],
+          "totalAmount": 1890.25,
+          "status": "pending",
+          "paymentMethod": "upi",
+          "createdAt": "2025-07-24T10:30:00.000Z",
+          "address": {
+            "line1": "789 Avenue",
+            "line2": "",
+            "city": "Delhi",
+            "state": "Delhi",
+            "pin": "110001",
+            "type": "home",
+            "id": "addr005"
+          }
+        }
+      ]
     }
   ],
   "slides": [
@@ -291,7 +383,7 @@
       "images": [
         "/products/football/football_goal_net.png"
       ],
-      "count": 11,
+      "count": 0,
       "price": 3865,
       "category": "football",
       "name": "Football Goal Net",
@@ -1064,7 +1156,7 @@
       "images": [
         "/products/volley/volleyball_cap.jpeg"
       ],
-      "isActive": false,
+      "isActive": true,
       "created_at": "2025-05-06T07:30:20.742443"
     },
     {
@@ -1082,7 +1174,7 @@
     },
     {
       "images": [
-        "ssssss"
+        "https://randomuser.me/api/portraits/men/85.jpg"
       ],
       "count": 2,
       "price": 2000,
@@ -1091,6 +1183,18 @@
       "isActive": true,
       "created_at": "2025-07-26T05:18:35.430Z",
       "id": "B-IuNo1"
+    },
+    {
+      "images": [
+        "https://randomuser.me/api/portraits/men/61.jpg"
+      ],
+      "count": 0,
+      "price": 100,
+      "category": "cricket",
+      "name": "test2",
+      "isActive": true,
+      "created_at": "2025-07-28T09:58:39.589Z",
+      "id": "-Ol8iP0"
     }
   ]
 }

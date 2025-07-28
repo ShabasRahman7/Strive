@@ -14,15 +14,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-// ✅ Validation schema
+// Validation schema
 const schema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   category: yup
     .string()
-    .oneOf(
-      ["football", "cricket", "hockey", "volleyball"],
-      "Select a valid category"
-    )
+    .oneOf(["football", "cricket", "hockey", "volleyball"], "Select a valid category")
     .required("Category is required"),
   price: yup
     .number()
@@ -37,31 +34,28 @@ const schema = yup.object().shape({
     .required("Stock count is required"),
   images: yup
     .array()
-    .of(
-      yup
-        .string("Enter Valid url")
-        .required("Image URL is required")
-    )
+    .of(yup.string().url("Enter a valid image URL").required("Image URL is required"))
     .min(1, "At least one image is required"),
 });
 
 function ProductManagement() {
   const [products, setProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const limit = 5;
 
   const [searchParams, setSearchParams] = useSearchParams();
   const pageParam = searchParams.get("page");
   const page = Number.isInteger(+pageParam) && +pageParam > 0 ? +pageParam : 1;
-
-  const [showForm, setShowForm] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const totalPages = Math.ceil(totalCount / limit);
 
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -74,16 +68,14 @@ function ProductManagement() {
     },
   });
 
-  const totalPages = Math.ceil(totalCount / limit);
-
   const fetchProducts = async (page) => {
     try {
-      const res = await api.get(`/products/`, {
+      const res = await api.get(`/products`, {
         params: { _page: page, _limit: limit },
       });
       setProducts(res.data);
       setTotalCount(Number(res.headers["x-total-count"]) || 0);
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch products");
     }
   };
@@ -102,9 +94,7 @@ function ProductManagement() {
       const updatedProduct = { ...product, isActive: !product.isActive };
       await api.patch(`/products/${product.id}`, updatedProduct);
       toast.success(
-        `${updatedProduct.name} has been ${
-          updatedProduct.isActive ? "activated" : "soft deleted"
-        }`
+        `${updatedProduct.name} has been ${updatedProduct.isActive ? "activated" : "soft deleted"}`
       );
       fetchProducts(page);
     } catch {
@@ -117,7 +107,7 @@ function ProductManagement() {
     setShowForm(true);
     reset({
       ...product,
-      images: product.images || [""],
+      images: product.images?.length ? product.images : [""],
     });
     setValue("id", product.id);
   };
@@ -186,7 +176,6 @@ function ProductManagement() {
               <th>Action</th>
             </tr>
           </thead>
-
           <tbody>
             {products.map((product, idx) => (
               <tr key={product.id}>
@@ -206,11 +195,7 @@ function ProductManagement() {
                 <td>₹{product.price.toFixed(2)}</td>
                 <td>{product.count}</td>
                 <td>
-                  <span
-                    className={`badge ${
-                      product.isActive ? "badge-success" : "badge-error"
-                    }`}
-                  >
+                  <span className={`badge ${product.isActive ? "badge-success" : "badge-error"}`}>
                     {product.isActive ? "Active" : "Inactive"}
                   </span>
                 </td>
@@ -230,22 +215,14 @@ function ProductManagement() {
                     }`}
                     onClick={() => toggleProductStatus(product)}
                   >
-                    {product.isActive ? (
-                      <ToggleLeft size={14} />
-                    ) : (
-                      <ToggleRight size={14} />
-                    )}
+                    {product.isActive ? <ToggleLeft size={14} /> : <ToggleRight size={14} />}
                   </button>
                 </td>
               </tr>
             ))}
-
             {products.length === 0 && (
               <tr>
-                <td
-                  colSpan="9"
-                  className="text-center text-gray-400 italic py-4"
-                >
+                <td colSpan="9" className="text-center text-gray-400 italic py-4">
                   No products found.
                 </td>
               </tr>
@@ -255,14 +232,12 @@ function ProductManagement() {
       </div>
 
       <div className="mt-4 flex justify-center gap-2">
-        <button
-          className="btn btn-sm"
-          onClick={() => goToPage(page - 1)}
-          disabled={page === 1}
-        >
+        <button className="btn btn-sm" onClick={() => goToPage(page - 1)} disabled={page === 1}>
           Prev
         </button>
-        <span className="text-sm font-semibold px-3 py-1">{`Page ${page} of ${totalPages}`}</span>
+        <span className="text-sm font-semibold px-3 py-1">
+          {`Page ${page} of ${totalPages}`}
+        </span>
         <button
           className="btn btn-sm"
           onClick={() => goToPage(page + 1)}
@@ -304,9 +279,7 @@ function ProductManagement() {
                 <option value="volleyball">Volleyball</option>
               </select>
               {errors.category && (
-                <p className="text-red-500 text-sm">
-                  {errors.category.message}
-                </p>
+                <p className="text-red-500 text-sm">{errors.category.message}</p>
               )}
 
               <input
@@ -333,19 +306,33 @@ function ProductManagement() {
                 <p className="text-red-500 text-sm">{errors.count.message}</p>
               )}
 
-              <input
-                type="text"
-                placeholder="Image URL"
-                className={`input input-bordered w-full ${
-                  errors.images ? "input-error" : ""
-                }`}
-                {...register("images.0")}
-              />
-              {errors.images && (
-                <p className="text-red-500 text-sm">
-                  {errors.images[0]?.message}
-                </p>
-              )}
+              <div>
+                <label className="label">
+                  <span className="label-text font-semibold">Product Image URL</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Image URL"
+                  className={`input input-bordered w-full ${
+                    errors.images?.[0] ? "input-error" : ""
+                  }`}
+                  {...register("images.0")}
+                />
+                {errors.images?.[0] && (
+                  <p className="text-red-500 text-sm">{errors.images[0].message}</p>
+                )}
+
+                <div className="mt-3">
+                  <span className="text-sm text-gray-500">Preview:</span>
+                  <div className="mt-1 w-24 h-24 border rounded overflow-hidden">
+                    <img
+                      src={watch("images.0") || "/placeholder.png"}
+                      alt="Preview"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+              </div>
 
               <div className="flex justify-end gap-2 pt-4">
                 <button

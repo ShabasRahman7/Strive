@@ -24,7 +24,9 @@ function OrderManagement() {
         }
       });
 
-      setOrders(allOrders);
+      setOrders(
+        allOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      );
     } catch (err) {
       console.error("Failed to fetch orders", err);
     }
@@ -74,6 +76,7 @@ function OrderManagement() {
               <th>Payment</th>
               <th>Address</th>
               <th>Status</th>
+              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -82,9 +85,7 @@ function OrderManagement() {
             {orders.map((order, idx) => (
               <tr key={order.id}>
                 <td>{idx + 1}</td>
-
                 <td className="text-xs text-gray-500">{order.id}</td>
-
                 <td>
                   <div className="text-sm font-medium">
                     {order.userName}
@@ -93,17 +94,13 @@ function OrderManagement() {
                     </span>
                   </div>
                 </td>
-
                 <td>₹{order.totalAmount.toFixed(2)}</td>
-
                 <td className="text-sm">
                   {order.items
                     .map((item) => `${item.name} x${item.quantity}`)
                     .join(", ")}
                 </td>
-
                 <td className="uppercase">{order.paymentMethod}</td>
-
                 <td className="text-xs">
                   <div>
                     {order.address.line1}, {order.address.city},{" "}
@@ -113,7 +110,6 @@ function OrderManagement() {
                     ({order.address.type})
                   </div>
                 </td>
-
                 <td>
                   <span
                     className={`badge ${
@@ -127,7 +123,9 @@ function OrderManagement() {
                     {order.status}
                   </span>
                 </td>
-
+                <td className="text-xs text-gray-500">
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </td>
                 <td>
                   <select
                     className="select select-sm select-bordered"
@@ -146,7 +144,10 @@ function OrderManagement() {
 
             {orders.length === 0 && (
               <tr>
-                <td colSpan="9" className="text-center text-gray-400 italic py-4">
+                <td
+                  colSpan="10"
+                  className="text-center text-gray-400 italic py-4"
+                >
                   No orders found.
                 </td>
               </tr>

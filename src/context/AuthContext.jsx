@@ -32,6 +32,10 @@ export const AuthProvider = ({ children }) => {
       const user = users[0];
       if (user.password !== password) throw new Error("Incorrect password");
 
+      if (user.isBlocked) {
+        throw new Error("Your account is blocked. Please contact support.");
+      }
+
       setUser(user);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
       return user;
@@ -52,7 +56,7 @@ export const AuthProvider = ({ children }) => {
         password,
         name,
         role: "user",
-        isBlocked:false,
+        isBlocked: false,
         profileImage:
           "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
         addresses: [],
