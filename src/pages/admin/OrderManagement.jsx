@@ -69,8 +69,7 @@ function OrderManagement() {
       </h1>
 
       {/* Table Container */}
-      <div className="w-full overflow-x-auto rounded-md shadow-md">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <h2 className="text-lg font-semibold text-primary">
             {filterStatus === "all" && "All Orders"}
             {filterStatus === "pending" && "Pending Orders"}
@@ -89,6 +88,8 @@ function OrderManagement() {
             <option value="delivered">Delivered</option>
           </select>
         </div>
+      <div className="w-full overflow-x-auto rounded-md shadow-md">
+       
         <table className="table table-zebra w-full min-w-[1000px]">
           <thead className="bg-base-200 sticky top-0 z-10">
             <tr>
