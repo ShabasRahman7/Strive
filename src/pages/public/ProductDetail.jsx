@@ -92,7 +92,7 @@ const ProductDetail = () => {
       await api.patch(`/users/${user.id}`, { wishlist: updatedWishlist });
       updateUser(updatedUser);
       setInWishlist(!isInWishlist);
-      toast.success(`${product.name} has been ${isInWishlist ? "removed from" : "added to"} wishlist.`,);
+      toast.success(`${product.name} has been ${isInWishlist ? "removed from" : "added to"} wishlist.`);
     } catch (error) {
       console.error("Failed to update wishlist:", error);
       toast.error("Failed to update wishlist")
@@ -102,7 +102,9 @@ const ProductDetail = () => {
   if (loading) return <div>Loading product details...</div>;
   if (!product) return <div>Product not found.</div>;
 
-  const isOutOfStock = !product.isActive || product.count === 0;
+  // Condition for displaying stock availability message
+  const isOutOfStock = product.count === 0;
+  const isUnavailable = !product.isActive && !isOutOfStock;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
@@ -135,12 +137,17 @@ const ProductDetail = () => {
             <strong>Category:</strong> {product.category}
           </p>
 
+          {/* Display Stock/Availability Message */}
           <p>
-            <strong>In Stock:</strong>{" "}
-            {isOutOfStock ? (
+            <strong>Status:</strong>{" "}
+            {isUnavailable ? (
+              <span className="text-yellow-500 font-semibold">
+                Currently Unavailable
+              </span>
+            ) : isOutOfStock ? (
               <span className="text-red-500 font-semibold">Out of Stock</span>
             ) : (
-              product.count
+              <span className="text-green-500 font-semibold">In Stock</span>
             )}
           </p>
 
@@ -170,10 +177,12 @@ const ProductDetail = () => {
               <button
                 className="btn btn-primary w-full flex gap-2 items-center"
                 onClick={handleAddToCart}
-                disabled={isOutOfStock}
+                disabled={isUnavailable || isOutOfStock}
               >
                 <ShoppingCart size={18} />
-                {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                {isUnavailable || isOutOfStock
+                  ? "Currently Unavailable"
+                  : "Add to Cart"}
               </button>
             )}
           </div>

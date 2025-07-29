@@ -42,6 +42,13 @@ function OrderManagement() {
       const userRes = await api.get(`/users/${userId}`);
       const user = userRes.data;
 
+      const orderToUpdate = user.orders.find((order) => order.id === orderId);
+
+      if (orderToUpdate.status === "delivered" && newStatus !== "delivered") {
+        toast.error("Cannot change the status of a delivered order.");
+        return;
+      }
+
       const updatedOrders = user.orders.map((order) =>
         order.id === orderId ? { ...order, status: newStatus } : order
       );
@@ -69,27 +76,27 @@ function OrderManagement() {
       </h1>
 
       {/* Table Container */}
-       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-          <h2 className="text-lg font-semibold text-primary">
-            {filterStatus === "all" && "All Orders"}
-            {filterStatus === "pending" && "Pending Orders"}
-            {filterStatus === "shipped" && "Shipped Orders"}
-            {filterStatus === "delivered" && "Delivered Orders"}
-          </h2>
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <h2 className="text-lg font-semibold text-primary">
+          {filterStatus === "all" && "All Orders"}
+          {filterStatus === "pending" && "Pending Orders"}
+          {filterStatus === "shipped" && "Shipped Orders"}
+          {filterStatus === "delivered" && "Delivered Orders"}
+        </h2>
 
-          <select
-            className="select select-bordered w-full sm:w-auto"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-          </select>
-        </div>
+        <select
+          className="select select-bordered w-full sm:w-auto"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+        </select>
+      </div>
+
       <div className="w-full overflow-x-auto rounded-md shadow-md">
-       
         <table className="table table-zebra w-full min-w-[1000px]">
           <thead className="bg-base-200 sticky top-0 z-10">
             <tr>

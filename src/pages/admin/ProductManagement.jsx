@@ -9,7 +9,6 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { toast } from "react-toastify";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -40,7 +39,6 @@ const schema = yup.object().shape({
     .of(
       yup
         .string()
-        .url("Enter a valid image URL")
         .required("Image URL is required")
     )
     .min(1, "At least one image is required"),
@@ -77,11 +75,11 @@ function ProductManagement() {
     },
   });
 
-  const fetchProducts = async (page, query = "") => {
+  const fetchProducts = async (pg, query = "") => {
     try {
       const res = await api.get(`/products`, {
         params: {
-          _page: page,
+          _page: pg,
           _limit: limit,
           q: query !== "" ? query : undefined,
         },
@@ -94,17 +92,18 @@ function ProductManagement() {
   };
 
   useEffect(() => {
-    fetchProducts(page, searchQuery);
-  }, [page]);
-
-  useEffect(() => {
+    const isSearching = searchQuery.trim() !== "";
     const delay = setTimeout(() => {
-      fetchProducts(1, searchQuery);
-      setSearchParams({ page: 1 });
-    }, 300);
+      if (page !== 1 && isSearching) {
+        setSearchParams({ page: 1 });
+        fetchProducts(1, searchQuery);
+      } else {
+        fetchProducts(page, searchQuery);
+      }
+    }, isSearching ? 300 : 0); // debounce only if searching
 
     return () => clearTimeout(delay);
-  }, [searchQuery]);
+  }, [page, searchQuery]);
 
   const goToPage = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
@@ -175,29 +174,27 @@ function ProductManagement() {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <div className="p-4 max-w-7xl mx-auto w-full">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-2 w-full md:w-auto">
-            <PackageCheck className="w-6 h-6" />
-            Product Management
-          </h1>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-2 w-full md:w-auto">
+          <PackageCheck className="w-6 h-6" />
+          Product Management
+        </h1>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="input input-bordered input-sm w-full sm:w-64"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              className="btn btn-primary btn-sm w-full sm:w-auto"
-              onClick={handleAdd}
-            >
-              <PlusCircle size={16} className="mr-1" />
-              Add Product
-            </button>
-          </div>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="input input-bordered input-sm w-full sm:w-64"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            className="btn btn-primary btn-sm w-full sm:w-auto"
+            onClick={handleAdd}
+          >
+            <PlusCircle size={16} className="mr-1" />
+            Add Product
+          </button>
         </div>
       </div>
 

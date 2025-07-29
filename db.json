@@ -1043,15 +1043,15 @@
       "created_at": "2025-06-15T07:30:20.742443"
     },
     {
-      "id": "86098b37-f816-4c43-b746-35a0e73b749b",
-      "name": "Sand Court Ball",
-      "description": "High quality sand court ball suitable for all levels.",
-      "price": 3145.99,
-      "count": 97,
-      "category": "volleyball",
       "images": [
         "/products/volley/sand_court_ball.jpeg"
       ],
+      "count": 100,
+      "price": 3147,
+      "category": "volleyball",
+      "name": "Sand Court Ball",
+      "id": "86098b37-f816-4c43-b746-35a0e73b749b",
+      "description": "High quality sand court ball suitable for all levels.",
       "isActive": true,
       "created_at": "2025-03-25T07:30:20.742443"
     },
