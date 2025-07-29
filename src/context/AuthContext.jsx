@@ -13,8 +13,15 @@ export const AuthProvider = ({ children }) => {
     if (savedUser) {
       const parsed = JSON.parse(savedUser);
       api.get(`/users/${parsed.id}`).then((res) => {
-        setUser(res.data);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(res.data));
+        const fetchedUser = res.data;
+
+        if (fetchedUser.isBlocked) {
+          logout();
+        } else {
+          setUser(fetchedUser);
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(fetchedUser));
+        }
+
         setLoading(false);
       });
     } else {
