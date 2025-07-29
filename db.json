@@ -272,7 +272,7 @@
           "id": "ord1004",
           "items": [],
           "totalAmount": 5120,
-          "status": "shipped",
+          "status": "pending",
           "paymentMethod": "upi",
           "createdAt": "2025-07-22T16:00:00.000Z",
           "address": {
@@ -289,7 +289,7 @@
           "id": "ord1005",
           "items": [],
           "totalAmount": 1890.25,
-          "status": "pending",
+          "status": "shipped",
           "paymentMethod": "upi",
           "createdAt": "2025-07-24T10:30:00.000Z",
           "address": {

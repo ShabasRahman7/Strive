@@ -5,6 +5,11 @@ import { toast } from "react-toastify";
 
 function OrderManagement() {
   const [orders, setOrders] = useState([]);
+  const [filterStatus, setFilterStatus] = useState("all");
+  const filteredOrders =
+    filterStatus === "all"
+      ? orders
+      : orders.filter((order) => order.status === filterStatus);
 
   const fetchOrders = async () => {
     try {
@@ -65,6 +70,25 @@ function OrderManagement() {
 
       {/* Table Container */}
       <div className="w-full overflow-x-auto rounded-md shadow-md">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <h2 className="text-lg font-semibold text-primary">
+            {filterStatus === "all" && "All Orders"}
+            {filterStatus === "pending" && "Pending Orders"}
+            {filterStatus === "shipped" && "Shipped Orders"}
+            {filterStatus === "delivered" && "Delivered Orders"}
+          </h2>
+
+          <select
+            className="select select-bordered w-full sm:w-auto"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+          </select>
+        </div>
         <table className="table table-zebra w-full min-w-[1000px]">
           <thead className="bg-base-200 sticky top-0 z-10">
             <tr>
@@ -82,7 +106,7 @@ function OrderManagement() {
           </thead>
 
           <tbody>
-            {orders.map((order, idx) => (
+            {filteredOrders.map((order, idx) => (
               <tr key={order.id}>
                 <td>{idx + 1}</td>
                 <td className="text-xs text-gray-500">{order.id}</td>
@@ -142,7 +166,7 @@ function OrderManagement() {
               </tr>
             ))}
 
-            {orders.length === 0 && (
+            {filteredOrders.length === 0 && (
               <tr>
                 <td
                   colSpan="10"
