@@ -20,17 +20,34 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         const res = await api.get(`/products/${id}`);
-        const data = res.data;
-        setProduct(data);
+        
+        if (res.status === 200) {
+          const data = res.data;
+          
+          if (!data || !data.id) {
+            throw new Error("Product not found");
+          }
 
-        if (user) {
-          const isInCart = user.cart?.some((item) => item.id === data.id);
-          const isInWishlist = user.wishlist?.some((item) => item.id === data.id);
-          setInCart(isInCart);
-          setInWishlist(isInWishlist);
+          setProduct(data);
+          if (user) {
+            const isInCart = user.cart?.some((item) => item.id === data.id);
+            const isInWishlist = user.wishlist?.some((item) => item.id === data.id);
+            setInCart(isInCart);
+            setInWishlist(isInWishlist);
+          }
+        } else {
+          throw new Error("Product not found");
         }
       } catch (error) {
         console.error("Error fetching product:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Product Not Found',
+          text: 'The product you are looking for does not exist or has been deleted.',
+          confirmButtonText: 'Go Back',
+        }).then(() => {
+          navigate("/products");
+        });
       } finally {
         setLoading(false);
       }
@@ -100,9 +117,8 @@ const ProductDetail = () => {
   };
 
   if (loading) return <div>Loading product details...</div>;
-  if (!product) return <div>Product not found.</div>;
+  if (!product) return null;
 
-  // Condition for displaying stock availability message
   const isOutOfStock = product.count === 0;
   const isUnavailable = !product.isActive && !isOutOfStock;
 
@@ -137,7 +153,6 @@ const ProductDetail = () => {
             <strong>Category:</strong> {product.category}
           </p>
 
-          {/* Display Stock/Availability Message */}
           <p>
             <strong>Status:</strong>{" "}
             {isUnavailable ? (

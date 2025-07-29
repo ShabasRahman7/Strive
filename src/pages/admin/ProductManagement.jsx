@@ -7,10 +7,12 @@ import {
   ToggleRight,
   Pencil,
   PlusCircle,
+  Trash2,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Swal from 'sweetalert2';
 import * as yup from "yup";
 
 // Validation schema
@@ -36,11 +38,7 @@ const schema = yup.object().shape({
     .required("Stock count is required"),
   images: yup
     .array()
-    .of(
-      yup
-        .string()
-        .required("Image URL is required")
-    )
+    .of(yup.string().required("Image URL is required"))
     .min(1, "At least one image is required"),
 });
 
@@ -93,14 +91,17 @@ function ProductManagement() {
 
   useEffect(() => {
     const isSearching = searchQuery.trim() !== "";
-    const delay = setTimeout(() => {
-      if (page !== 1 && isSearching) {
-        setSearchParams({ page: 1 });
-        fetchProducts(1, searchQuery);
-      } else {
-        fetchProducts(page, searchQuery);
-      }
-    }, isSearching ? 300 : 0); // debounce only if searching
+    const delay = setTimeout(
+      () => {
+        if (page !== 1 && isSearching) {
+          setSearchParams({ page: 1 });
+          fetchProducts(1, searchQuery);
+        } else {
+          fetchProducts(page, searchQuery);
+        }
+      },
+      isSearching ? 300 : 0
+    ); // debounce only if searching
 
     return () => clearTimeout(delay);
   }, [page, searchQuery]);
@@ -125,6 +126,7 @@ function ProductManagement() {
     }
   };
 
+
   const handleEdit = (product) => {
     setIsEdit(true);
     setShowForm(true);
@@ -134,6 +136,29 @@ function ProductManagement() {
     });
     setValue("id", product.id);
   };
+
+  const handleDelete = async (product) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `You are about to delete the product: ${product.name}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await api.delete(`/products/${product.id}`);
+        toast.success(`${product.name} has been deleted`);
+        fetchProducts(page, searchQuery);
+      } catch {
+        toast.error("Failed to delete product");
+      }
+    }
+  };
+
 
   const handleAdd = () => {
     setIsEdit(false);
@@ -261,6 +286,12 @@ function ProductManagement() {
                     ) : (
                       <ToggleRight size={14} />
                     )}
+                  </button>
+                  <button
+                    className="btn btn-xs btn-info"
+                    onClick={() => handleDelete(product)}
+                  >
+                    <Trash2 size={14} />
                   </button>
                 </td>
               </tr>

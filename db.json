@@ -13,7 +13,7 @@
       "password": "shabas@123",
       "name": "Shabas",
       "role": "user",
-      "isBlocked": true,
+      "isBlocked": false,
       "profileImage": "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
       "addresses": [
         {
@@ -26,7 +26,22 @@
           "id": "74bde581-d71d-4f9f-b693-3c89f58d6e3d"
         }
       ],
-      "cart": [],
+      "cart": [
+        {
+          "id": "5321123a-f4ca-41d7-90e9-8a4b5e371bcd",
+          "name": "Puma Shin Guards",
+          "description": "High quality puma shin guards suitable for all levels.",
+          "price": 2195.94,
+          "count": 94,
+          "category": "football",
+          "images": [
+            "/products/football/puma_shin_guards.png"
+          ],
+          "isActive": true,
+          "created_at": "2025-05-15T07:30:20.742443",
+          "quantity": 1
+        }
+      ],
       "wishlist": [
         {
           "id": "4027ced2-ee1a-442b-a7c4-ea0e32a198d7",
