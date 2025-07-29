@@ -19,7 +19,10 @@ const schema = yup.object().shape({
   name: yup.string().required("Product name is required"),
   category: yup
     .string()
-    .oneOf(["football", "cricket", "hockey", "volleyball"], "Select a valid category")
+    .oneOf(
+      ["football", "cricket", "hockey", "volleyball"],
+      "Select a valid category"
+    )
     .required("Category is required"),
   price: yup
     .number()
@@ -34,7 +37,12 @@ const schema = yup.object().shape({
     .required("Stock count is required"),
   images: yup
     .array()
-    .of(yup.string().url("Enter a valid image URL").required("Image URL is required"))
+    .of(
+      yup
+        .string()
+        .url("Enter a valid image URL")
+        .required("Image URL is required")
+    )
     .min(1, "At least one image is required"),
 });
 
@@ -43,6 +51,7 @@ function ProductManagement() {
   const [totalCount, setTotalCount] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const limit = 5;
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,10 +77,14 @@ function ProductManagement() {
     },
   });
 
-  const fetchProducts = async (page) => {
+  const fetchProducts = async (page, query = "") => {
     try {
       const res = await api.get(`/products`, {
-        params: { _page: page, _limit: limit },
+        params: {
+          _page: page,
+          _limit: limit,
+          q: query !== "" ? query : undefined,
+        },
       });
       setProducts(res.data);
       setTotalCount(Number(res.headers["x-total-count"]) || 0);
@@ -81,8 +94,17 @@ function ProductManagement() {
   };
 
   useEffect(() => {
-    fetchProducts(page);
+    fetchProducts(page, searchQuery);
   }, [page]);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchProducts(1, searchQuery);
+      setSearchParams({ page: 1 });
+    }, 300);
+
+    return () => clearTimeout(delay);
+  }, [searchQuery]);
 
   const goToPage = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
@@ -94,9 +116,11 @@ function ProductManagement() {
       const updatedProduct = { ...product, isActive: !product.isActive };
       await api.patch(`/products/${product.id}`, updatedProduct);
       toast.success(
-        `${updatedProduct.name} has been ${updatedProduct.isActive ? "activated" : "soft deleted"}`
+        `${updatedProduct.name} has been ${
+          updatedProduct.isActive ? "activated" : "soft deleted"
+        }`
       );
-      fetchProducts(page);
+      fetchProducts(page, searchQuery);
     } catch {
       toast.error("Failed to update product status");
     }
@@ -143,7 +167,7 @@ function ProductManagement() {
       }
 
       setShowForm(false);
-      fetchProducts(page);
+      fetchProducts(page, searchQuery);
     } catch {
       toast.error("Failed to save product");
     }
@@ -151,14 +175,30 @@ function ProductManagement() {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-primary flex items-center gap-2">
-          <PackageCheck className="w-6 h-6" />
-          Product Management
-        </h1>
-        <button className="btn btn-primary btn-sm" onClick={handleAdd}>
-          <PlusCircle size={16} /> Add Product
-        </button>
+      <div className="p-4 max-w-7xl mx-auto w-full">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary flex items-center gap-2 w-full md:w-auto">
+            <PackageCheck className="w-6 h-6" />
+            Product Management
+          </h1>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="input input-bordered input-sm w-full sm:w-64"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              className="btn btn-primary btn-sm w-full sm:w-auto"
+              onClick={handleAdd}
+            >
+              <PlusCircle size={16} className="mr-1" />
+              Add Product
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto shadow-md rounded-md">
@@ -195,7 +235,11 @@ function ProductManagement() {
                 <td>₹{product.price.toFixed(2)}</td>
                 <td>{product.count}</td>
                 <td>
-                  <span className={`badge ${product.isActive ? "badge-success" : "badge-error"}`}>
+                  <span
+                    className={`badge ${
+                      product.isActive ? "badge-success" : "badge-error"
+                    }`}
+                  >
                     {product.isActive ? "Active" : "Inactive"}
                   </span>
                 </td>
@@ -215,14 +259,21 @@ function ProductManagement() {
                     }`}
                     onClick={() => toggleProductStatus(product)}
                   >
-                    {product.isActive ? <ToggleLeft size={14} /> : <ToggleRight size={14} />}
+                    {product.isActive ? (
+                      <ToggleLeft size={14} />
+                    ) : (
+                      <ToggleRight size={14} />
+                    )}
                   </button>
                 </td>
               </tr>
             ))}
             {products.length === 0 && (
               <tr>
-                <td colSpan="9" className="text-center text-gray-400 italic py-4">
+                <td
+                  colSpan="9"
+                  className="text-center text-gray-400 italic py-4"
+                >
                   No products found.
                 </td>
               </tr>
@@ -232,7 +283,11 @@ function ProductManagement() {
       </div>
 
       <div className="mt-4 flex justify-center gap-2">
-        <button className="btn btn-sm" onClick={() => goToPage(page - 1)} disabled={page === 1}>
+        <button
+          className="btn btn-sm"
+          onClick={() => goToPage(page - 1)}
+          disabled={page === 1}
+        >
           Prev
         </button>
         <span className="text-sm font-semibold px-3 py-1">
@@ -279,7 +334,9 @@ function ProductManagement() {
                 <option value="volleyball">Volleyball</option>
               </select>
               {errors.category && (
-                <p className="text-red-500 text-sm">{errors.category.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors.category.message}
+                </p>
               )}
 
               <input
@@ -308,7 +365,9 @@ function ProductManagement() {
 
               <div>
                 <label className="label">
-                  <span className="label-text font-semibold">Product Image URL</span>
+                  <span className="label-text font-semibold">
+                    Product Image URL
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -319,7 +378,9 @@ function ProductManagement() {
                   {...register("images.0")}
                 />
                 {errors.images?.[0] && (
-                  <p className="text-red-500 text-sm">{errors.images[0].message}</p>
+                  <p className="text-red-500 text-sm">
+                    {errors.images[0].message}
+                  </p>
                 )}
 
                 <div className="mt-3">
