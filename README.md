@@ -1,4 +1,4 @@
 # Strivo
 Sports Ecommerce Using React JS
 
-strive-ecommerce.vercel.app
+[🚀 Live Demo](https://strivo-ecommerce.vercel.app)
