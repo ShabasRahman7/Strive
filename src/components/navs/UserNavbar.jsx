@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { getImageUrl } from "../../utils/imageUtils";
+import { safeLocalStorage } from "../../utils/tokenStorage";
 import {
   Sun,
   Moon,
@@ -19,7 +21,7 @@ function UserNavbar() {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
+    const savedTheme = safeLocalStorage.getItem("theme") || "light";
     setTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
@@ -27,7 +29,7 @@ function UserNavbar() {
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
+    safeLocalStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
@@ -46,12 +48,33 @@ function UserNavbar() {
     }
   };
 
+  // Safe cart calculations with error handling
   const cartItems = user?.cart || [];
-  const cartItemCount = cartItems.length;
-  const cartSubtotal = cartItems.reduce(
-    (acc, item) => acc + (item.price || 0),
-    0
-  );
+  const cartItemCount = Array.isArray(cartItems) ? cartItems.length : 0;
+  const cartSubtotal = Array.isArray(cartItems) 
+    ? cartItems.reduce((acc, item) => {
+        try {
+          const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+          return acc + price;
+        } catch (error) {
+          console.warn('Error calculating cart item price:', error);
+          return acc;
+        }
+      }, 0)
+    : 0;
+
+  // wishlist count
+  const wishlistCount = Array.isArray(user?.wishlist) ? user.wishlist.length : 0;
+
+  // price formatting
+  const formatPrice = (price) => {
+    try {
+      return typeof price === 'number' ? price.toFixed(2) : '0.00';
+    } catch (error) {
+      console.warn('Error formatting price:', error);
+      return '0.00';
+    }
+  };
 
   return (
     <div className="bg-base-100 shadow-sm sticky top-0 z-50">
@@ -114,7 +137,7 @@ function UserNavbar() {
                   {cartItemCount} {cartItemCount === 1 ? "Item" : "Items"}
                 </span>
                 <span className="text-info">
-                  Subtotal: ₹{cartSubtotal.toFixed(2)}
+                  Subtotal: ₹{formatPrice(cartSubtotal)}
                 </span>
                 <div className="card-actions">
                   <button
@@ -138,7 +161,7 @@ function UserNavbar() {
               <div className="w-10 rounded-full">
                 <img
                   alt="User Avatar"
-                  src={user?.profileImage}
+                  src={getImageUrl(user?.profileImage)}
                   className="object-cover"
                 />
               </div>
@@ -162,7 +185,7 @@ function UserNavbar() {
               <li>
                 <a onClick={() => navigate("/wishlist")}>
                   <Heart className="w-4 h-4 mr-2" /> Wishlist
-                  <span className="badge text-xs ml-auto">{`${user.wishlist.length} Items`}</span>
+                  <span className="badge text-xs ml-auto">{`${wishlistCount} Items`}</span>
                 </a>
               </li>
               <li>

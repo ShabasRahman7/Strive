@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import ScrollToTop from "../components/shared/ScrollToTop";
 
 function Layout() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const showToast = sessionStorage.getItem("showLoginToast");
@@ -22,10 +22,18 @@ function Layout() {
     }
   }, [user]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <ScrollToTop />
-      {user?.role === "user" ? <UserNav /> : <GuestNav />}
+        {user?.role === "user" ? <UserNav /> : <GuestNav />}
       <main className="min-h-screen">
         <Outlet />
       </main>

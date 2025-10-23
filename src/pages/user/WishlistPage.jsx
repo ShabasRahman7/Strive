@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
@@ -6,12 +6,30 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { toast } from "react-toastify";
 import api from "../../api/axios";
+import { getImageProps, formatPrice } from "../../utils/imageUtils";
 
 const WishlistPage = () => {
-  const { user, updateUser } = useAuth();
-  const [wishlist, setWishlist] = useState(user?.wishlist || []);
+  const { user, updateUserLocal } = useAuth();
+  const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [removingId, setRemovingId] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const response = await api.get('/api/users/wishlist/');
+        setWishlist(response.data);
+      } catch (error) {
+        console.error('Failed to fetch wishlist:', error);
+        toast.error('Failed to load wishlist');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWishlist();
+  }, []);
 
   const confirmRemoveFromWishlist = async (productId) => {
     const result = await Swal.fire({
@@ -36,12 +54,9 @@ const WishlistPage = () => {
     setWishlist(updatedWishlist);
 
     try {
-      // ✅ Use Axios instead of fetch
-      await api.patch(`/users/${user.id}`, {
-        wishlist: updatedWishlist,
-      });
+      await api.patch('/api/users/wishlist/', { wishlist: updatedWishlist });
 
-      updateUser({ ...user, wishlist: updatedWishlist });
+      updateUserLocal({ ...user, wishlist: updatedWishlist });
       toast.success("Item removed from wishlist");
     } catch (err) {
       console.error("Failed to update wishlist:", err);
@@ -50,6 +65,22 @@ const WishlistPage = () => {
       setRemovingId(null);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl w-full mx-auto px-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="btn btn-sm btn-outline my-4"
+        >
+          ← Go Back
+        </button>
+        <div className="flex justify-center items-center py-12">
+          <div className="loading loading-spinner loading-lg"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl w-full mx-auto px-4">
@@ -90,8 +121,7 @@ const WishlistPage = () => {
                 onClick={() => navigate(`/products/${item.id}`)}
               >
                 <img
-                  src={item.images?.[0]}
-                  alt={item.name}
+                  {...getImageProps(item.images?.[0], item.name)}
                   className="w-full h-full object-cover"
                 />
               </figure>
@@ -102,7 +132,7 @@ const WishlistPage = () => {
                   {item.description}
                 </p>
                 <p className="text-lg font-semibold text-primary">
-                  ₹{item.price.toFixed(2)}
+                  ₹{formatPrice(item.price)}
                 </p>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../../api/axios";
+import { getImageUrl, formatPrice } from "../../utils/imageUtils";
 import {
   PackageCheck,
   ToggleLeft,
@@ -15,8 +16,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from 'sweetalert2';
 import * as yup from "yup";
 
-// Validation schema
-const schema = yup.object().shape({
+// Create dynamic validation schema
+const createSchema = (isEdit) => yup.object().shape({
   name: yup.string().required("Product name is required"),
   category: yup
     .string()
@@ -36,10 +37,20 @@ const schema = yup.object().shape({
     .integer("Stock count must be an integer")
     .min(0, "Stock cannot be negative")
     .required("Stock count is required"),
-  images: yup
-    .array()
-    .of(yup.string().required("Image URL is required"))
-    .min(1, "At least one image is required"),
+  // When not editing, ensure at least one image is present
+  images: isEdit
+    ? yup.mixed().optional()
+    : yup
+        .mixed()
+        .test(
+          "required",
+          "At least one image is required",
+          (value) => {
+            if (!value) return false;
+            const length = value.length !== undefined ? value.length : (Array.isArray(value) ? value.length : 0);
+            return length > 0;
+          }
+        ),
 });
 
 function ProductManagement() {
@@ -48,6 +59,9 @@ function ProductManagement() {
   const [showForm, setShowForm] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [currentProductImages, setCurrentProductImages] = useState([]);
   const limit = 5;
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,30 +75,40 @@ function ProductManagement() {
     reset,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(createSchema(isEdit)),
     defaultValues: {
       name: "",
       category: "",
       price: "",
       count: "",
-      images: [""],
+      images: [],
     },
   });
 
+
   const fetchProducts = async (pg, query = "") => {
     try {
-      const res = await api.get(`/products`, {
+      const res = await api.get(`/api/admin/products/`, {
         params: {
           _page: pg,
           _limit: limit,
           q: query !== "" ? query : undefined,
         },
       });
-      setProducts(res.data);
-      setTotalCount(Number(res.headers["x-total-count"]) || 0);
-    } catch {
+
+      // Handle new response format with pagination metadata
+      if (res.data && res.data.data && res.data.pagination) {
+        setProducts(res.data.data);
+        setTotalCount(res.data.pagination.total_count);
+      } else {
+        // Fallback for old format
+        setProducts(res.data);
+        const totalCount = Number(res.headers["x-total-count"]) || Number(res.headers["X-Total-Count"]) || 0;
+        setTotalCount(totalCount);
+      }
+    } catch (error) {
       toast.error("Failed to fetch products");
     }
   };
@@ -113,15 +137,34 @@ function ProductManagement() {
 
   const toggleProductStatus = async (product) => {
     try {
-      const updatedProduct = { ...product, isActive: !product.isActive };
-      await api.patch(`/products/${product.id}`, updatedProduct);
-      toast.success(
-        `${updatedProduct.name} has been ${
-          updatedProduct.isActive ? "activated" : "soft deleted"
-        }`
+      const newStatus = !product.isActive;
+
+      // Optimistically update the local state first
+      setProducts(prevProducts =>
+        prevProducts.map(p =>
+          p.id === product.id
+            ? { ...p, isActive: newStatus }
+            : p
+        )
       );
+
+      const response = await api.patch(`/api/admin/products/${product.id}/`, { isActive: newStatus });
+
+      toast.success(
+        `${product.name} has been ${newStatus ? "activated" : "deactivated"}`
+      );
+
+      // Refresh the data to ensure consistency
       fetchProducts(page, searchQuery);
-    } catch {
+    } catch (error) {
+      // Revert the optimistic update on error
+      setProducts(prevProducts =>
+        prevProducts.map(p =>
+          p.id === product.id
+            ? { ...p, isActive: product.isActive }
+            : p
+        )
+      );
       toast.error("Failed to update product status");
     }
   };
@@ -130,9 +173,18 @@ function ProductManagement() {
   const handleEdit = (product) => {
     setIsEdit(true);
     setShowForm(true);
+    
+    // Store current product images
+    setCurrentProductImages(product.images || []);
+    
+    // Show current product images as previews
+    const currentImagePreviews = product.images?.map(img => getImageUrl(img)) || [];
+    setImagePreviews(currentImagePreviews);
+    setSelectedImages([]); // No new files selected yet
+    
     reset({
       ...product,
-      images: product.images?.length ? product.images : [""],
+      images: [], // Keep empty for new uploads
     });
     setValue("id", product.id);
   };
@@ -150,7 +202,7 @@ function ProductManagement() {
 
     if (result.isConfirmed) {
       try {
-        await api.delete(`/products/${product.id}`);
+        await api.delete(`/api/admin/products/${product.id}/`);
         toast.success(`${product.name} has been deleted`);
         fetchProducts(page, searchQuery);
       } catch {
@@ -160,39 +212,84 @@ function ProductManagement() {
   };
 
 
+  const handleImageChange = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedImages(files);
+    
+    // Create previews for new files
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    
+    // Combine current images with new images for preview
+    const currentPreviews = currentProductImages?.map(img => getImageUrl(img)) || [];
+    setImagePreviews([...currentPreviews, ...newPreviews]);
+    
+    // Update form with files so RHF sees them
+    setValue("images", files, { shouldValidate: true });
+  };
+
   const handleAdd = () => {
     setIsEdit(false);
     setShowForm(true);
+    setSelectedImages([]);
+    setImagePreviews([]);
+    setCurrentProductImages([]);
     reset({
       name: "",
       category: "",
       price: "",
       count: "",
-      images: [""],
+      images: [],
     });
   };
 
   const onSubmit = async (data) => {
     try {
-      const payload = {
-        ...data,
-        price: parseFloat(data.price),
-        count: parseInt(data.count),
-        isActive: true,
-      };
+      const formData = new FormData();
+      
+      // Add basic fields
+      formData.append('name', data.name);
+      formData.append('description', data.description || '');
+      formData.append('price', parseFloat(data.price));
+      formData.append('count', parseInt(data.count));
+      // Ensure category is sent as the category name string (keep original case)
+      formData.append('category', String(data.category).trim());
+      formData.append('isActive', data.isActive !== undefined ? data.isActive : true);
+      
+      // Add images (only if new images are selected)
+      const imagesValue = data.images;
+      const imagesArray = imagesValue instanceof FileList ? Array.from(imagesValue) : Array.isArray(imagesValue) ? imagesValue : [];
+      if (imagesArray && imagesArray.length > 0) {
+        imagesArray.forEach((image) => {
+          if (image instanceof File) {
+            formData.append('images', image);
+          }
+        });
+      }
+      // If no new images and editing, keep existing images (backend will handle this)
 
       if (isEdit && data.id) {
-        await api.put(`/products/${data.id}`, payload);
+        await api.put(`/api/admin/products/${data.id}/`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         toast.success("Product updated successfully");
       } else {
-        payload.created_at = new Date().toISOString();
-        await api.post(`/products`, payload);
+        formData.append('created_at', new Date().toISOString());
+        await api.post(`/api/admin/products/`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         toast.success("Product added successfully");
       }
 
       setShowForm(false);
+      setSelectedImages([]);
+      setImagePreviews([]);
+      setCurrentProductImages([]);
       fetchProducts(page, searchQuery);
-    } catch {
+    } catch (error) {
       toast.error("Failed to save product");
     }
   };
@@ -246,21 +343,27 @@ function ProductManagement() {
                   <div className="avatar">
                     <div className="w-12 h-12 rounded ring ring-primary ring-offset-base-100 ring-offset-2">
                       <img
-                        src={product.images?.[0] || "/placeholder.png"}
-                        alt={product.name}
+                        src={getImageUrl(product.images?.[0] ?? '')}
+                        alt={product.name || 'Product'}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          if (e.target.src !== '/placeholder.svg') {
+                            e.target.src = '/placeholder.svg';
+                          }
+                        }}
                       />
+
                     </div>
                   </div>
                 </td>
-                <td className="font-semibold">{product.name}</td>
-                <td className="capitalize">{product.category}</td>
-                <td>₹{product.price.toFixed(2)}</td>
-                <td>{product.count}</td>
+                <td className="font-semibold">{product.name || 'N/A'}</td>
+                <td className="capitalize">{product.category || 'N/A'}</td>
+                <td>₹{parseFloat(product.price).toFixed(2)}</td>
+                <td>{product.count || 0}</td>
                 <td>
                   <span
-                    className={`badge ${
-                      product.isActive ? "badge-success" : "badge-error"
-                    }`}
+                    className={`badge ${product.isActive ? "badge-success" : "badge-error"
+                      }`}
                   >
                     {product.isActive ? "Active" : "Inactive"}
                   </span>
@@ -276,9 +379,8 @@ function ProductManagement() {
                     <Pencil size={14} />
                   </button>
                   <button
-                    className={`btn btn-xs ${
-                      product.isActive ? "btn-error" : "btn-success"
-                    }`}
+                    className={`btn btn-xs ${product.isActive ? "btn-error" : "btn-success"
+                      }`}
                     onClick={() => toggleProductStatus(product)}
                   >
                     {product.isActive ? (
@@ -314,17 +416,17 @@ function ProductManagement() {
         <button
           className="btn btn-sm"
           onClick={() => goToPage(page - 1)}
-          disabled={page === 1}
+          disabled={page <= 1 || totalPages === 0}
         >
           Prev
         </button>
         <span className="text-sm font-semibold px-3 py-1">
-          {`Page ${page} of ${totalPages}`}
+          {`Page ${page} of ${totalPages || 1}`}
         </span>
         <button
           className="btn btn-sm"
           onClick={() => goToPage(page + 1)}
-          disabled={page >= totalPages}
+          disabled={page >= totalPages || totalPages === 0}
         >
           Next
         </button>
@@ -340,9 +442,8 @@ function ProductManagement() {
               <input
                 type="text"
                 placeholder="Product Name"
-                className={`input input-bordered w-full ${
-                  errors.name ? "input-error" : ""
-                }`}
+                className={`input input-bordered w-full ${errors.name ? "input-error" : ""
+                  }`}
                 {...register("name")}
               />
               {errors.name && (
@@ -350,9 +451,8 @@ function ProductManagement() {
               )}
 
               <select
-                className={`select select-bordered w-full ${
-                  errors.category ? "select-error" : ""
-                }`}
+                className={`select select-bordered w-full ${errors.category ? "select-error" : ""
+                  }`}
                 {...register("category")}
               >
                 <option value="">Select Category</option>
@@ -370,9 +470,8 @@ function ProductManagement() {
               <input
                 type="number"
                 placeholder="Price"
-                className={`input input-bordered w-full ${
-                  errors.price ? "input-error" : ""
-                }`}
+                className={`input input-bordered w-full ${errors.price ? "input-error" : ""
+                  }`}
                 {...register("price")}
               />
               {errors.price && (
@@ -382,9 +481,8 @@ function ProductManagement() {
               <input
                 type="number"
                 placeholder="Stock Count"
-                className={`input input-bordered w-full ${
-                  errors.count ? "input-error" : ""
-                }`}
+                className={`input input-bordered w-full ${errors.count ? "input-error" : ""
+                  }`}
                 {...register("count")}
               />
               {errors.count && (
@@ -394,16 +492,16 @@ function ProductManagement() {
               <div>
                 <label className="label">
                   <span className="label-text font-semibold">
-                    Product Image URL
+                    Product Images
                   </span>
                 </label>
                 <input
-                  type="text"
-                  placeholder="Image URL"
-                  className={`input input-bordered w-full ${
-                    errors.images?.[0] ? "input-error" : ""
-                  }`}
-                  {...register("images.0")}
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className={`file-input file-input-bordered w-full ${errors.images?.[0] ? "file-input-error" : ""
+                    }`}
+                  onChange={handleImageChange}
                 />
                 {errors.images?.[0] && (
                   <p className="text-red-500 text-sm">
@@ -411,16 +509,44 @@ function ProductManagement() {
                   </p>
                 )}
 
-                <div className="mt-3">
-                  <span className="text-sm text-gray-500">Preview:</span>
-                  <div className="mt-1 w-24 h-24 border rounded overflow-hidden">
-                    <img
-                      src={watch("images.0") || "/placeholder.png"}
-                      alt="Preview"
-                      className="object-cover w-full h-full"
-                    />
+                {/* Image Previews */}
+                {imagePreviews.length > 0 && (
+                  <div className="mt-3">
+                    <span className="text-sm text-gray-500">Preview:</span>
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      {imagePreviews.map((preview, index) => {
+                        const isCurrentImage = isEdit && index < currentProductImages.length;
+                        const isNewImage = isEdit && index >= currentProductImages.length && selectedImages.length > 0;
+                        return (
+                          <div key={index} className="relative">
+                            <div className="w-24 h-24 border rounded overflow-hidden">
+                              <img
+                                src={preview}
+                                alt={`Preview ${index + 1}`}
+                                className="object-cover w-full h-full"
+                                onError={(e) => {
+                                  if (e.target.src !== '/placeholder.svg') {
+                                    e.target.src = '/placeholder.svg';
+                                  }
+                                }}
+                              />
+                            </div>
+                            {isCurrentImage && (
+                              <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs px-1 rounded">
+                                Current
+                              </div>
+                            )}
+                            {isNewImage && (
+                              <div className="absolute -top-1 -right-1 bg-green-500 text-white text-xs px-1 rounded">
+                                New
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
@@ -431,8 +557,12 @@ function ProductManagement() {
                 >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  {isEdit ? "Update" : "Add"}
+                <button 
+                  type="submit" 
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Saving..." : (isEdit ? "Update" : "Add")}
                 </button>
               </div>
             </form>

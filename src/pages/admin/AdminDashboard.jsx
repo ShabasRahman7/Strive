@@ -24,27 +24,15 @@ ChartJS.register(
 );
 
 const AdminDashboard = () => {
-  const [users, setUsers] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [chartType, setChartType] = useState('yearly'); // 'yearly' or 'monthly'
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [userRes, productRes] = await Promise.all([
-          api.get("/users"),
-          api.get("/products"),
-        ]);
-        const allUsers = userRes.data;
-        const allOrders = allUsers.flatMap((user) =>
-          Array.isArray(user.orders)
-            ? user.orders.map((order) => ({ ...order, user }))
-            : []
-        );
-        setUsers(allUsers);
-        setProducts(productRes.data);
-        setOrders(allOrders);
+        const dashboardRes = await api.get("/api/admin/dashboard/");
+        setDashboardData(dashboardRes.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -55,36 +43,44 @@ const AdminDashboard = () => {
     fetchDashboardData();
   }, []);
 
-  const totalRevenue = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+  if (!dashboardData) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
 
+  // Dynamic revenue chart data based on toggle
   const revenueData = {
-    labels: orders
-      .reverse()
-      .slice(0, 10)
-      .map((o) => new Date(o.createdAt).toLocaleDateString()),
+    labels: chartType === 'yearly' 
+      ? Object.keys(dashboardData.yearly_revenue)
+      : Object.keys(dashboardData.monthly_revenue).map(month => {
+          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                             'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          return monthNames[parseInt(month) - 1];
+        }),
     datasets: [
       {
-        label: "Revenue",
-        data: orders.slice(0, 10).map((o) => o.totalAmount),
+        label: chartType === 'yearly' ? "Yearly Revenue (₹)" : "Monthly Revenue (₹)",
+        data: chartType === 'yearly' 
+          ? Object.values(dashboardData.yearly_revenue)
+          : Object.values(dashboardData.monthly_revenue),
         fill: false,
-        borderColor: "rgb(59, 130, 246)",
-        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        borderColor: chartType === 'yearly' ? "rgb(59, 130, 246)" : "rgb(16, 185, 129)",
+        backgroundColor: chartType === 'yearly' ? "rgba(59, 130, 246, 0.2)" : "rgba(16, 185, 129, 0.2)",
         tension: 0.4,
       },
     ],
   };
 
-  const statusCounts = orders.reduce((acc, order) => {
-    if (order.status) acc[order.status] = (acc[order.status] || 0) + 1;
-    return acc;
-  }, {});
-
+  // Order status distribution
   const doughnutData = {
-    labels: Object.keys(statusCounts),
+    labels: Object.keys(dashboardData.status_distribution),
     datasets: [
       {
-        data: Object.values(statusCounts),
-        backgroundColor: ["#4ade80", "#facc15", "#00bafe"],
+        data: Object.values(dashboardData.status_distribution),
+        backgroundColor: ["#4ade80", "#facc15", "#00bafe", "#ef4444", "#8b5cf6"],
         borderWidth: 1,
       },
     ],
@@ -103,11 +99,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const lowStock = products.filter((p) => p.count < 5);
-
-  if (loading) {
-    return <div className="p-6 text-lg font-medium">Loading dashboard...</div>;
-  }
+  const lowStock = dashboardData.low_stock_products || [];
 
   return (
     <div className="p-4 space-y-6">
@@ -133,7 +125,7 @@ const AdminDashboard = () => {
               Total Users
             </h2>
             <p className="text-2xl sm:text-3xl md:text-3xl font-bold">
-              {users.length}
+              {dashboardData.summary.total_users}
             </p>
           </div>
         </div>
@@ -147,7 +139,7 @@ const AdminDashboard = () => {
               Total Products
             </h2>
             <p className="text-2xl sm:text-3xl md:text-3xl font-bold">
-              {products.length}
+              {dashboardData.summary.total_products}
             </p>
           </div>
         </div>
@@ -161,7 +153,7 @@ const AdminDashboard = () => {
               Total Orders
             </h2>
             <p className="text-2xl sm:text-3xl md:text-3xl font-bold">
-              {orders.length}
+              {dashboardData.summary.total_orders}
             </p>
           </div>
         </div>
@@ -175,29 +167,57 @@ const AdminDashboard = () => {
               Total Revenue
             </h2>
             <p className="text-2xl sm:text-3xl md:text-3xl font-bold">
-              ₹{totalRevenue.toFixed(0)}
+              ₹{dashboardData.summary.total_revenue.toFixed(0)}
             </p>
           </div>
         </div>
       </div>
 
       {/* Charts */}
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         <div className="bg-base-100 p-4 rounded shadow flex-1 h-80">
-          <h2 className="text-lg font-semibold mb-2">Revenue Overview</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold">
+              Revenue Chart ({chartType === 'yearly' ? `2020-${new Date().getFullYear()}` : new Date().getFullYear()})
+            </h2>
+            <div className="flex gap-2">
+              <button
+                className={`btn btn-sm ${chartType === 'yearly' ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => setChartType('yearly')}
+              >
+                Yearly
+              </button>
+              <button
+                className={`btn btn-sm ${chartType === 'monthly' ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => setChartType('monthly')}
+              >
+                Monthly
+              </button>
+            </div>
+          </div>
           <div className="h-full">
             <Line
               data={revenueData}
               options={{
                 maintainAspectRatio: false,
                 responsive: true,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      callback: function(value) {
+                        return '₹' + value.toLocaleString();
+                      }
+                    }
+                  }
+                }
               }}
             />
           </div>
         </div>
-        <div className="bg-base-100 p-4 rounded shadow w-full md:w-80 h-80 flex flex-col items-center justify-center">
-          <h2 className="text-lg font-semibold mb-2">Order Status</h2>
-          <div className="w-40 h-40">
+        <div className="bg-base-100 p-4 rounded shadow w-full lg:w-80 h-96 flex flex-col items-center justify-center">
+          <h2 className="text-lg font-semibold mb-2">Order Status Distribution</h2>
+          <div className="w-48 h-48">
             <Doughnut
               data={doughnutData}
               options={{
@@ -206,8 +226,20 @@ const AdminDashboard = () => {
                 plugins: {
                   legend: {
                     position: "bottom",
+                    labels: {
+                      padding: 15,
+                      usePointStyle: true,
+                      font: {
+                        size: 12
+                      }
+                    }
                   },
                 },
+                layout: {
+                  padding: {
+                    bottom: 20
+                  }
+                }
               }}
             />
           </div>
@@ -223,7 +255,7 @@ const AdminDashboard = () => {
               lowStock.map((p) => (
                 <li key={p.id}>
                   {p.name} —{" "}
-                  <span className="text-red-600">{p.count} left</span>
+                  <span className="text-red-600">{p.stock_count} left</span>
                 </li>
               ))
             ) : (
@@ -235,34 +267,31 @@ const AdminDashboard = () => {
         <div className="bg-base-100 p-4 rounded shadow lg:w-2/3">
           <h2 className="text-lg font-semibold mb-3">Recent Orders</h2>
           <ul className="space-y-2 text-sm">
-            {orders
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-              .slice(0, 3)
-              .map((order) => (
-                <li
-                  key={order.id}
-                  className="flex justify-between items-center border-b pb-2"
-                >
-                  <div>
-                    <p className="font-medium">#{order.id.slice(0, 8)}...</p>
-                    <p className="text-xs text-gray-500">
-                      {order.user?.name || "Unknown User"}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium">
-                      ₹{order.totalAmount?.toFixed(2)}
-                    </p>
-                    <span
-                      className={`badge text-xs ${getStatusColor(
-                        order.status
-                      )}`}
-                    >
-                      {order.status}
-                    </span>
-                  </div>
-                </li>
-              ))}
+            {dashboardData.recent_orders.map((order) => (
+              <li
+                key={order.id}
+                className="flex justify-between items-center border-b pb-2"
+              >
+                <div>
+                  <p className="font-medium">#{order.order_number}</p>
+                  <p className="text-xs text-gray-500">
+                    {order.user?.name || "Unknown User"}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">
+                    ₹{order.total_amount.toFixed(2)}
+                  </p>
+                  <span
+                    className={`badge text-xs ${getStatusColor(
+                      order.status
+                    )}`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

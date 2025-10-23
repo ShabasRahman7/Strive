@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import { getImageProps, formatPrice } from "../../utils/imageUtils";
 import {
   Filter,
   SortAsc,
@@ -14,6 +15,8 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
@@ -25,11 +28,11 @@ const ProductList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
-    const fetchAndFilter = async () => {
+    const fetchProducts = async () => {
       try {
-        const res = await api.get("/products");
-        const data = res.data;
-
+        setLoading(true);
+        setError(null);
+        
         const params = new URLSearchParams(location.search);
         const urlCategory = params.get("category") || "";
         const searchQuery = params.get("name_like") || "";
@@ -37,65 +40,70 @@ const ProductList = () => {
         const maxPriceParam = params.get("maxPrice") || "";
         const sortParam = params.get("sort") || "";
 
+        // Build query parameters for server-side filtering
+        const queryParams = new URLSearchParams();
+        if (urlCategory) queryParams.set('category', urlCategory);
+        if (searchQuery) queryParams.set('name_like', searchQuery);
+        if (minPriceParam) queryParams.set('minPrice', minPriceParam);
+        if (maxPriceParam) queryParams.set('maxPrice', maxPriceParam);
+        if (sortParam) {
+          // Map frontend sort options to backend ordering
+          switch (sortParam) {
+            case "az":
+              queryParams.set('ordering', 'name');
+              break;
+            case "za":
+              queryParams.set('ordering', '-name');
+              break;
+            case "priceLowHigh":
+              queryParams.set('ordering', 'price');
+              break;
+            case "priceHighLow":
+              queryParams.set('ordering', '-price');
+              break;
+            case "newest":
+              queryParams.set('ordering', '-created_at');
+              break;
+            default:
+              queryParams.set('ordering', '-created_at');
+              break;
+          }
+        }
+
+        const res = await api.get(`/api/products/?${queryParams.toString()}`);
+        const responseData = res.data;
+        
+        // Handle both paginated and non-paginated responses
+        const data = responseData.results || responseData;
+        
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid response format");
+        }
+
+        // Get unique categories for filter dropdown
+        const allProductsRes = await api.get("/api/products/");
+        const allProductsData = allProductsRes.data.results || allProductsRes.data;
         const uniqueCategories = [
-          ...new Set(data.map((item) => item.category)),
+          ...new Set(allProductsData.map((item) => item.category)),
         ];
+        
         setCategories(uniqueCategories);
         setAllProducts(data);
         setSelectedCategory(urlCategory);
         setMinPrice(minPriceParam);
         setMaxPrice(maxPriceParam);
         setSortOption(sortParam);
-
-        let filtered = [...data];
-
-        if (urlCategory) {
-          filtered = filtered.filter(
-            (p) => p.category.toLowerCase() === urlCategory.toLowerCase()
-          );
-        }
-
-        if (searchQuery) {
-          filtered = filtered.filter((p) =>
-            p.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-
-        if (minPriceParam) {
-          filtered = filtered.filter((p) => p.price >= Number(minPriceParam));
-        }
-
-        if (maxPriceParam) {
-          filtered = filtered.filter((p) => p.price <= Number(maxPriceParam));
-        }
-
-        switch (sortParam) {
-          case "az":
-            filtered.sort((a, b) => a.name.localeCompare(b.name));
-            break;
-          case "za":
-            filtered.sort((a, b) => b.name.localeCompare(a.name));
-            break;
-          case "priceLowHigh":
-            filtered.sort((a, b) => a.price - b.price);
-            break;
-          case "priceHighLow":
-            filtered.sort((a, b) => b.price - a.price);
-            break;
-          case "newest":
-            filtered.sort((a, b) => b.id - a.id);
-            break;
-          default:
-            break;
-        }
-
-        setProducts(filtered);
+        setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setError("Failed to load products. Please try again.");
+        setProducts([]);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchAndFilter();
+    fetchProducts();
   }, [location.search]);
 
   const updateURLParams = (key, value) => {
@@ -130,6 +138,7 @@ const ProductList = () => {
     params.delete("minPrice");
     params.delete("maxPrice");
     params.delete("sort");
+    params.delete("name_like");
 
     setMinPrice("");
     setMaxPrice("");
@@ -181,58 +190,77 @@ const ProductList = () => {
         <ArrowLeft size={16} /> Go Back
       </button>
 
-      <div className="flex justify-between items-center mb-6 mt-2">
-        <h2 className="text-2xl font-bold">All Products</h2>
-        <div className="flex gap-2">
-          <label
-            htmlFor="filter_modal"
-            className="btn btn-outline flex items-center gap-2 cursor-pointer"
-          >
-            <Filter size={16} /> Filter
-          </label>
-          <div className="dropdown dropdown-end">
+      <div className="mb-6 mt-2">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">All Products</h2>
+          <div className="flex gap-2">
             <label
-              tabIndex={0}
-              className="btn btn-outline flex items-center gap-2 h-full"
+              htmlFor="filter_modal"
+              className="btn btn-outline flex items-center gap-2 cursor-pointer"
             >
-              Sort
+              <Filter size={16} /> Filter
             </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-[100]"
-            >
-              <li>
-                <button onClick={() => onSortChange("newest")}>
-                  <Clock size={16} /> Newest - Default
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onSortChange("az")}>
-                  <SortAsc size={16} /> A-Z
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onSortChange("za")}>
-                  <SortDesc size={16} /> Z-A
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onSortChange("priceLowHigh")}>
-                  <IndianRupee size={16} /> Price: Low to High
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onSortChange("priceHighLow")}>
-                  <IndianRupee size={16} /> Price: High to Low
-                </button>
-              </li>
-            </ul>
+            <div className="dropdown dropdown-end">
+              <label
+                tabIndex={0}
+                className="btn btn-outline flex items-center gap-2 h-full"
+              >
+                Sort
+              </label>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-[100]"
+              >
+                <li>
+                  <button onClick={() => onSortChange("newest")}>
+                    <Clock size={16} /> Newest - Default
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => onSortChange("az")}>
+                    <SortAsc size={16} /> A-Z
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => onSortChange("za")}>
+                    <SortDesc size={16} /> Z-A
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => onSortChange("priceLowHigh")}>
+                    <IndianRupee size={16} /> Price: Low to High
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => onSortChange("priceHighLow")}>
+                    <IndianRupee size={16} /> Price: High to Low
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
-      {products.length === 0 ? (
-        <div className="text-center">No products found.</div>
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="loading loading-spinner loading-lg"></div>
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <div className="text-error text-lg font-semibold mb-4">{error}</div>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="btn btn-primary"
+          >
+            Retry
+          </button>
+        </div>
+      ) : products.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-lg font-semibold mb-2">No products found.</div>
+          <div className="text-gray-600">Try adjusting your filters or search criteria.</div>
+        </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {products.map((product) => (
@@ -243,15 +271,14 @@ const ProductList = () => {
             >
               <figure className="aspect-square overflow-hidden">
                 <img
-                  src={product.images[0]}
-                  alt={product.name}
+                  {...getImageProps(product.images?.[0], product.name)}
                   className="w-full h-full object-cover"
                 />
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{product.name}</h2>
                 <p className="text-lg font-semibold text-primary">
-                  ₹{product.price.toFixed(2)}
+                  ₹{formatPrice(product.price)}
                 </p>
               </div>
             </div>

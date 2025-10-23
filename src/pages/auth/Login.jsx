@@ -48,7 +48,8 @@ export default function Login() {
       sessionStorage.setItem("showLoginToast", "true");
       navigate("/");
     } catch (error) {
-      setAlert({ message: error.message, type: "error" });
+      const friendly = error?.message || 'Login failed. Please try again.';
+      setAlert({ message: friendly, type: "error" });
     } finally {
       setLoading(false);
     }
@@ -99,11 +100,24 @@ export default function Login() {
 
           <div className="form-control mt-6">
             <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
 
           <p className="mt-3 text-center">
+            <Link to="/forgot-password" className="text-primary hover:underline text-sm">
+              Forgot Password?
+            </Link>
+          </p>
+
+          <p className="mt-2 text-center">
             Don't have an account?{" "}
             <Link to="/register" className="text-primary hover:underline">
               Register Here

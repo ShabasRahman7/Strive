@@ -6,22 +6,34 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
+import { getImageProps, formatPrice } from "../../utils/imageUtils";
 
 const CartPage = () => {
-  const { user, updateUser } = useAuth();
+  const { user, updateUserLocal, loading } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Please login to view your cart");
+      navigate("/login");
+      return;
+    }
+    
     setCartItems(
       user?.cart?.map((item) => ({ ...item, quantity: item.quantity || 1 })) ||
         []
     );
-  }, [user]);
+  }, [user, loading, navigate]);
 
   const updateQuantity = async (productId, newQty) => {
     if (newQty < 1 || newQty > 10) return;
+    if (!user) {
+      toast.error("Please login to manage your cart");
+      navigate("/login");
+      return;
+    }
     setIsProcessing(true);
     const updated = cartItems.map((item) =>
       item.id !== productId ? item : { ...item, quantity: newQty }
@@ -44,25 +56,46 @@ const CartPage = () => {
     });
 
     if (result.isConfirmed) {
-      removeItem(productId);
-      toast.success("Product Successfully Removed")
+      await removeItem(productId);
     }
   };
 
   const removeItem = async (productId) => {
+    if (!user) {
+      toast.error("Please login to manage your cart");
+      navigate("/login");
+      return;
+    }
+
     setIsProcessing(true);
     const updated = cartItems.filter((item) => item.id !== productId);
     setCartItems(updated);
-    await persistCart(updated);
+    try {
+      await persistCart(updated);
+      toast.success("Product Successfully Removed");
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+      toast.error("Failed to remove item");
+      // Revert the cart state if the API call failed
+      setCartItems(cartItems);
+    }
     setIsProcessing(false);
   };
 
   const persistCart = async (updatedCart) => {
     try {
-      await api.patch(`/users/${user.id}`, { cart: updatedCart });
-      updateUser({ ...user, cart: updatedCart });
+      await api.patch('/api/users/cart/', { cart: updatedCart });
+      const updatedUser = { ...user, cart: updatedCart };
+      updateUserLocal(updatedUser);
     } catch (err) {
       console.error("Cart persist error", err);
+      if (err.response?.status === 401) {
+        toast.error("Session expired. Please login again.");
+        navigate("/login");
+      } else {
+        toast.error("Failed to update cart");
+      }
+      throw err; // Re-throw to let calling function handle it
     }
   };
 
@@ -83,6 +116,26 @@ const CartPage = () => {
       navigate("/checkout", { state: { cartItems } });
     }
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto p-4">
+        <div className="flex justify-center items-center py-12">
+          <div className="loading loading-spinner loading-lg"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-5xl mx-auto p-4">
+        <div className="text-center text-gray-500">
+          Please login to view your cart.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto p-4">
@@ -107,13 +160,12 @@ const CartPage = () => {
                 onClick={() => navigate(`/products/${item.id}`)}
               >
                 <img
-                  src={item.images?.[0]}
-                  alt={item.name}
+                  {...getImageProps(item.images?.[0], item.name)}
                   className="w-16 h-16 object-cover rounded"
                 />
                 <div>
                   <h2 className="font-semibold">{item.name}</h2>
-                  <p className="text-gray-600">₹{item.price.toFixed(2)}</p>
+                  <p className="text-gray-600">₹{formatPrice(item.price)}</p>
                 </div>
               </div>
 
@@ -140,7 +192,7 @@ const CartPage = () => {
 
                 <div className="flex items-center gap-2">
                   <p className="font-semibold whitespace-nowrap">
-                    ₹{(item.price * item.quantity).toFixed(2)}
+                    ₹{formatPrice((item.price || 0) * item.quantity)}
                   </p>
                   <button
                     className="btn btn-sm btn-error"

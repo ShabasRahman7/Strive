@@ -3,11 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import api from "../../api/axios";
+import { toast } from "react-toastify";
 
 const CheckoutPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { user, updateUser } = useAuth();
+  const { user, updateUserLocal } = useAuth();
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
@@ -19,10 +20,47 @@ const CheckoutPage = () => {
     }
   }, [cartItems, navigate]);
 
+  // Prevent direct access to checkout without cart items
+  if (!cartItems.length) {
+    return (
+      <div className="max-w-4xl mx-auto p-4 text-center">
+        <h1 className="text-3xl font-bold mb-4">Checkout</h1>
+        <p className="text-gray-500 mb-4">No items in cart to checkout.</p>
+        <button
+          className="btn btn-primary"
+          onClick={() => navigate("/cart")}
+        >
+          Go to Cart
+        </button>
+      </div>
+    );
+  }
+
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) return resolve(true);
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const afterOrderPlaced = async () => {
+    try {
+      const { data: profile } = await api.get('/api/users/profile/');
+      updateUserLocal(profile);
+    } catch (_) {
+      updateUserLocal({ ...user, cart: [] });
+    }
+    navigate("/orders");
+  };
 
   const handlePlaceOrder = async () => {
     if (!selectedAddressId) {
@@ -30,62 +68,97 @@ const CheckoutPage = () => {
       return;
     }
 
-    const selectedAddress = user.addresses.find(
-      (a) => a.id === selectedAddressId
-    );
-
     try {
-      const invalidItems = [];
-
-      for (const item of cartItems) {
-        const { data: product } = await api.get(`/products/${item.id}`);
-
-        if (!product.isActive) {
-          invalidItems.push(`❌ ${item.name} is inactive`);
-        } else if (item.quantity > product.count) {
-          invalidItems.push(
-            `❌ ${item.name} only has ${product.count} in stock`
-          );
-        }
-      }
-
-      if (invalidItems.length > 0) {
-        Swal.fire("Order Error", invalidItems.join("<br>"), "warning");
+      if (paymentMethod === 'cod') {
+        const payload = {
+          shipping_address_id: selectedAddressId,
+          payment_method: 'cash',
+        };
+        await api.post('/api/orders/create_from_cart/', payload);
+        await Swal.fire(
+          "Order Placed",
+          "Your order has been placed successfully!",
+          "success"
+        );
+        await afterOrderPlaced();
         return;
       }
 
-      const order = {
-        id: crypto.randomUUID(),
-        items: cartItems,
-        totalAmount: subtotal,
-        address: selectedAddress,
-        paymentMethod,
-        status: "pending",
-        createdAt: new Date().toISOString(),
+      // Razorpay flow
+      const ok = await loadRazorpayScript();
+      if (!ok) {
+        toast.error("Failed to load Razorpay. Check your connection.");
+        Swal.fire("Error", "Failed to load Razorpay. Check your connection.", "error");
+        return;
+      }
+
+      // Create Razorpay order on backend for current cart total
+      let rp;
+      try {
+        const resp = await api.post('/api/payments/razorpay/create-order/');
+        rp = resp.data;
+      } catch (e) {
+        console.error(e);
+        toast.error("Payment initialization failed.");
+        Swal.fire("Error", "Payment initialization failed.", "error");
+        return;
+      }
+
+      if (!rp?.order_id || !rp?.key_id) {
+        toast.error("Invalid payment setup.");
+        Swal.fire("Error", "Invalid payment setup.", "error");
+        return;
+      }
+
+      const options = {
+        key: rp.key_id,
+        amount: rp.amount,
+        currency: rp.currency,
+        name: "Strive Store",
+        description: "Order Payment",
+        order_id: rp.order_id,
+        prefill: {
+          name: user?.name || user?.email,
+          email: user?.email,
+        },
+        theme: { color: "#570df8" },
+        handler: async function (response) {
+          try {
+            const verifyPayload = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              shipping_address_id: selectedAddressId,
+            };
+            await api.post('/api/payments/razorpay/verify/', verifyPayload);
+            toast.success("Payment successful. Order placed!");
+            await Swal.fire("Payment Success", "Your order has been placed!", "success");
+            await afterOrderPlaced();
+          } catch (e) {
+            console.error('Verify failed', e);
+            toast.error("Payment verification failed.");
+            Swal.fire("Error", "Payment verification failed.", "error");
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            toast.info("Payment cancelled.");
+            Swal.fire("Cancelled", "Payment was cancelled.", "info");
+          }
+        },
       };
 
-      const updatedOrders = [...user.orders, order];
-
-      await Promise.all(
-        cartItems.map(async (item) => {
-          const { data: product } = await api.get(`/products/${item.id}`);
-
-          await api.patch(`/products/${item.id}`, {
-            count: product.count - item.quantity,
-          });
-        })
-      );
-
-      await updateUser({ ...user, cart: [], orders: updatedOrders });
-
-      Swal.fire(
-        "Order Placed",
-        "Your order has been placed successfully!",
-        "success"
-      );
-      navigate("/orders");
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (resp) {
+        console.error('Payment failed', resp);
+        const reason = resp?.error?.description || 'Payment failed. Please try again.';
+        toast.error(reason);
+        Swal.fire("Payment Failed", reason, "error");
+      });
+      rzp.open();
     } catch (error) {
       console.error("Order Error:", error);
+      toast.error("Failed to place order");
       Swal.fire("Error", "Failed to place order", "error");
     }
   };
@@ -173,11 +246,11 @@ const CheckoutPage = () => {
               type="radio"
               name="payment"
               className="radio"
-              value="upi"
-              checked={paymentMethod === "upi"}
+              value="razorpay"
+              checked={paymentMethod === "razorpay"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
-            <span className="ml-2">UPI</span>
+            <span className="ml-2">Razorpay</span>
           </label>
         </div>
       </div>

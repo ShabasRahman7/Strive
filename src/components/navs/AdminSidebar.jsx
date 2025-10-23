@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { safeLocalStorage } from "../../utils/tokenStorage";
 import {
   LayoutDashboard,
   Users,
@@ -20,7 +21,7 @@ export default function AdminSidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isDark, setIsDark] = useState(
-    localStorage.getItem("theme") === "dark"
+    safeLocalStorage.getItem("theme") === "dark"
   );
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function AdminSidebar() {
   const toggleTheme = () => {
     const newTheme = isDark ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
+    safeLocalStorage.setItem("theme", newTheme);
     setIsDark(!isDark);
   };
 

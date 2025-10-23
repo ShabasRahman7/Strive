@@ -5,11 +5,12 @@ import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
+import { getImageProps, formatPrice } from "../../utils/imageUtils";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, updateUser } = useAuth();
+  const { user, updateUserLocal } = useAuth();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await api.get(`/products/${id}`);
+        const res = await api.get(`/api/products/${id}/`);
         
         if (res.status === 200) {
           const data = res.data;
@@ -29,12 +30,6 @@ const ProductDetail = () => {
           }
 
           setProduct(data);
-          if (user) {
-            const isInCart = user.cart?.some((item) => item.id === data.id);
-            const isInWishlist = user.wishlist?.some((item) => item.id === data.id);
-            setInCart(isInCart);
-            setInWishlist(isInWishlist);
-          }
         } else {
           throw new Error("Product not found");
         }
@@ -54,7 +49,17 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [id, user]);
+  }, [id]);
+
+  // Separate useEffect to sync cart and wishlist state with user data
+  useEffect(() => {
+    if (user && product) {
+      const isInCart = user.cart?.some((item) => item.id === product.id);
+      const isInWishlist = user.wishlist?.some((item) => item.id === product.id);
+      setInCart(isInCart);
+      setInWishlist(isInWishlist);
+    }
+  }, [user, product]);
 
   const promptLogin = () => {
     Swal.fire({
@@ -81,12 +86,12 @@ const ProductDetail = () => {
       return;
     }
 
-    const updatedCart = [...(user.cart || []), { ...product, quantity: 1 }];
-    const updatedUser = { ...user, cart: updatedCart };
-
     try {
-      await api.patch(`/users/${user.id}`, { cart: updatedCart });
-      updateUser(updatedUser);
+      const updatedCart = [...(user.cart || []), { ...product, quantity: 1 }];
+      await api.patch('/api/users/cart/', { cart: updatedCart });
+      
+      const updatedUser = { ...user, cart: updatedCart };
+      updateUserLocal(updatedUser);
       setInCart(true);
       toast.success(`${product.name} has been added to cart.`);
     } catch (error) {
@@ -106,8 +111,8 @@ const ProductDetail = () => {
     const updatedUser = { ...user, wishlist: updatedWishlist };
 
     try {
-      await api.patch(`/users/${user.id}`, { wishlist: updatedWishlist });
-      updateUser(updatedUser);
+      await api.patch('/api/users/wishlist/', { wishlist: updatedWishlist });
+      updateUserLocal(updatedUser);
       setInWishlist(!isInWishlist);
       toast.success(`${product.name} has been ${isInWishlist ? "removed from" : "added to"} wishlist.`);
     } catch (error) {
@@ -116,7 +121,13 @@ const ProductDetail = () => {
     }
   };
 
-  if (loading) return <div>Loading product details...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
   if (!product) return null;
 
   const isOutOfStock = product.count === 0;
@@ -134,8 +145,7 @@ const ProductDetail = () => {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-1/2">
           <img
-            src={product.images[0]}
-            alt={product.name}
+            {...getImageProps(product.images?.[0], product.name)}
             className="w-full rounded-lg object-cover"
           />
         </div>
@@ -143,7 +153,7 @@ const ProductDetail = () => {
         <div className="md:w-1/2 space-y-3">
           <h1 className="text-3xl font-bold">{product.name}</h1>
           <p className="text-primary text-2xl font-semibold">
-            ₹{product.price.toFixed(2)}
+            ₹{formatPrice(product.price)}
           </p>
           <p className="text-base text-gray-600 dark:text-gray-400">
             {product.description}

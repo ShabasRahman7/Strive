@@ -11,7 +11,7 @@ const Home = () => {
     <SearchBar/>
     <Carousel />
     <FeaturedCategories/>
-    <TopSellingProducts/>
+      <TopSellingProducts/>
     <Footer/>
     </>
   );

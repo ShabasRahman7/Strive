@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Mail, Edit3, Save, Home, Trash2, Plus, X } from "lucide-react";
 import api from "../../api/axios";
+import { getImageUrl } from "../../utils/imageUtils";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
@@ -19,11 +20,12 @@ const addressSchema = yup.object().shape({
 });
 
 export default function ProfilePage() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUserLocal } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [profileImage, setProfileImage] = useState(user?.profileImage || "");
+  const [imageFile, setImageFile] = useState(null);
 
   const [originalName, setOriginalName] = useState(user?.name || "");
   const [originalImage, setOriginalImage] = useState(user?.profileImage || "");
@@ -48,13 +50,19 @@ export default function ProfilePage() {
 
   const handleSaveProfile = async () => {
     try {
-      const updatedUser = { ...user, name, profileImage };
-      await api.patch(`/users/${user.id}`, updatedUser);
-      updateUser(updatedUser);
-
+      const formData = new FormData();
+      formData.append('name', name);
+      
+      if (imageFile) {
+        formData.append('profile_image', imageFile);
+      }
+      
+      const response = await api.patch('/api/users/profile/', formData);
+      
+      updateUserLocal(response.data);
       setOriginalName(name);
-      setOriginalImage(profileImage);
-
+      setOriginalImage(response.data.profileImage);
+      setImageFile(null);
       setIsEditing(false);
       toast.success("Profile updated");
     } catch (err) {
@@ -66,15 +74,31 @@ export default function ProfilePage() {
   const handleCancelEdit = () => {
     setName(originalName);
     setProfileImage(originalImage);
+    setImageFile(null);
     setIsEditing(false);
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setProfileImage(URL.createObjectURL(file));
+      setImageSource('file');
+    }
+  };
+
   const addAddress = async (data) => {
-    const newAddr = { ...data, id: crypto.randomUUID() };
-    const updatedUser = { ...user, addresses: [...(user.addresses || []), newAddr] };
     try {
-      await api.patch(`/users/${user.id}`, updatedUser);
-      updateUser(updatedUser);
+      const response = await api.post('/api/users/add_address/', data);
+      const newAddr = response.data;
+      
+      // Update user state with new address
+      const updatedUser = { 
+        ...user, 
+        addresses: [...(user.addresses || []), newAddr] 
+      };
+      updateUserLocal(updatedUser);
+      
       setShowAdd(false);
       reset();
       toast.success("Address added");
@@ -97,9 +121,17 @@ export default function ProfilePage() {
     if (!res.isConfirmed) return;
 
     try {
-      const updatedUser = { ...user, addresses: user.addresses.filter((a) => a.id !== id) };
-      await api.patch(`/users/${user.id}`, updatedUser);
-      updateUser(updatedUser);
+      await api.delete('/api/users/delete_address/', { 
+        data: { address_id: id } 
+      });
+      
+      // Update user state by removing the address
+      const updatedUser = { 
+        ...user, 
+        addresses: user.addresses.filter((a) => a.id !== id) 
+      };
+      updateUserLocal(updatedUser);
+      
       toast.success("Address deleted");
     } catch (err) {
       console.error("Delete failed:", err);
@@ -113,20 +145,21 @@ export default function ProfilePage() {
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-24 h-24">
             <img
-              src={profileImage}
+              src={getImageUrl(profileImage)}
               alt="User Avatar"
               className="w-24 h-24 rounded-full object-cover shadow"
             />
           </div>
 
           {isEditing && (
-            <input
-              type="text"
-              placeholder="Profile Image URL"
-              value={profileImage}
-              onChange={(e) => setProfileImage(e.target.value)}
-              className="input input-sm input-bordered w-full max-w-xs"
-            />
+            <div className="flex flex-col gap-2 w-full max-w-xs">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="file-input file-input-sm file-input-bordered w-full"
+              />
+            </div>
           )}
 
           <h2 className="text-2xl font-bold">

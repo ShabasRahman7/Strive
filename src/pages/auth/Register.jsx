@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../api/axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,10 +21,12 @@ const schema = yup.object().shape({
 });
 
 export default function Register() {
-  const { user, register: registerUser } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ message: "", type: "error" });
+  const [otpStage, setOtpStage] = useState({ open: false, email: "" });
+  const [otp, setOtp] = useState("");
 
   const {
     register,
@@ -49,11 +52,35 @@ export default function Register() {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await registerUser(data.email, data.password, data.name);
-      toast.success("Registration Successful");
-      navigate("/profile");
+      await api.post("/api/register_request/", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+      setOtpStage({ open: true, email: data.email });
+      toast.info("OTP sent to your email");
     } catch (error) {
-      setAlert({ message: error.message, type: "error" });
+      const msg = error.response?.data?.error || error.message || "Registration failed";
+      setAlert({ message: msg, type: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otp) return toast.error("Enter OTP");
+    try {
+      setLoading(true);
+      await api.post("/api/register_verify/", {
+        email: otpStage.email,
+        otp,
+      });
+      toast.success("Account created. Please login.");
+      setOtpStage({ open: false, email: "" });
+      setOtp("");
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Invalid OTP");
     } finally {
       setLoading(false);
     }
@@ -120,7 +147,14 @@ export default function Register() {
 
           <div className="form-control mt-6">
             <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? "Registering..." : "Register"}
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  Registering...
+                </>
+              ) : (
+                "Register"
+              )}
             </button>
           </div>
 
@@ -132,6 +166,28 @@ export default function Register() {
           </p>
         </form>
       </div>
+
+      {otpStage.open && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Verify Email</h3>
+            <p className="py-2 text-sm text-gray-600">We sent an OTP to {otpStage.email}. Enter it to complete signup.</p>
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="input input-bordered w-full"
+              placeholder="Enter 6-digit OTP"
+            />
+            <div className="modal-action">
+              <button className="btn btn-outline" onClick={() => setOtpStage({ open: false, email: "" })}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleVerifyOtp} disabled={loading}>
+                {loading ? <span className="loading loading-spinner loading-sm"></span> : 'Verify'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

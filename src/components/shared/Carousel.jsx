@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
-import api from "../../api/axios"; // ✅ use your custom axios instance
+import api from "../../api/axios";
+import { getImageUrl } from "../../utils/imageUtils";
 
 const Carousel = () => {
   const [slides, setSlides] = useState([]);
@@ -12,10 +13,16 @@ const Carousel = () => {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const res = await api.get("/slides"); // ✅ call using custom axios
-        setSlides(res.data);
+        const res = await api.get("/api/slides/active/");
+        if (res.data && res.data.results && Array.isArray(res.data.results)) {
+          setSlides(res.data.results);
+        } else {
+          console.warn("Invalid data format received from slides endpoint");
+          setSlides([]);
+        }
       } catch (error) {
         console.error("Failed to fetch slides:", error);
+        setSlides([]);
       } finally {
         setLoading(false);
       }
@@ -41,7 +48,13 @@ const Carousel = () => {
     trackMouse: true,
   });
 
-  if (loading) return <div>Loading slides...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl w-full mx-auto px-4 py-6 sm:py-12">
@@ -58,7 +71,7 @@ const Carousel = () => {
               key={slide.id}
               className="flex-shrink-0 w-full aspect-[16/7] min-h-[200px] relative"
               style={{
-                backgroundImage: `url(${slide.image})`,
+                backgroundImage: `url(${getImageUrl(slide.image)})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}

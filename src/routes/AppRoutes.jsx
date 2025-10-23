@@ -3,6 +3,9 @@ import Layout from "../layouts/Layout";
 import Home from "../pages/public/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
+import SetupPasswordPage from "../pages/auth/SetupPasswordPage";
 import ProductList from "../pages/public/ProductList";
 import ProductDetail from "../pages/public/ProductDetail";
 import CartPage from "../pages/user/CartPage";
@@ -104,6 +107,9 @@ const AppRoutes = () => {
       {/* register&login */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/setup-password" element={<SetupPasswordPage />} />
 
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />

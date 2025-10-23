@@ -13,10 +13,19 @@ export default function SearchBar() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await api.get("/products");
-        setAllProducts(res.data);
+        const res = await api.get("/api/products/");
+        // Handle both paginated and non-paginated 
+        const data = res.data.results || res.data;
+        
+        if (Array.isArray(data)) {
+          setAllProducts(data);
+        } else {
+          console.warn("Invalid data format received from products endpoint");
+          setAllProducts([]);
+        }
       } catch (err) {
         console.error("Failed to fetch products for suggestions", err);
+        setAllProducts([]);
       }
     };
     fetchProducts();
@@ -30,6 +39,7 @@ export default function SearchBar() {
     const matched = allProducts
       .filter((p) => p.name.toLowerCase().includes(query.toLowerCase()))
       .slice(0, 3);
+    console.log('Search suggestions:', matched);
     setSuggestions(matched);
   }, [query, allProducts]);
 
@@ -82,7 +92,7 @@ export default function SearchBar() {
         </button>
 
         {suggestions.length > 0 && (
-          <ul className="absolute top-full left-0 right-0 bg-base-100 border border-base-300 rounded-b-md shadow-lg z-50 max-h-60 overflow-auto">
+          <ul className="absolute top-full left-0 right-0 bg-base-100 border border-base-300 rounded-b-md shadow-lg z-50 max-h-60 overflow-auto mt-1">
             {suggestions.map((product) => (
               <li
                 key={product.id}
@@ -91,7 +101,7 @@ export default function SearchBar() {
                   setSuggestions([]);
                   setQuery(product.name);
                 }}
-                className="cursor-pointer px-4 py-2 hover:bg-primary hover:text-white"
+                className="cursor-pointer px-4 py-2 hover:bg-primary hover:text-white transition-colors"
               >
                 {product.name}
               </li>
