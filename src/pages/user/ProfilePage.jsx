@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { Mail, Edit3, Save, Home, Trash2, Plus, X } from "lucide-react";
+import { Mail, Edit3, Save, Home, Trash2, Plus, X, Loader } from "lucide-react";
 import api from "../../api/axios";
 import { getImageUrl } from "../../utils/imageUtils";
 import Swal from "sweetalert2";
@@ -22,11 +22,11 @@ const addressSchema = yup.object().shape({
 export default function ProfilePage() {
   const { user, updateUserLocal } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [profileImage, setProfileImage] = useState(user?.profileImage || "");
   const [imageFile, setImageFile] = useState(null);
-
+  const [loading, setLoading] = useState(false); // For loading state
+  const [showAdd, setShowAdd] = useState(false); // For Add Address Modal
   const [originalName, setOriginalName] = useState(user?.name || "");
   const [originalImage, setOriginalImage] = useState(user?.profileImage || "");
 
@@ -49,16 +49,18 @@ export default function ProfilePage() {
   }
 
   const handleSaveProfile = async () => {
+    setLoading(true); // Start loading animation
+
     try {
       const formData = new FormData();
-      formData.append('name', name);
-      
+      formData.append("name", name);
+
       if (imageFile) {
-        formData.append('profile_image', imageFile);
+        formData.append("profile_image", imageFile);
       }
-      
-      const response = await api.patch('/api/users/profile/', formData);
-      
+
+      const response = await api.patch("/api/users/profile/", formData);
+
       updateUserLocal(response.data);
       setOriginalName(name);
       setOriginalImage(response.data.profileImage);
@@ -68,6 +70,8 @@ export default function ProfilePage() {
     } catch (err) {
       console.error("Error updating profile:", err);
       toast.error("Failed to update profile");
+    } finally {
+      setLoading(false); // Stop loading animation
     }
   };
 
@@ -82,23 +86,24 @@ export default function ProfilePage() {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setProfileImage(URL.createObjectURL(file));
-      setImageSource('file');
+      setProfileImage(URL.createObjectURL(file)); // Show immediate preview
     }
   };
 
+  const isSaveDisabled = !name || (imageFile === null && name === originalName); // Disable Save button if no changes
+
   const addAddress = async (data) => {
     try {
-      const response = await api.post('/api/users/add_address/', data);
+      const response = await api.post("/api/users/add_address/", data);
       const newAddr = response.data;
-      
+
       // Update user state with new address
-      const updatedUser = { 
-        ...user, 
-        addresses: [...(user.addresses || []), newAddr] 
+      const updatedUser = {
+        ...user,
+        addresses: [...(user.addresses || []), newAddr],
       };
       updateUserLocal(updatedUser);
-      
+
       setShowAdd(false);
       reset();
       toast.success("Address added");
@@ -121,17 +126,17 @@ export default function ProfilePage() {
     if (!res.isConfirmed) return;
 
     try {
-      await api.delete('/api/users/delete_address/', { 
-        data: { address_id: id } 
+      await api.delete("/api/users/delete_address/", {
+        data: { address_id: id },
       });
-      
+
       // Update user state by removing the address
-      const updatedUser = { 
-        ...user, 
-        addresses: user.addresses.filter((a) => a.id !== id) 
+      const updatedUser = {
+        ...user,
+        addresses: user.addresses.filter((a) => a.id !== id),
       };
       updateUserLocal(updatedUser);
-      
+
       toast.success("Address deleted");
     } catch (err) {
       console.error("Delete failed:", err);
@@ -144,8 +149,9 @@ export default function ProfilePage() {
       <div className="max-w-3xl mx-auto bg-base-100 shadow-lg rounded-lg p-8">
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-24 h-24">
+            {/* Show profile image only if available */}
             <img
-              src={getImageUrl(profileImage)}
+              src={profileImage ? profileImage : getImageUrl(profileImage)}
               alt="User Avatar"
               className="w-24 h-24 rounded-full object-cover shadow"
             />
@@ -178,12 +184,24 @@ export default function ProfilePage() {
           <div className="flex gap-2">
             {isEditing ? (
               <>
-                <button onClick={handleSaveProfile} className="btn btn-sm btn-primary flex items-center gap-2">
-                  <Save className="w-4 h-4" /> Save
+                <button
+                  onClick={handleSaveProfile}
+                  className={`btn btn-sm btn-primary flex items-center gap-2 ${loading && "loading"}`}
+                  disabled={isSaveDisabled}
+                >
+                  {loading ? (
+                    <Loader className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" /> Save
+                    </>
+                  )}
                 </button>
-                <button onClick={handleCancelEdit} className="btn btn-sm btn-ghost flex items-center gap-2">
-                  <X className="w-4 h-4" /> Cancel
-                </button>
+                {!loading && (
+                  <button onClick={handleCancelEdit} className="btn btn-sm btn-ghost flex items-center gap-2">
+                    <X className="w-4 h-4" /> Cancel
+                  </button>
+                )}
               </>
             ) : (
               <button onClick={() => setIsEditing(true)} className="btn btn-outline btn-sm flex items-center gap-2">
@@ -241,7 +259,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Add Address modal */}
+      {/* Add Address Modal */}
       <input type="checkbox" id="add-address-modal" className="modal-toggle" checked={showAdd} readOnly />
       <div className="modal">
         <div className="modal-box w-full max-w-md">
